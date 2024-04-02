@@ -14,6 +14,8 @@ class EmotionGenerator:
         self.identity = [0,0,0] #identity in EPA space
         self.impression = [0,0,0] #impression in EPA space
         self.emotion = [0,0,0] #emotion in EPA space
+        #subscriber a /impression
+        #service /emotion_service
 
     def evaluation(self):
         #check impression evaluation
@@ -84,6 +86,16 @@ class EmotionGenerator:
             self.emotion[2]= -2 #low arousal emotion
             self.emotion[1] += 1 #high potency empotion
         print(self.emotion[2])
-
-    
+   
 #main
+def main():
+    emoNode = EmotionGenerator()
+    while(1):
+        #get identity
+        emoNode.evaluation()
+        emoNode.potency()
+        emoNode.activity()
+
+
+if __name__ == '__main__':
+    main()
