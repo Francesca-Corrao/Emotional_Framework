@@ -17,6 +17,7 @@ class EmotionGenerator:
         #subscriber a /impression
         #service /emotion_service
 
+    #computation of emotion evaluation
     def evaluation(self):
         #check impression evaluation
         if(self.impression[0]>=0):
@@ -45,7 +46,7 @@ class EmotionGenerator:
             self.emotion -= 0.5
         print("evaluation: " + self.emotion[0])
 
-
+    #computation of emotion potency
     def potency(self):
         #potency impression-identity relate with identity
         if(self.impression[1]-self.identity[1]>=1):
@@ -71,7 +72,7 @@ class EmotionGenerator:
                
         print(self.emotion[1])
 
-
+    #computation of emotion activity
     def activity(self):
         #check impression - identiy 
         if(self.impression[2]-self.identity[2]>=1):
@@ -86,6 +87,10 @@ class EmotionGenerator:
             self.emotion[2]= -2 #low arousal emotion
             self.emotion[1] += 1 #high potency empotion
         print(self.emotion[2])
+
+    #set/get user's impression
+    def set_impression(self, imp):
+        self.impression = imp
    
 #main
 def main():
