@@ -10,6 +10,17 @@ from this enstablish an impression in the EPA plane
 
 #import
 
+#basic emotions in PAD space
+emotion_map = {
+    "H":[3, 2.5, 2.8],
+    "N":[0,0,0],
+    "D":[-1,0,1],
+    "F":[-1.86, -2.2, 2.5],
+    "A":[-2, 1.5, 2],
+    "SA":[-3, -2.2 , 2.5],
+    "SU":[0, 0, 3],
+}
+
 #class
 class ImpressionDetection():
     def __init__(self) -> None:
@@ -22,43 +33,42 @@ class ImpressionDetection():
         self.delta = 0.1 #to update the impression based on the old one
 
     #get emotion and attention detected with morphcast
-    def morphcast_feedback(self):
+    def morphcast_feedback(self, data):
         #get emotion
-        self.user_emotion
+        self.old_emotion = self.user_emotion
+        self.user_emotion = emotion_map[data[emotion]]
         #get attention
-        self.attention
+        self.attention = data[attention]
 
     #get proximity from Pepper
-    def get_proximity(self):
-        self.proximity
+    def get_proximity(self, data):
+        self.proximity = data
 
     #update Impression
     def update_impression(self):
-        #evaluation according to user emotion
-        if(self.user_emotion == good and self.old_emotion == bad):
-            self.impression[0] == good
-            if(self.attention == 'A'):
-                self.impression[0] += self.delta
-        elif(self.user_emotion == bad and self.old_emotion == good):
-            self.impression[0] == bad
-            if(self.attention == 'A'):
-                self.impression[0] -= self.delta
+        #emotion effects
+        if(self.user_emotion[1] >= 1 and self.old_emotion <= -1):
+            self.impression[0] == 1.5
+        elif(self.user_emotion <= -1 and self.old_emotion >= 1):
+            self.impression[0] == -1.5
         else:
-            self.impression[0] = neutral
+            self.impression[0] = 0
         
         #proximity effect
         if(self.proximity <= shorter_distance_th):
-            self.impression[2] = active
+            self.impression[2] = 1.5
             self.impression[0] += self.delta 
         elif(self.get_proximity >= large_distance_th):
-            self.impression[2] = passive
+            self.impression[2] = -1.5
             self.impression[0] -= self.delta
 
         #attention effect
         if(self.attention == 'A'): 
-            self.impression[1] = power
+            self.impression[1] = 1.5
+            #increase effect of other 
         elif(self.attention == 'NA'):
-            self.impression[1] = powerless        
+            self.impression[1] = -1.5
+            #decrease the effect of others       
 
         
 #main
