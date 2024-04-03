@@ -38,18 +38,17 @@ class ImpressionDetection():
         self.old_emotion = self.user_emotion
         self.user_emotion = emotion_map[data[emotion]]
         #get attention
-        self.attention = data[attention]
+        self.attention = float(data[attention])
 
     #get proximity from Pepper
     def get_proximity(self, data):
         self.proximity = data
 
-    #update Impression
     def update_impression(self):
         #emotion effects
-        if(self.user_emotion[1] >= 1 and self.old_emotion <= -1):
+        if(self.user_emotion[0] >= 1 and self.old_emotion[0] <= -1):
             self.impression[0] == 1.5
-        elif(self.user_emotion <= -1 and self.old_emotion >= 1):
+        elif(self.user_emotion[0] <= -1 and self.old_emotion[0] >= 1):
             self.impression[0] == -1.5
         else:
             self.impression[0] = 0
@@ -58,15 +57,15 @@ class ImpressionDetection():
         if(self.proximity <= shorter_distance_th):
             self.impression[2] = 1.5
             self.impression[0] += self.delta 
-        elif(self.get_proximity >= large_distance_th):
+        elif(self.proximity >= large_distance_th):
             self.impression[2] = -1.5
             self.impression[0] -= self.delta
 
         #attention effect
-        if(self.attention == 'A'): 
+        if(self.attention >= 0.5): 
             self.impression[1] = 1.5
             #increase effect of other 
-        elif(self.attention == 'NA'):
+        elif(self.attention < 0.5):
             self.impression[1] = -1.5
             #decrease the effect of others       
 
