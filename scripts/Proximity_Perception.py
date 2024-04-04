@@ -9,14 +9,13 @@ class ProximityPerception():
         self.memory = ALProxy("ALMemory", IP_ADD, PORT) #aggiungere IP e porta
         self.people_perception = ALProxy("ALPeoplePerception", IP_ADD,PORT) #aggiungere IP e porta
         self.engagment_zone = ALProxy("ALEngagementZones",IP_ADD,PORT) #aggiungere IP e porta 
-        self.engagment_zone.setFirstLimitDistance(1.5) 
-        self.engagment_zone.setSecondLimitDistance(2.5)
-        self.engagment_zone.setLimitAngle(70)
+        self.engagment_zone.setFirstLimitDistance(1) 
+        self.engagment_zone.setSecondLimitDistance(2)
+        self.engagment_zone.setLimitAngle(90)
         self.people = False
         self.people_id = []
 
     def onInput_onStart(self):
-        #self.onStopped() #activate the output of the box
         print("Start")
         while(True):
             self.people_id = []
@@ -40,6 +39,8 @@ class ProximityPerception():
                 for p in self.people_id:
                     dist = self.memory.getData(p)
                     print(p, " : ", dist)
+            else:
+                print("no People detected")
             time.sleep(3)
         pass
 
