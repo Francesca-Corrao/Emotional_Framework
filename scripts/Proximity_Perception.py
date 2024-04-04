@@ -2,8 +2,8 @@ from naoqi import ALProxy
 import time
 #localhost:51260
 #pepper.local.:9559
-IP_ADD = "10.0.0.2"
-PORT = 9559
+IP_ADD = "10.0.0.2" #set correct IP 
+PORT = 9559 #set correct PORT 
 class ProximityPerception():
     def __init__(self):
         self.memory = ALProxy("ALMemory", IP_ADD, PORT) #aggiungere IP e porta
