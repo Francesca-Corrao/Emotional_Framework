@@ -18,8 +18,7 @@ emotion_map = {
     "F":[-1.86, -2.2, 2.5],
     "A":[-2, 1.5, 2],
     "SA":[-3, -2.2 , 2.5],
-    "SU":[0, 0, 3],
-}
+    "SU":[0, 0, 3]}
 
 #class
 class ImpressionDetection():
