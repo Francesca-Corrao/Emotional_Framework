@@ -9,6 +9,7 @@ from this enstablish an impression in the EPA plane
 """
 
 #import
+import time
 
 #basic emotions in PAD space
 emotion_map = {
@@ -22,22 +23,27 @@ emotion_map = {
 
 #class
 class ImpressionDetection():
-    def __init__(self) -> None:
+    def __init__(self):
         self.impression = [0,0,0] #impression in EPA space
-        self.user_emotion #emotion label [H,N,D,A,F,SA,SU]
-        self.proximity #
-        self.attention #attention label [A/NA]
-        self.old_emotion
-        self.old_impression #to keep into account a smooth transaction(?)
-        self.delta = 0.1 #to update the impression based on the old one
+        self.user_emotion = [0,0,0]
+        self.proximity = 1
+        self.attention= 0.5
+        self.old_emotion = [0,0,0]
+        self.delta = 0.5
+        #distance thresholds, try proximity with pepper and set this
+        self.shorter_distance_th = 0.5
+        self.large_distance_th = 1
 
     #get emotion and attention detected with morphcast
     def morphcast_feedback(self, data):
-        #get emotion
+        #converti data
+        d = data.split("_")
+        #update old emotion
         self.old_emotion = self.user_emotion
-        self.user_emotion = emotion_map[data[emotion]]
-        #get attention
-        self.attention = float(data[attention])
+        #update user emotion with the value in EPA space
+        self.user_emotion = emotion_map[d[1]]
+        #set user attention
+        self.attention = float(d[0])
 
     #get proximity from Pepper
     def get_proximity(self, data):
@@ -45,18 +51,20 @@ class ImpressionDetection():
 
     def update_impression(self):
         #emotion effects
+        print("emo_now:" + str(self.user_emotion[0]))
+        print("emo_old:" +str(self.old_emotion[0]))
         if(self.user_emotion[0] >= 1 and self.old_emotion[0] <= -1):
-            self.impression[0] == 1.5
+            self.impression[0] = 1.5
         elif(self.user_emotion[0] <= -1 and self.old_emotion[0] >= 1):
-            self.impression[0] == -1.5
+            self.impression[0] = -1.5
         else:
             self.impression[0] = 0
         
         #proximity effect
-        if(self.proximity <= shorter_distance_th):
+        if(self.proximity <= self.shorter_distance_th):
             self.impression[2] = 1.5
-            self.impression[0] += self.delta 
-        elif(self.proximity >= large_distance_th):
+            self.impression[0] = self.impression[0] + self.delta 
+        elif(self.proximity >= self.large_distance_th):
             self.impression[2] = -1.5
             self.impression[0] -= self.delta
 
@@ -64,9 +72,23 @@ class ImpressionDetection():
         if(self.attention >= 0.5): 
             self.impression[1] = 1.5
             #increase effect of other 
-        elif(self.attention < 0.5):
+        else:
             self.impression[1] = -1.5
-            #decrease the effect of others       
+            #decrease the effect of others
+        print("impression: " + str(self.impression))       
 
         
 #main
+def main():
+    imp_node = ImpressionDetection()
+    #get morphcast string da tastiera
+    while(1):
+        data = input("morphcast string: ")
+        imp_node.morphcast_feedback(data)
+        data = float(input("proximity: "))
+        imp_node.get_proximity(data)
+        imp_node.update_impression()
+        time.sleep(5)
+
+
+main()
