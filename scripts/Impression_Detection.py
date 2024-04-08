@@ -26,10 +26,12 @@ class ImpressionDetection():
     def __init__(self):
         self.impression = [0,0,0] #impression in EPA space
         self.user_emotion = [0,0,0]
-        self.proximity = 1
-        self.attention= 0.5
+        self.proximity = 1 #change in proximity
+        self.attention= 0
         self.old_emotion = [0,0,0]
-        self.delta = 0.5
+        self.old_prox = 1
+        self.old_att = 0
+        self.delta = 1
         #distance thresholds, try proximity with pepper and set this
         self.shorter_distance_th = 0.5
         self.large_distance_th = 1
@@ -43,38 +45,77 @@ class ImpressionDetection():
         #update user emotion with the value in EPA space
         self.user_emotion = emotion_map[d[1]]
         #set user attention
+        self.old_att = self.attention
         self.attention = float(d[0])
 
     #get proximity from Pepper
     def get_proximity(self, data):
+        #change in proximity
+        self.old_prox = self.proximity
         self.proximity = data
 
     def update_impression(self):
         #emotion effects
-        print("emo_now:" + str(self.user_emotion[0]))
-        print("emo_old:" +str(self.old_emotion[0]))
-        if(self.user_emotion[0] >= 1 and self.old_emotion[0] <= -1):
-            self.impression[0] = 1.5
-        elif(self.user_emotion[0] <= -1 and self.old_emotion[0] >= 1):
-            self.impression[0] = -1.5
+        sign = [0,0,0]
+        print("--------Emotion Effects--------")
+        if(self.user_emotion[0]> 1 and self.user_emotion[0] - self.old_emotion[0] > 1):
+            print("perceived good & better")
+            #emozione migliorata in positivo
+            self.impression[0] += self.delta
+            sign[0]= 1
+        elif(self.user_emotion[0]< -1 and self.user_emotion[0] - self.old_emotion[0] < -1):
+            #emozione peggiorata in negativo
+            print("perceived bad & worster")
+            self.impression[0] += -self.delta
+            sign[0] = -1
         else:
-            self.impression[0] = 0
-        
+            if(self.user_emotion[0]!=0):
+                sign[0] = self.user_emotion[0]/abs(self.user_emotion[0])
+                print("perceived : " +str(sign[0]))
+                self.impression[0] += sign[0]*(0.1)
+            else: 
+                sign[0] = 0 
+        print("impression: " + str(self.impression))
+
+        print("--------Proximity Effects--------")
         #proximity effect
         if(self.proximity <= self.shorter_distance_th):
             self.impression[2] = 1.5
-            self.impression[0] = self.impression[0] + self.delta 
-        elif(self.proximity >= self.large_distance_th):
-            self.impression[2] = -1.5
-            self.impression[0] -= self.delta
+            sign[2] = 1
+            if(self.proximity - self.old_prox <= -0.1):
+                self.impression[0] +=  self.delta/3
+                #self.impression[2] +=  self.delta
 
+        elif(self.proximity <= self.large_distance_th):
+            sign[2] = 0
+        
+        else:
+            sign[2] = -1
+            self.impression[2] = -1.5
+            if(self.proximity - self.old_prox >= 0.1):
+                self.impression[0] += -self.delta/3
+        print("impression: " + str(self.impression))
+
+        print("--------Attention Effects --------")
         #attention effect
         if(self.attention >= 0.5): 
-            self.impression[1] = 1.5
-            #increase effect of other 
-        else:
-            self.impression[1] = -1.5
+            if(self.attention - self.old_att > 0.15):
+                sign[1] = 1
+                self.impression[1] += self.delta
+            #increase effect of other
+            self.impression[0] += sign[0]*0.1
+            self.impression[1] += sign[1]*0.1
+            self.impression[2] += sign[2]*0.1
+
+        elif(self.attention< 0.5):
+            if(self.attention - self.old_att < -0.15):
+                sign[1] = -1
+                self.impression[1] += -self.delta
             #decrease the effect of others
+            self.impression[0] += -sign[0]*0.1
+            self.impression[1] += -sign[1]*0.1
+            self.impression[2] += -sign[2]*0.1
+
         print("impression: " + str(self.impression))       
 
         
@@ -88,7 +129,7 @@ def main():
         data = float(input("proximity: "))
         imp_node.get_proximity(data)
         imp_node.update_impression()
-        time.sleep(5)
+        time.sleep(3)
 
 
 main()
