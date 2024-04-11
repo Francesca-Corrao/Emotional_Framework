@@ -7,6 +7,14 @@ Three main components, each computing one of the value of the emotion in the EPA
 """
 
 #import needed
+from flask import Flask, request, jsonify 
+#import request 
+import threading
+import json
+
+#rest API
+app = Flask(__name__)
+
 
 #define class
 class EmotionGenerator:
@@ -14,6 +22,7 @@ class EmotionGenerator:
         self.identity = [1,1,1] #identity in EPA space
         self.impression = [0,0,0] #impression in EPA space
         self.emotion = [0,0,0] #emotion in EPA space
+        self.new_imp = False
         #subscriber a /impression
         #service /emotion_service
 
@@ -129,21 +138,51 @@ class EmotionGenerator:
     #set/get user's impression
     def set_impression(self, imp):
         self.impression = imp
-   
-#main
-def main():
-    emoNode = EmotionGenerator()
-    while(1):
-        #get identity
-        data = input("impression in EPA: ").split(',')
-        i = []
-        for val in data:
-            i.append(float(val))
-        emoNode.set_impression(i)
-        emoNode.evaluation()
-        emoNode.potency()
-        emoNode.activity()
 
+    def main(self):
+        while(1):
+        #get identity
+            """data = input("impression in EPA: ").split(',')
+            i = []
+            for val in data:
+                i.append(float(val))
+            emoNode.set_impression(i)
+            """
+            if(self.new_imp):
+                self.new_imp = False
+                print("New impression")
+                print(self.impression)
+                self.evaluation()
+                self.potency()
+                self.activity()
+            #else:
+                #print("No new impression")
+                #time.sleep(1)
+
+emoNode = EmotionGenerator()
+
+#rest API
+@app.route('/impression',methods =['POST'])
+def get_impression():
+    #receive impression from Impression Node
+    print("Received Impression")
+    #convert fro json to array
+    data = request.get_json()
+    i = json.loads(data)
+    print(i)
+    emoNode.new_imp = True
+    emoNode.set_impression(i)
+
+    #i = data
+    #emoNode.set_impression(i)
+    return jsonify({'succes':'True'})
+
+@app.route('/emotional_state',methods =['GET'])
+def send_emotion():
+    print("Received Request from Emotional expression")
+    return jsonify(emoNode.emotion)
 
 if __name__ == '__main__':
-    main()
+    threading.Thread(target=emoNode.main).start()
+    app.run(host='127.0.0.1', port=3000)
+    

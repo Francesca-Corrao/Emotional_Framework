@@ -14,7 +14,7 @@ def publish_perception():
     if new_perception=="True":
         perc=eval(resp.text)["perception"]
         print(perc)
-
+        #post on Impression Node
 while(1):
     time.sleep(1)
     publish_perception()

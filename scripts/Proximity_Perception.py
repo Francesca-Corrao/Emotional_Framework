@@ -39,6 +39,7 @@ class ProximityPerception():
                 for p in self.people_id:
                     dist = self.memory.getData(p)
                     print(p, " : ", dist)
+                #post on Impression Node API
             else:
                 print("no People detected")
             time.sleep(3)

@@ -10,6 +10,21 @@ from this enstablish an impression in the EPA plane
 
 #import
 import time
+from flask import Flask 
+import json
+import requests
+
+#rest API
+app = Flask(__name__)
+@app.route('/morphcast_perception',methods =['POST'])
+def get_impression():
+    #receive impression from Impression Node
+    print("Received Morphcast")
+    #convert json to 
+
+@app.route('/proximity_perception',methods =['POST'])
+def send_emotion():
+    print("Received Proximity")
 
 #basic emotions in PAD space
 emotion_map = {
@@ -20,7 +35,7 @@ emotion_map = {
     "A":[-2, 1.5, 2],
     "SA":[-3, -2.2 , 2.5],
     "SU":[0, 0, 3]}
-
+url='http://127.0.0.1:3000/'
 #class
 class ImpressionDetection():
     def __init__(self):
@@ -116,7 +131,10 @@ class ImpressionDetection():
             self.impression[1] += -sign[1]*0.1
             self.impression[2] += -sign[2]*0.1
 
-        print("impression: " + str(self.impression))       
+        print("impression: " + str(self.impression))
+        #post request to EmoGen Node
+        data = json.dumps(self.impression)
+        requests.post(url+'/impression' , json = data)      
 
         
 #main

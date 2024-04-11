@@ -11,6 +11,8 @@ from naoqi import ALProxy
 import random
 import numpy as np 
 from numpy.linalg import norm
+
+
 #basic emotion in EPA
 emotion_map = {
     "H": np.array([3, 2.5, 2.8]),
@@ -133,16 +135,23 @@ class EmotionExpression():
             print("Avatar Case")
             #face animation
         time.sleep(self.time_decay/2)
+    
+    def get_emotion(self):
+        print("Request Emotional State to Emotion Generator Node")
+        #get request
+        #convert json to array
 
-         
+
 #main
 def main():
     emo_exp = EmotionExpression("R")
     while(True):
-        data = input("impression in EPA: ")
+        emo_exp.get_emotion()
+        """data = input("impression in EPA: ")
         i = []
         for val in data:
             i.append(float(val))
+        """
         emo_exp.emotion = np.array(i)
         
         emo_exp.update_motion()
