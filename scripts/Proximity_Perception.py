@@ -23,7 +23,7 @@ class ProximityPerception():
         print("Start")
         while(True):
             self.people_id = []
-            """people_list = self.memory.getData("EngagementZones/PeopleInZone1")
+            people_list = self.memory.getData("EngagementZones/PeopleInZone1")
             if len(people_list) >0:
                 self.people = True
                 for p in people_list:
@@ -38,7 +38,7 @@ class ProximityPerception():
                         print(p)
                         s = "PeoplePerception/Person/"+ str(p) + "/Distance"
                         self.people_id.append(s)
-            """
+            
             self.people = True
             if(self.people):
                 dist = 0 
@@ -46,7 +46,7 @@ class ProximityPerception():
                     dist = self.memory.getData(p)
                     print(p, " : ", dist)
                 #post on Impression Node API
-                dist = float(input("proximity: "))
+                #dist = float(input("proximity: "))
                 data2 = json.dumps(dist)
                 requests.post(url2+"/proximity_perception", json=data2)
 

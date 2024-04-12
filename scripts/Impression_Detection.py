@@ -145,8 +145,8 @@ class ImpressionDetection():
         if(upd):
             print("Impression updated")
             print("impression: " + str(self.impression))
-            #data = json.dumps(self.impression)
-            #requests.post(url+'/impression' , json = data)      
+            data = json.dumps(self.impression)
+            requests.post(url+'/impression' , json = data)      
 
     def main(self):
         #get morphcast string da tastiera
