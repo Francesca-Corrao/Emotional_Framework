@@ -11,7 +11,8 @@ from naoqi import ALProxy
 import random
 import numpy as np 
 from numpy.linalg import norm
-
+import requests
+import json
 
 #basic emotion in EPA
 emotion_map = {
@@ -50,16 +51,20 @@ fear_animation = [
     "F:path4",
     "F:path5"]
 
+#Pepper Connection
 IP_ADD = "10.0.0.2" #set correct IP 
 PORT = 9559 #set correct PORT 
+
+url='http://127.0.0.1:3000/' #emotion Generation API
 
 #class
 class EmotionExpression():
     def __init__(self, type):
         self.emotion = [0,0,0]
         self.emo_label = "N"
-        self.time_decay = 2
+        self.time_decay = 4
         self.type = type
+        self.new_emotion = False
         if type == 'R':
             print("Robot Case")
             #self.animation_player = ALProxy("ALAnimationPlayerProxy", IP_ADD , PORT )
@@ -134,12 +139,19 @@ class EmotionExpression():
         else:
             print("Avatar Case")
             #face animation
-        time.sleep(self.time_decay/2)
     
     def get_emotion(self):
         print("Request Emotional State to Emotion Generator Node")
         #get request
         #convert json to array
+        data = requests.get(url + '/emotional_state').json()
+        self.new_emotion= data['new_emotion']
+        if(self.new_emotion):
+            print("received new emotion")
+            self.emotion = data["emotion"]
+            print(self.emotion)
+        else:
+            print("no new emotion")
 
 
 #main
@@ -152,9 +164,9 @@ def main():
         for val in data:
             i.append(float(val))
         """
-        emo_exp.emotion = np.array(i)
-        
-        emo_exp.update_motion()
-    
+        ##emo_exp.emotion = np.array(i)
+        if(emo_exp.new_emotion):
+          emo_exp.update_motion()
+        time.sleep(emo_exp.time_decay/2)
 
 main()

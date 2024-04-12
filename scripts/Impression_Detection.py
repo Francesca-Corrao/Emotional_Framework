@@ -10,21 +10,13 @@ from this enstablish an impression in the EPA plane
 
 #import
 import time
-from flask import Flask 
+from flask import Flask, request, jsonify 
 import json
 import requests
+import threading
 
 #rest API
-app = Flask(__name__)
-@app.route('/morphcast_perception',methods =['POST'])
-def get_impression():
-    #receive impression from Impression Node
-    print("Received Morphcast")
-    #convert json to 
 
-@app.route('/proximity_perception',methods =['POST'])
-def send_emotion():
-    print("Received Proximity")
 
 #basic emotions in PAD space
 emotion_map = {
@@ -35,7 +27,7 @@ emotion_map = {
     "A":[-2, 1.5, 2],
     "SA":[-3, -2.2 , 2.5],
     "SU":[0, 0, 3]}
-url='http://127.0.0.1:3000/'
+url='http://127.0.0.1:3000/' #emotion Generation API
 #class
 class ImpressionDetection():
     def __init__(self):
@@ -50,6 +42,9 @@ class ImpressionDetection():
         #distance thresholds, try proximity with pepper and set this
         self.shorter_distance_th = 0.5
         self.large_distance_th = 1
+        self.sign = [0,0,0]
+        self.new_perc = False
+        self.new_prox = False
 
     #get emotion and attention detected with morphcast
     def morphcast_feedback(self, data):
@@ -64,90 +59,128 @@ class ImpressionDetection():
         self.attention = float(d[0])
 
     #get proximity from Pepper
-    def get_proximity(self, data):
+    def set_proximity(self, data):
         #change in proximity
         self.old_prox = self.proximity
         self.proximity = data
 
-    def update_impression(self):
-        #emotion effects
-        sign = [0,0,0]
+    def emotion_effects(self):
+        
         print("--------Emotion Effects--------")
         if(self.user_emotion[0]> 1 and self.user_emotion[0] - self.old_emotion[0] > 1):
             print("perceived good & better")
             #emozione migliorata in positivo
             self.impression[0] += self.delta
-            sign[0]= 1
+            self.sign[0]= 1
         elif(self.user_emotion[0]< -1 and self.user_emotion[0] - self.old_emotion[0] < -1):
             #emozione peggiorata in negativo
             print("perceived bad & worster")
             self.impression[0] += -self.delta
-            sign[0] = -1
+            self.sign[0] = -1
         else:
             if(self.user_emotion[0]!=0):
-                sign[0] = self.user_emotion[0]/abs(self.user_emotion[0])
-                print("perceived : " +str(sign[0]))
-                self.impression[0] += sign[0]*(0.1)
+                self.sign[0] = self.user_emotion[0]/abs(self.user_emotion[0])
+                print("perceived : " +str(self.sign[0]))
+                self.impression[0] += self.sign[0]*(0.1)
             else: 
-                sign[0] = 0 
+                self.sign[0] = 0 
         print("impression: " + str(self.impression))
 
+    def proximty_effects(self):
         print("--------Proximity Effects--------")
         #proximity effect
         if(self.proximity <= self.shorter_distance_th):
             self.impression[2] = 1.5
-            sign[2] = 1
+            self.sign[2] = 1
             if(self.proximity - self.old_prox <= -0.1):
                 self.impression[0] +=  self.delta/3
                 #self.impression[2] +=  self.delta
 
         elif(self.proximity <= self.large_distance_th):
-            sign[2] = 0
+            self.sign[2] = 0
         
         else:
-            sign[2] = -1
+            self.sign[2] = -1
             self.impression[2] = -1.5
             if(self.proximity - self.old_prox >= 0.1):
                 self.impression[0] += -self.delta/3
         print("impression: " + str(self.impression))
 
+    def attention_effect(self):
         print("--------Attention Effects --------")
         #attention effect
+        self.sign[1]= 0
         if(self.attention >= 0.5): 
             if(self.attention - self.old_att > 0.15):
-                sign[1] = 1
+                self.sign[1] = 1
                 self.impression[1] += self.delta
             #increase effect of other
-            self.impression[0] += sign[0]*0.1
-            self.impression[1] += sign[1]*0.1
-            self.impression[2] += sign[2]*0.1
+            self.impression[0] += self.sign[0]*0.1
+            self.impression[1] += self.sign[1]*0.1
+            self.impression[2] += self.sign[2]*0.1
 
         elif(self.attention< 0.5):
             if(self.attention - self.old_att < -0.15):
-                sign[1] = -1
+                self.sign[1] = -1
                 self.impression[1] += -self.delta
             #decrease the effect of others
-            self.impression[0] += -sign[0]*0.1
-            self.impression[1] += -sign[1]*0.1
-            self.impression[2] += -sign[2]*0.1
+            self.impression[0] += -self.sign[0]*0.1
+            self.impression[1] += -self.sign[1]*0.1
+            self.impression[2] += -self.sign[2]*0.1
 
-        print("impression: " + str(self.impression))
+
+    def update_impression(self):
+        #emotion effects
+        upd = False
+        if(self.new_perc):
+            self.new_perc = False
+            self.emotion_effects()
+            self.attention_effect()
+            upd = True
+        if(self.new_prox):
+            self.new_prox = False
+            self.proximty_effects()
+            upd = True
         #post request to EmoGen Node
-        data = json.dumps(self.impression)
-        requests.post(url+'/impression' , json = data)      
+        if(upd):
+            print("Impression updated")
+            print("impression: " + str(self.impression))
+            #data = json.dumps(self.impression)
+            #requests.post(url+'/impression' , json = data)      
 
-        
-#main
-def main():
-    imp_node = ImpressionDetection()
-    #get morphcast string da tastiera
-    while(1):
-        data = input("morphcast string: ")
-        imp_node.morphcast_feedback(data)
-        data = float(input("proximity: "))
-        imp_node.get_proximity(data)
-        imp_node.update_impression()
-        time.sleep(3)
+    def main(self):
+        #get morphcast string da tastiera
+        while(1):
+            #data = input("morphcast string: ")
+            #imp_node.morphcast_feedback(data)
+            #data = float(input("proximity: "))
+            #imp_node.get_proximity(data)
+            self.update_impression()
+            time.sleep(3)
+
+imp_node = ImpressionDetection()
+app = Flask(__name__)
+@app.route('/morphcast_perception',methods =['POST'])
+def get_emotion_attention():
+    #receive impression from Impression Node
+    print("Received Morphcast")
+    #convert json to 
+    data = request.get_json()
+    imp_node.new_perc = True
+    print(str(data))
+    imp_node.morphcast_feedback(json.loads(data))
+    return jsonify({'succes':'True'}),200
+
+@app.route('/proximity_perception',methods =['POST'])
+def get_proximity():
+    print("Received Proximity")
+    data = request.get_json()
+    imp_node.new_prox = True
+    print(data)
+    imp_node.set_proximity(float(json.loads(data)))
+    return jsonify({'succes':'True'}),200
 
 
-main()
+if __name__ == '__main__':
+    threading.Thread(target=imp_node.main).start()
+    app.run(host='127.0.0.1', port=4000)

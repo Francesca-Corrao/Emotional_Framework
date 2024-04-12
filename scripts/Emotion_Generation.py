@@ -23,6 +23,7 @@ class EmotionGenerator:
         self.impression = [0,0,0] #impression in EPA space
         self.emotion = [0,0,0] #emotion in EPA space
         self.new_imp = False
+        self.new_emo = False
         #subscriber a /impression
         #service /emotion_service
 
@@ -155,6 +156,7 @@ class EmotionGenerator:
                 self.evaluation()
                 self.potency()
                 self.activity()
+                self.new_emo = True
             #else:
                 #print("No new impression")
                 #time.sleep(1)
@@ -169,18 +171,19 @@ def get_impression():
     #convert fro json to array
     data = request.get_json()
     i = json.loads(data)
-    print(i)
     emoNode.new_imp = True
     emoNode.set_impression(i)
 
     #i = data
     #emoNode.set_impression(i)
-    return jsonify({'succes':'True'})
+    return jsonify({'succes':'True'}),200
 
 @app.route('/emotional_state',methods =['GET'])
 def send_emotion():
     print("Received Request from Emotional expression")
-    return jsonify(emoNode.emotion)
+    val = emoNode.new_emo
+    emoNode.new_emo = False
+    return jsonify({'new_emotion': val, 'emotion':emoNode.emotion}),200
 
 if __name__ == '__main__':
     threading.Thread(target=emoNode.main).start()
