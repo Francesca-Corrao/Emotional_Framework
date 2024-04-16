@@ -1,11 +1,12 @@
 """"
 Impression Detection Component:
 Get the information from the perception Module in order to get impression the user has of the robot.
-Takes into account 3 different aspect:
--Emotion of the user [H,N,D,F,A, SA,SU]
--attention of the user [A/ NA]
+Takes into account 3 different aspect, collect by the rest API:
+-Emotion of the user [H,N,D,F,A,SA,SU]
+-attention of the user [0-1]
 -proximity []
 from this enstablish an impression in the EPA plane
+Then the impression is send to the Emotion Generation Node.
 """
 
 #import
@@ -15,10 +16,7 @@ import json
 import requests
 import threading
 
-#rest API
-
-
-#basic emotions in PAD space
+#basic emotions in EPA space
 emotion_map = {
     "H":[3, 2.5, 2.8],
     "N":[0,0,0],
@@ -32,23 +30,27 @@ url='http://127.0.0.1:3000/' #emotion Generation API
 class ImpressionDetection():
     def __init__(self):
         self.impression = [0,0,0] #impression in EPA space
-        self.user_emotion = [0,0,0]
-        self.proximity = 1 #change in proximity
-        self.attention= 0
-        self.old_emotion = [0,0,0]
+        self.user_emotion = [0,0,0] #user emotion in EPA
+        self.proximity = 1 # proximity
+        self.attention= 0 #user's attention
+        #old value to get the transition
+        self.old_emotion = [0,0,0] 
         self.old_prox = 1
         self.old_att = 0
+        #delto to increment/decrement impressopm
         self.delta = 1
         #distance thresholds, try proximity with pepper and set this
         self.shorter_distance_th = 0.5
         self.large_distance_th = 1
+        #to set the sign of the new impression if positive or negative
         self.sign = [0,0,0]
+        #value to start the processing of perception to get impression
         self.new_perc = False
         self.new_prox = False
 
     #get emotion and attention detected with morphcast
     def morphcast_feedback(self, data):
-        #converti data
+        #data conversion
         d = data.split("_")
         #update old emotion
         self.old_emotion = self.user_emotion
@@ -60,12 +62,11 @@ class ImpressionDetection():
 
     #get proximity from Pepper
     def set_proximity(self, data):
-        #change in proximity
         self.old_prox = self.proximity
         self.proximity = data
 
     def emotion_effects(self):
-        
+        #compute the effect of emotion in impresion making -> related to evaluation
         print("--------Emotion Effects--------")
         if(self.user_emotion[0]> 1 and self.user_emotion[0] - self.old_emotion[0] > 1):
             print("perceived good & better")
@@ -88,7 +89,7 @@ class ImpressionDetection():
 
     def proximty_effects(self):
         print("--------Proximity Effects--------")
-        #proximity effect
+        #proximity effect on Impression makig -> Activity and Evaluation 
         if(self.proximity <= self.shorter_distance_th):
             self.impression[2] = 1.5
             self.sign[2] = 1
@@ -108,7 +109,7 @@ class ImpressionDetection():
 
     def attention_effect(self):
         print("--------Attention Effects --------")
-        #attention effect
+        #attention effect -> set Power and slightly increment/decremt the rest
         self.sign[1]= 0
         if(self.attention >= 0.5): 
             if(self.attention - self.old_att > 0.15):
@@ -141,7 +142,7 @@ class ImpressionDetection():
             self.new_prox = False
             self.proximty_effects()
             upd = True
-        #post request to EmoGen Node
+        #if new impression publish to EmoGen Node
         if(upd):
             print("Impression updated")
             print("impression: " + str(self.impression))
@@ -149,22 +150,27 @@ class ImpressionDetection():
             requests.post(url+'/impression' , json = data)      
 
     def main(self):
-        #get morphcast string da tastiera
+        
         while(1):
-            #data = input("morphcast string: ")
-            #imp_node.morphcast_feedback(data)
-            #data = float(input("proximity: "))
-            #imp_node.get_proximity(data)
+            """
+            #per test senza perception nodes
+            data = input("morphcast string: ")
+            imp_node.morphcast_feedback(data)
+            data = float(input("proximity: "))
+            imp_node.get_proximity(data)
+            """
             self.update_impression()
             time.sleep(3)
 
 imp_node = ImpressionDetection()
+
+#RestAPI
 app = Flask(__name__)
+
 @app.route('/morphcast_perception',methods =['POST'])
 def get_emotion_attention():
-    #receive impression from Impression Node
+    #receive attention and perception from Morphcat
     print("Received Morphcast")
-    #convert json to 
     data = request.get_json()
     imp_node.new_perc = True
     print(str(data))
@@ -173,6 +179,7 @@ def get_emotion_attention():
 
 @app.route('/proximity_perception',methods =['POST'])
 def get_proximity():
+    #received proximity
     print("Received Proximity")
     data = request.get_json()
     imp_node.new_prox = True
@@ -182,5 +189,7 @@ def get_proximity():
 
 
 if __name__ == '__main__':
+    #start impression node main
     threading.Thread(target=imp_node.main).start()
+    #start Rest API server.
     app.run(host='127.0.0.1', port=4000)

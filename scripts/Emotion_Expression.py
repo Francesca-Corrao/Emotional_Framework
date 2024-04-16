@@ -2,10 +2,10 @@
 Emotion Expression Component: get the emotion the robot feel in EPA space and perform one of the 5 it's able to feel.
 From EPA found the closest one among the 5 he can display [Happy, Neutral, Sad, Anger and Fear].
 Send the clue for the Expression to the Agent. 
-It takes into account the time decay of emotions and the fact that the transition should be smooth. 
+Robot case: 
+-Emotion Animation -> ALAnimationPlayerProxy 
+-Eye LED color -> ALLeds
 """
-
-from sklearn.metrics.pairwise import cosine_similarity
 import time
 from naoqi import ALProxy
 import random
@@ -23,6 +23,7 @@ emotion_map = {
     "SA":np.array([-3, -2.2 , -2.5]),
     "SU":np.array([0, 0, 3])}
 
+#animations path for different emotions
 happy_animation = [
     "H:path1",
     "H:path2",
@@ -55,7 +56,7 @@ fear_animation = [
 IP_ADD = "10.0.0.2" #set correct IP 
 PORT = 9559 #set correct PORT 
 
-url='http://127.0.0.1:3000/' #emotion Generation API
+url='http://127.0.0.1:3000/' #emotion Generation restAPI
 
 #class
 class EmotionExpression():
@@ -67,8 +68,8 @@ class EmotionExpression():
         self.new_emotion = False
         if type == 'R':
             print("Robot Case")
-            #self.animation_player = ALProxy("ALAnimationPlayerProxy", IP_ADD , PORT )
-            #self.leds = ALProxy("ALLeds",IP_ADD,PORT)
+            self.animation_player = ALProxy("ALAnimationPlayerProxy", IP_ADD , PORT )
+            self.leds = ALProxy("ALLeds",IP_ADD,PORT)
         else:
             #facial expression module
             print("Avatar")
@@ -76,23 +77,21 @@ class EmotionExpression():
         #client
     
     def get_basic(self):
+        #get the basic emotion from the vector in EPA space 
         cos_list = []
         #compute cosine similarity 
         for key in emotion_map:
             #cos_list.append(cosine_similarity(self.emotion.reshape(1,-1), emotion_map[key].reshape(1,-1)))
             cos_list.append(np.dot(self.emotion,emotion_map[key])/(norm(self.emotion)*norm(emotion_map[key])))
-        print(cos_list)
         max_cos = -1
         index = 0
         #get higher cosine similarity 
         for i in range(0, len(cos_list)):
             if(cos_list[i] > max_cos):
-                print(str(i) + " maggiore di "+ str(index))
                 max_cos= cos_list[i]
                 index = i
         #get label 
         keys = list(emotion_map.keys())
-        print(emotion_map)
         self.emo_label = keys[index]
         print("basic emotion: "+ self.emo_label)
 
@@ -124,12 +123,11 @@ class EmotionExpression():
 
     def update_motion(self):
         print("Updating emotion behaviours")
-        #request emotion
         #find closest basic emotion
         self.get_basic()
         #select emotion to play
         if(self.type == "R"):
-            if self.emo_label in ["H", "A", "F", "S"] :
+            if self.emo_label in ["H", "A", "F", "SA"] :
                 print("play emotion:" + self.emo_label)
                 self.play_animation()
             elif(self.emo_label == "N"):
@@ -158,15 +156,20 @@ class EmotionExpression():
 def main():
     emo_exp = EmotionExpression("R")
     while(True):
+        #get emotion
         emo_exp.get_emotion()
-        """data = input("impression in EPA: ")
+        """
+        #to test withour the 
+        data = input("impression in EPA: ")
         i = []
         for val in data:
             i.append(float(val))
-        """
         ##emo_exp.emotion = np.array(i)
+        """
+        #update motion if got a new one
         if(emo_exp.new_emotion):
           emo_exp.update_motion()
-        time.sleep(emo_exp.time_decay/2)
+        #wait for emotion to decay
+        time.sleep(emo_exp.time_decay)
 
 main()
