@@ -14,23 +14,25 @@ class ProximityPerception():
         #set up to connect to Pepper
         self.memory = ALProxy("ALMemory", IP_ADD, PORT) #aggiungere IP e porta
         self.engagment_zone = ALProxy("ALEngagementZones",IP_ADD,PORT) #aggiungere IP e porta 
+        self.people_perception = ALProxy("ALPeoplePerception", IP_ADD,PORT)
         self.engagment_zone.setFirstLimitDistance(1) 
         self.engagment_zone.setSecondLimitDistance(2)
         self.engagment_zone.setLimitAngle(90)
         self.people_id = 0
 
     def get_people_id(self):
+        print("looking for people")
         p = self.people_id
         zone = 1
-        while(self.people_id != p and zone<= 3):
-            str = "EngagementZones/PeopleInZone"+str(zone)
-            people_list = self.memory.getData(str)
+        while(self.people_id == p and zone<= 3):
+            s = "EngagementZones/PeopleInZone"+str(zone)
+            people_list = self.memory.getData(s)
             if( len(people_list)==1):
-                print("new people(id) found")
                 self.people_id= people_list[0]
+                print("new people(",self.people_id,") found:")
             elif( len(people_list)>1):
-                print("More than one People in Zone"+str(zone)+ "taking the first"):
                 self.people_id= people_list[0]
+                print("More than one People in Zone",zone, " taking the first: ", self.people_id)
             else:
                 zone += 1
 
@@ -40,18 +42,20 @@ class ProximityPerception():
         self.get_people_id()
         while(1):
             people_list = self.memory.getData("EngagementZones/PeopleInZone1")
-            people_list.append(self.memory.getData("EngagementZones/PeopleInZone2"))
-            people_list.append(self.memory.getData("EngagementZones/PeopleInZone3"))
-            if(self.people_id in people_list):
-                print("people(id) still visible")
-                str = "PeoplePerception/Person/"+ str(self.people_id) + "/Distance"
-                dist = self.memory.getData(str)
+            people_list2 = self.memory.getData("EngagementZones/PeopleInZone2")
+            people_list3 = self.memory.getData("EngagementZones/PeopleInZone3")
+            print(people_list)
+            if((self.people_id in people_list) or (self.people_id in people_list2) or (self.people_id in people_list3)):
+                print("people(",self.people_id,") still visible")
+                s = "PeoplePerception/Person/"+ str(self.people_id) + "/Distance"
+                dist = self.memory.getData(s)
+                #send distance to Impression Detection 
+                print(self.people_id, " : ", dist)  
+                data2 = json.dumps(dist)
+                #requests.post(url2+"/proximity_perception", json=data2)
             else:
-                print("People(id) not visible looking for new id")
+                print("People(",self.people_id,") not visible looking for new id")
                 self.get_people_id()
-            #send distance to Impression Interface
-            data2 = json.dumps(dist)
-            requests.post(url2+"/proximity_perception", json=data2)
             time.sleep(3) #choose appropriate rate
 
 PP_module = ProximityPerception()

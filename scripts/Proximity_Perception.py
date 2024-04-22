@@ -60,7 +60,7 @@ class ProximityPerception():
                 #dist = float(input("proximity: ")) #per test senza Pepper decommentare
                 #post on Impression Node API
                 data2 = json.dumps(dist)
-                requests.post(url2+"/proximity_perception", json=data2)
+                #requests.post(url2+"/proximity_perception", json=data2)
 
             else:
                 print("no People detected")
