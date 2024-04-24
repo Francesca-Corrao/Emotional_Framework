@@ -37,11 +37,11 @@ class ImpressionDetection():
         self.old_emotion = [0,0,0] 
         self.old_prox = 1
         self.old_att = 0
-        #delto to increment/decrement impressopm
-        self.delta = 1
+        #delta to increment/decrement impressopm
+        self.delta = 0.5
         #distance thresholds, try proximity with pepper and set this
-        self.shorter_distance_th = 0.5
-        self.large_distance_th = 1
+        self.shorter_distance_th = 1.25 #Engagment Zone 1
+        self.large_distance_th = 2 #Engagmente Zone 3
         #to set the sign of the new impression if positive or negative
         self.sign = [0,0,0]
         #value to start the processing of perception to get impression
@@ -71,18 +71,18 @@ class ImpressionDetection():
         if(self.user_emotion[0]> 1 and self.user_emotion[0] - self.old_emotion[0] > 1):
             print("perceived good & better")
             #emozione migliorata in positivo
-            self.impression[0] += self.delta
+            self.impression[0] += self.delta * (self.user_emotion[0] - self.old_emotion[0])
             self.sign[0]= 1
         elif(self.user_emotion[0]< -1 and self.user_emotion[0] - self.old_emotion[0] < -1):
             #emozione peggiorata in negativo
             print("perceived bad & worster")
-            self.impression[0] += -self.delta
+            self.impression[0] += self.delta * (self.user_emotion[0] - self.old_emotion[0])
             self.sign[0] = -1
         else:
             if(self.user_emotion[0]!=0):
                 self.sign[0] = self.user_emotion[0]/abs(self.user_emotion[0])
                 print("perceived : " +str(self.sign[0]))
-                self.impression[0] += self.sign[0]*(0.1)
+                self.impression[0] += self.sign[0]*0.1
             else: 
                 self.sign[0] = 0 
         print("impression: " + str(self.impression))
@@ -91,20 +91,23 @@ class ImpressionDetection():
         print("--------Proximity Effects--------")
         #proximity effect on Impression makig -> Activity and Evaluation 
         if(self.proximity <= self.shorter_distance_th):
-            self.impression[2] = 1.5
+            self.impression[2] += 0.2
             self.sign[2] = 1
-            if(self.proximity - self.old_prox <= -0.1):
-                self.impression[0] +=  self.delta/3
-                #self.impression[2] +=  self.delta
+            if(self.proximity - self.old_prox <= -0.25):
+                self.impression[2] += self.old_prox - self.proximity
+                self.impression[0] +=  self.delta/2
 
-        elif(self.proximity <= self.large_distance_th):
-            self.sign[2] = 0
+        elif(self.proximity >= self.large_distance_th):
+            self.sign[2] = -1
+            self.impression[2] += -0.2
+            if(self.proximity - self.old_prox >= 0.25):
+                self.impression[0] += -self.delta/2
+                self.impression[2] += -(self.old_prox - self.proximity)
         
         else:
-            self.sign[2] = -1
-            self.impression[2] = -1.5
-            if(self.proximity - self.old_prox >= 0.1):
-                self.impression[0] += -self.delta/3
+            self.sign[2] = 0
+            #self.impression[2] += 0.1
+
         print("impression: " + str(self.impression))
 
     def attention_effect(self):
@@ -112,23 +115,23 @@ class ImpressionDetection():
         #attention effect -> set Power and slightly increment/decremt the rest
         self.sign[1]= 0
         if(self.attention >= 0.5): 
-            if(self.attention - self.old_att > 0.15):
-                self.sign[1] = 1
+            if(self.attention - self.old_att > 0.3):
+                self.sign[1] += 1
                 self.impression[1] += self.delta
             #increase effect of other
             self.impression[0] += self.sign[0]*0.1
             self.impression[1] += self.sign[1]*0.1
             self.impression[2] += self.sign[2]*0.1
 
-        elif(self.attention< 0.5):
-            if(self.attention - self.old_att < -0.15):
-                self.sign[1] = -1
+        else:
+            if(self.attention - self.old_att < -0.3):
+                self.sign[1] += -1
                 self.impression[1] += -self.delta
             #decrease the effect of others
             self.impression[0] += -self.sign[0]*0.1
             self.impression[1] += -self.sign[1]*0.1
             self.impression[2] += -self.sign[2]*0.1
-
+        print("impression: " + str(self.impression))
 
     def update_impression(self):
         #emotion effects
@@ -145,20 +148,20 @@ class ImpressionDetection():
         #if new impression publish to EmoGen Node
         if(upd):
             print("Impression updated")
-            print("impression: " + str(self.impression))
+            print("impression:"  + str(self.impression))
             data = json.dumps(self.impression)
             requests.post(url+'/impression' , json = data)      
 
     def main(self):
         
         while(1):
-            """
-            #per test senza perception nodes
+            """#per test senza perception nodes
             data = input("morphcast string: ")
             imp_node.morphcast_feedback(data)
             data = float(input("proximity: "))
-            imp_node.get_proximity(data)
-            """
+            imp_node.set_proximity(data)
+            self.new_prox = True
+            self.new_perc = True"""
             self.update_impression()
             time.sleep(3)
 
@@ -193,3 +196,4 @@ if __name__ == '__main__':
     threading.Thread(target=imp_node.main).start()
     #start Rest API server.
     app.run(host='127.0.0.1', port=4000)
+    #imp_node.main()
