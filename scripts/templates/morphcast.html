@@ -2,15 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>MorphCast SDK - Photo as an input example</title>
+    <title>MorphCast SDK - Pepper comunication </title>
 </head>
 <body>
-Morphact Node to comunicate with Pepper Robot. Analyze the image provided by the robot camera.
+Morphcast SDK v1.16 using as input image acquired by Pepper Camera
 <img id="bg" src="{{ url_for('pepper_video') }}" style="width: 60%;">
 <script src="https://ai-sdk.morphcast.com/v1.16/ai-sdk.js"></script>
 <script>
-    let url = "https://localhost:5000/pepper_video";
-
     let crtImgData;
     let resolver;
     const SERVER_URL = 'http://127.0.0.1:8001/process_data';
@@ -54,7 +52,7 @@ Morphact Node to comunicate with Pepper Robot. Analyze the image provided by the
     window.addEventListener(CY.modules().FACE_EMOTION.eventName, handleFaceArousalValence);
     window.addEventListener(CY.modules().FACE_ATTENTION.eventName, handleFaceArousalValence);
 
-    getImageData(url).then(imgData => customSource.analyzeFrame(imgData));
+    getImageData().then(imgData => customSource.analyzeFrame(imgData));
 
     function handleFaceArousalValence(evt) {
         const detail = evt.detail;
@@ -66,10 +64,10 @@ Morphact Node to comunicate with Pepper Robot. Analyze the image provided by the
         },
         body: JSON.stringify(detail)
         });
-        getImageData(url).then(imgData => customSource.analyzeFrame(imgData));
+        getImageData().then(imgData => customSource.analyzeFrame(imgData));
     }
 
-    function getImageData(imgpage) {
+    function getImageData() {
         return new Promise((resolve, reject) => {
             const img = new Image();
             img.crossOrigin = "Anonymous";

@@ -9,28 +9,33 @@ import time
 import io
 from PIL import Image
 
+#Pepper IP information update with the right one
 IP_ADD = "10.0.0.2" #set correct IP 
 PORT = 9559 #set correct PORT
 
+#REST API PORT
 REST_PORT = 5000 
 
 app = Flask(__name__)
 
-video_srv = ALProxy("ALVideoDevice", IP_ADD, PORT)
+video_srv = ALProxy("ALVideoDevice", IP_ADD, PORT) #ALVideoDevice server
 
+#check if already subscrive to and in case unsubscrive
 if video_srv.getSubscribers():
     for subscriber in video_srv.getSubscribers():
-        if "CameraStream" in subscriber:  # name passed as argument on subscription
+        if "CameraStream" in subscriber:
             video_srv.unsubscribe(subscriber)
-
-resolution = vision_definitions.kQVGA
+#subscrive to the Camera
+resolution = vision_definitions.kVGA
 colorSpace = vision_definitions.kRGBColorSpace
 imgClient = video_srv.subscribe("CameraStream", resolution, colorSpace,30)
 
+#open morphcast
 @app.route("/pepper_view")
 def pepper_view():
     return render_template("morphcast.html")
 
+#create stream video on /pepper_video
 @app.route("/pepper_video")
 def pepper_video():
     return Response(
