@@ -20,7 +20,7 @@ class EmotionGenerator():
         self.emotion = [0,0,0] #emotion in EPA space
         self.new_imp = False
         #self.new_emo = False
-        self.time_decay = 0 
+        self.time_decay = 5 #look for accurate data
         self.freq = 0
         self.delta = self.freq/self.time_decay
     
