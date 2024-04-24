@@ -29,7 +29,7 @@ imgClient = video_srv.subscribe("CameraStream", resolution, colorSpace,30)
 
 @app.route("/pepper_view")
 def pepper_view():
-    return render_template("camera.html")
+    return render_template("morphcast.html")
 
 @app.route("/pepper_video")
 def pepper_video():
@@ -73,6 +73,7 @@ def stream_generator():
             jpeg_bytes = PIL_to_JPEG_BYTEARRAY(pil_img)
             yield (b'--frame\r\n'
                        b'Content-Type: image/jpeg\r\n\r\n' + jpeg_bytes + b'\r\n\r\n')
+            #return jpeg_bytes
         time.sleep(0.01)
 
 

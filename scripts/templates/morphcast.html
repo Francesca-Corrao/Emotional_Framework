@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MorphCast SDK - Photo as an input example</title>
+</head>
+<body>
+Morphact Node to comunicate with Pepper Robot. Analyze the image provided by the robot camera.
+<img id="bg" src="{{ url_for('pepper_video') }}" style="width: 60%;">
+<script src="https://ai-sdk.morphcast.com/v1.16/ai-sdk.js"></script>
+<script>
+    let url = "https://localhost:5000/pepper_video";
+
+    let crtImgData;
+    let resolver;
+    const SERVER_URL = 'http://127.0.0.1:8001/process_data';
+
+    const customSource = {
+        analyzeFrame(imageData) {
+            if (resolver) {
+            resolver(imageData);
+            resolver = null;
+            } else {
+            crtImgData = imageData;
+            }
+        },
+        getFrame(...args) {
+            if (crtImgData) {
+            const p = Promise.resolve(crtImgData);
+            crtImgData = null;
+            return p;
+            } else {
+            return new Promise(res => resolver = res);
+            }
+        },
+        start() { },
+        stop() { },
+        get stopped() { }
+    };
+
+    CY.loader()
+    .licenseKey("ska899a84cc05f49bc490ffe9f7be4721de1919af42946")
+    .addModule(CY.modules().FACE_DETECTOR.name, {maxInputFrameSize: 640, smoothness: 0}) // disables filtering over time to enable one-shot analysis
+    .addModule(CY.modules().FACE_EMOTION.name, {smoothness: 0})
+    .addModule(CY.modules().FACE_AROUSAL_VALENCE.name, {smoothness: 0})
+    .addModule(CY.modules().FACE_ATTENTION.name, {smoothness: 0})
+    .source(customSource)
+    .load().then(({start, stop}) => {
+    start();
+    }).catch((err) => {
+    console.error(err);
+    });
+
+    window.addEventListener(CY.modules().FACE_EMOTION.eventName, handleFaceArousalValence);
+    window.addEventListener(CY.modules().FACE_ATTENTION.eventName, handleFaceArousalValence);
+
+    getImageData(url).then(imgData => customSource.analyzeFrame(imgData));
+
+    function handleFaceArousalValence(evt) {
+        const detail = evt.detail;
+        fetch(SERVER_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify(detail)
+        });
+        getImageData(url).then(imgData => customSource.analyzeFrame(imgData));
+    }
+
+    function getImageData(imgpage) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.crossOrigin = "Anonymous";
+            img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            context.drawImage(img, 0, 0);
+            resolve(context.getImageData(0, 0, img.width, img.height));
+            };
+            img.onerror = (err) => reject(err);
+            img.src = document.getElementById("bg").src 
+        });
+    }
+
+
+</script>
+</body>
+</html>
