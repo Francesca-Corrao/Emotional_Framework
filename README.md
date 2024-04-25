@@ -21,11 +21,10 @@ If you encounter any strange problem when try to import naoqi in python due to t
 You should not face any problem using it from anaconda
 
 ### Python 3 environment
-* conda create -n emotional-framework
+* conda create -n emotional-framework python=3.12
 * conda activate emotional-framework
 * pip install flask
 * pip install requests
-* pip install threading
 
 Node
 ------
