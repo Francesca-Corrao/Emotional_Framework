@@ -1,77 +1,63 @@
-"""
-This node use naoqi SDK to connect to Pepper robot and get the information about proximity of the humans.
-In particular is uses ALPeoplePerception, ALEngagementZones and ALMemory. 
-ALEngagementZones is used to describe and update in an initial state the thre different zones recognized by Pepper:
-near-front, far and lateral, very far away and later.
-Then form ALMemory it is retrived the list of people id present in the different zones, stored by ALEngagementZones.
-This id later used by ALMemory to get the distance of that people from teh robot, stored by ALPeoplePerception. 
-"""
-
 from naoqi import ALProxy
 import time
 import requests
 import json
-#localhost:51260
-#pepper.local.:9559
-IP_ADD = "10.0.0.2" #set correct IP 
-PORT = 9559 #set correct PORT 
 
+#Pepper info to connect
+IP_ADD = "10.0.0.2" #set correct IP 
+PORT = 9559 #set correct PORT
+
+MAX_DIST = 15 
 url2 = 'http://127.0.0.1:4000' #impression_detection
 class ProximityPerception():
     def __init__(self):
         #set up to connect to Pepper
         self.memory = ALProxy("ALMemory", IP_ADD, PORT) #aggiungere IP e porta
-        self.people_perception = ALProxy("ALPeoplePerception", IP_ADD,PORT) #aggiungere IP e porta
         self.engagment_zone = ALProxy("ALEngagementZones",IP_ADD,PORT) #aggiungere IP e porta 
+        self.people_perception = ALProxy("ALPeoplePerception", IP_ADD,PORT)
         self.engagment_zone.setFirstLimitDistance(1) 
         self.engagment_zone.setSecondLimitDistance(2)
         self.engagment_zone.setLimitAngle(90)
-        self.people = False
-        self.people_id = []
+        self.people_id = 0
+
+    def get_people_id(self):
+        print("looking for people")
+        p = self.people_id
+        zone = 1
+        while(self.people_id == p and zone<= 3):
+            s = "EngagementZones/PeopleInZone"+str(zone)
+            people_list = self.memory.getData(s)
+            if( len(people_list)==1):
+                self.people_id= people_list[0]
+                print("new people(",self.people_id,") found:")
+            elif( len(people_list)>1):
+                self.people_id= people_list[0]
+                print("More than one People in Zone",zone, " taking the first: ", self.people_id)
+            else:
+                zone += 1
 
     def onInput_onStart(self):
         print("Proximity Perceptioon Started...")
-        while(True):
-            self.people_id = [] #list of people in the Engagement Zones
-            people_list = self.memory.getData("EngagementZones/PeopleInZone1") #look for people in the 1st EZ
-
-            if len(people_list) >0:
-                self.people = True
-                for p in people_list:
-                    print(p)
-                    s = "PeoplePerception/Person/"+ str(p) + "/Distance"
-                    self.people_id.append(s) 
-            else:
-                #if there are no people in Zone 1 look for people in zone 2
-                people_list = self.memory.getData("EngagementZones/PeopleInZone2")
-                if len(people_list) >0:
-                    self.people = True
-                    for p in people_list:
-                        print(p)
-                        s = "PeoplePerception/Person/"+ str(p) + "/Distance"
-                        self.people_id.append(s)
-            
-            self.people = True
-            if(self.people):
-                dist = 0 
-                for p in self.people_id:
-                    dist = self.memory.getData(p)
-                    print(p, " : ", dist)
-                #dist = float(input("proximity: ")) #per test senza Pepper decommentare
-                #post on Impression Node API
+        dist = MAX_DIST
+        self.get_people_id()
+        while(1):
+            people_list = self.memory.getData("EngagementZones/PeopleInZone1")
+            people_list2 = self.memory.getData("EngagementZones/PeopleInZone2")
+            people_list3 = self.memory.getData("EngagementZones/PeopleInZone3")
+            print(people_list)
+            if((self.people_id in people_list) or (self.people_id in people_list2) or (self.people_id in people_list3)):
+                print("people(",self.people_id,") still visible")
+                s = "PeoplePerception/Person/"+ str(self.people_id) + "/Distance"
+                dist = self.memory.getData(s)
+                #send distance to Impression Detection 
+                print(self.people_id, " : ", dist)  
                 data2 = json.dumps(dist)
                 #requests.post(url2+"/proximity_perception", json=data2)
-
             else:
-                print("no People detected")
-                #send maximum distance from robot ? or don't post nothing ? 
-            time.sleep(3)
-        pass
+                print("People(",self.people_id,") not visible looking for new id")
+                self.get_people_id()
+            time.sleep(3) #choose appropriate rate
 
-
-#print("Hello world!")
 PP_module = ProximityPerception()
 PP_module.onInput_onStart()
-
-
-
+    

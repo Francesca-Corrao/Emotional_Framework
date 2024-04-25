@@ -24,7 +24,8 @@ You should not face any problem using it from anaconda
 * conda create -n emotional-framework
 * conda activate emotional-framework
 * pip install flask
-*
+* pip install requests
+* pip install threading
 
 Node
 ------
