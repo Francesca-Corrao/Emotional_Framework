@@ -19,7 +19,7 @@ class EmotionGenerator():
         self.impression = [0,0,0] #impression in EPA space
         self.emotion = [0,0,0] #emotion in EPA space
         self.new_imp = False
-        #self.new_emo = False
+        self.new_emo = False
         self.time_decay = 5 #look for accurate data
         self.freq = 0
         self.delta = self.freq/self.time_decay
@@ -27,7 +27,7 @@ class EmotionGenerator():
     #compute emotion evaluation
     def evaluation(self):
         """Positivity varies with the valence of one's transient impression"""
-        sign = self.impression[0]/abs(self.impression[0])
+        #sign = self.impression[0]/abs(self.impression[0])
         """Intensity varies with extremity of impression and fundamental meaning adjust it"""
         self.emotion[0] = self.impression[0] - self.identity[0]
         """fundamental activity and its impression effect positivity"""
@@ -61,11 +61,15 @@ class EmotionGenerator():
         self.impression = imp
 
     def main(self):
+        print("Emotion Generation Node")
         while(1):
             if(self.new_imp):
+                self.new_imp = False
                 self.evaluation()
                 self.potency()
                 self.activity()
+                self.new_emo = True
+                print("Emotion Updated : ", self.emotion)
             """else:
                 #time decay
                 for i in range(0,2):

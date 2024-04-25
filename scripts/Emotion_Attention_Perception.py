@@ -28,7 +28,9 @@ def publish_perception():
         data2 = json.dumps(perc)
         #post on Impression Node
         requests.post(url2+"/morphcast_perception", json=data2)
+        
+print("Emotion Attention Perception Node")
 
 while(1):
-    time.sleep(1)
+    time.sleep(3)
     publish_perception()

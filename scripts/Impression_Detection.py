@@ -20,7 +20,7 @@ import threading
 emotion_map = {
     "H":[3, 2.5, 2.8],
     "N":[0,0,0],
-    "D":[-1,0,1],
+    "D":[-1.2,0,1],
     "F":[-1.86, -2.2, 2.5],
     "A":[-2, 1.5, 2],
     "SA":[-3, -2.2 , 2.5],
@@ -73,7 +73,7 @@ class ImpressionDetection():
             #emozione migliorata in positivo
             self.impression[0] += self.delta * (self.user_emotion[0] - self.old_emotion[0])
             self.sign[0]= 1
-        elif(self.user_emotion[0]< -1 and self.user_emotion[0] - self.old_emotion[0] < -1):
+        elif(self.user_emotion[0]< -1 and self.user_emotion[0] - self.old_emotion[0] <= -1):
             #emozione peggiorata in negativo
             print("perceived bad & worster")
             self.impression[0] += self.delta * (self.user_emotion[0] - self.old_emotion[0])
@@ -85,7 +85,9 @@ class ImpressionDetection():
                 self.impression[0] += self.sign[0]*0.1
             else: 
                 self.sign[0] = 0 
-        print("impression: " + str(self.impression))
+        if abs(self.impression[0])>4:
+            self.impression[0] = 4 * (self.impression[0]/abs(self.impression[0]))
+        print("Impression: " + str(self.impression))
 
     def proximty_effects(self):
         print("--------Proximity Effects--------")
@@ -107,8 +109,9 @@ class ImpressionDetection():
         else:
             self.sign[2] = 0
             #self.impression[2] += 0.1
-
-        print("impression: " + str(self.impression))
+        if abs(self.impression[2])>4:
+            self.impression[2] = 4 * (self.impression[2]/abs(self.impression[2]))
+        print("Impression: " + str(self.impression))
 
     def attention_effect(self):
         print("--------Attention Effects --------")
@@ -116,7 +119,7 @@ class ImpressionDetection():
         self.sign[1]= 0
         if(self.attention >= 0.5): 
             if(self.attention - self.old_att > 0.3):
-                self.sign[1] += 1
+                self.sign[1] = 1
                 self.impression[1] += self.delta
             #increase effect of other
             self.impression[0] += self.sign[0]*0.1
@@ -125,13 +128,15 @@ class ImpressionDetection():
 
         else:
             if(self.attention - self.old_att < -0.3):
-                self.sign[1] += -1
+                self.sign[1] = -1
                 self.impression[1] += -self.delta
             #decrease the effect of others
             self.impression[0] += -self.sign[0]*0.1
             self.impression[1] += -self.sign[1]*0.1
             self.impression[2] += -self.sign[2]*0.1
-        print("impression: " + str(self.impression))
+        if abs(self.impression[1])>4:
+            self.impression[1] = 4 * (self.impression[1]/abs(self.impression[1]))
+        print("Impression: " + str(self.impression))
 
     def update_impression(self):
         #emotion effects
@@ -148,11 +153,12 @@ class ImpressionDetection():
         #if new impression publish to EmoGen Node
         if(upd):
             print("Impression updated")
-            print("impression:"  + str(self.impression))
+            print("Impression:"  + str(self.impression))
             data = json.dumps(self.impression)
             requests.post(url+'/impression' , json = data)      
 
     def main(self):
+        print("Impression Detection Node")
         
         while(1):
             """#per test senza perception nodes

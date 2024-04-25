@@ -63,7 +63,7 @@ class EmotionExpression():
     def __init__(self, type):
         self.emotion = [0,0,0]
         self.emo_label = "N"
-        self.time_decay = 4
+        self.time_decay = 10
         self.type = type
         self.new_emotion = False
         if type == 'R':
@@ -82,10 +82,10 @@ class EmotionExpression():
         #compute cosine similarity 
         for key in emotion_map:
             #cos_list.append(cosine_similarity(self.emotion.reshape(1,-1), emotion_map[key].reshape(1,-1)))
-            print(key)
+            #print(key)
             cos_list.append(np.dot(self.emotion,emotion_map[key])/(norm(self.emotion)*norm(emotion_map[key])))
         print(cos_list)
-        max_cos = 0.7
+        max_cos = 0.65
         index = 4
         #get higher cosine similarity 
         for i in range(0, len(cos_list)):
@@ -157,6 +157,7 @@ class EmotionExpression():
 #main
 def main():
     emo_exp = EmotionExpression("A")
+    print ("Emotion Expression Node")
     while(True):
         #get emotion
         emo_exp.get_emotion()

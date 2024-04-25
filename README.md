@@ -26,5 +26,52 @@ You should not face any problem using it from anaconda
 * pip install flask
 * pip install requests
 
-Node
+Nodes 
 ------
+Emotion Generation Node
+* cd ./Documenti/Tesi/Emotional_Framework/scripts
+* conda activate emotional-framework
+* python Emotion_Generation.py
+
+Impression Detection Node
+* cd ./Documenti/Tesi/Emotional_Framework/scripts
+* conda activate emotional-framework
+* python Emotion_Generation.py
+
+Morphcast python backend
+* cd ./Documents/Morphcast/area42-swat-morphcast/src/backend-python
+* conda activate emotional-framework
+* python play_backend.py
+
+Emotion and Attention Perception
+* cd ./Documenti/Tesi/Emotional_Framework/scripts
+* conda activate emotional-framework
+* python Emotion_Attention_Perception.py
+
+Emotion Expression
+* cd ./Documenti/Tesi/Emotional_Framework/scripts
+* conda activate py27
+* python Emotion_Expression.py
+
+### For Pepper
+PepperVision
+* cd ./Documenti/Tesi/Emotional_Framework/scripts
+* conda activate py27
+* python PepperVision.py
+
+Proximity_Perception
+Emotion Expression
+* cd ./Documenti/Tesi/Emotional_Framework/scripts
+* conda activate py27
+* python Proximity_Perception.py
+
+Start Morphcast
+http://127.0.0.1:5000/pepper_view
+
+### Avatar/ using computer camera
+- open terminal and "conda activate area42-swat-morphcast"
+- go into src/sdk-javascript "./Documents/Morphcast/area42-swat-morphcast/src/sdk-javascript"
+- run "python -m http.server"
+- open your web browser and navigate to http://localhost:8000/play-sdk-v5.html
+
+
