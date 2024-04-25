@@ -17,7 +17,7 @@ import json
 #basic emotion in EPA
 emotion_map = {
     "H": np.array([3, 2.5, 2.8]),
-    "N":np.array([0,0,0]),
+    "N":np.array([0.01,0.01,0.01]),
     "F":np.array([-1.86, -2.2, 2.5]),
     "A":np.array([-2, 1.5, 2]),
     "SA":np.array([-3, -2.2 , -2.5]),
@@ -72,7 +72,7 @@ class EmotionExpression():
             self.leds = ALProxy("ALLeds",IP_ADD,PORT)
         else:
             #facial expression module
-            print("Avatar")
+            print("Avatar Case")
     
         #client
     
@@ -82,9 +82,11 @@ class EmotionExpression():
         #compute cosine similarity 
         for key in emotion_map:
             #cos_list.append(cosine_similarity(self.emotion.reshape(1,-1), emotion_map[key].reshape(1,-1)))
+            print(key)
             cos_list.append(np.dot(self.emotion,emotion_map[key])/(norm(self.emotion)*norm(emotion_map[key])))
-        max_cos = -1
-        index = 0
+        print(cos_list)
+        max_cos = 0.7
+        index = 4
         #get higher cosine similarity 
         for i in range(0, len(cos_list)):
             if(cos_list[i] > max_cos):
@@ -135,7 +137,7 @@ class EmotionExpression():
             else:
                 print("no able to dispaly emotion:" + self.emo_label)
         else:
-            print("Avatar Case")
+            print("Avatar Case - emotion:" + self.emo_label)
             #face animation
     
     def get_emotion(self):
@@ -154,18 +156,17 @@ class EmotionExpression():
 
 #main
 def main():
-    emo_exp = EmotionExpression("R")
+    emo_exp = EmotionExpression("A")
     while(True):
         #get emotion
         emo_exp.get_emotion()
-        """
-        #to test withour the 
+        """#to test without the other nodes 
         data = input("impression in EPA: ")
         i = []
         for val in data:
             i.append(float(val))
-        ##emo_exp.emotion = np.array(i)
-        """
+        emo_exp.new_emotion = True
+        emo_exp.emotion = np.array(i)"""        
         #update motion if got a new one
         if(emo_exp.new_emotion):
           emo_exp.update_motion()
