@@ -69,7 +69,7 @@ class EmotionExpression():
         self.new_emotion = False
         if type == 'R':
             print("Robot Case")
-            self.animation_player = ALProxy("ALAnimationPlayerProxy", IP_ADD , PORT )
+            self.animation_player = ALProxy("ALAnimationPlayer", IP_ADD , PORT )
             self.leds = ALProxy("ALLeds",IP_ADD,PORT)
         elif type == 'A':
             #facial expression module
@@ -107,7 +107,7 @@ class EmotionExpression():
             print("Happy")
             animation = happy_animation[r]
             color = "yellow" #sostituire con HEX
-        elif(self.emo_label == "S"):
+        elif(self.emo_label == "SA"):
             print("Sad")
             animation = sad_animation[r]
             color = "blue" #sostituire con HEX
@@ -115,7 +115,7 @@ class EmotionExpression():
             print("Angry")
             animation = angry_animation[r]
             color = "red"
-        else:
+        elif(self.emo_label == "F"):
             print("Fear")
             animation= fear_animation[r]
             color = "purple"

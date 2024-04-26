@@ -52,7 +52,7 @@ class ProximityPerception():
                 #send distance to Impression Detection 
                 print(self.people_id, " : ", dist)  
                 data2 = json.dumps(dist)
-                #requests.post(url2+"/proximity_perception", json=data2)
+                requests.post(url2+"/proximity_perception", json=data2)
             else:
                 print("People(",self.people_id,") not visible looking for new id")
                 self.get_people_id()
