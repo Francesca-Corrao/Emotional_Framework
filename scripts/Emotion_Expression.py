@@ -13,6 +13,7 @@ import numpy as np
 from numpy.linalg import norm
 import requests
 import json
+import sys
 
 #basic emotion in EPA
 emotion_map = {
@@ -70,7 +71,7 @@ class EmotionExpression():
             print("Robot Case")
             self.animation_player = ALProxy("ALAnimationPlayerProxy", IP_ADD , PORT )
             self.leds = ALProxy("ALLeds",IP_ADD,PORT)
-        else:
+        elif type == 'A':
             #facial expression module
             print("Avatar Case")
     
@@ -156,8 +157,11 @@ class EmotionExpression():
 
 #main
 def main():
-    emo_exp = EmotionExpression("A")
     print ("Emotion Expression Node")
+    input_type = sys.argv[1]
+    emo_exp = EmotionExpression(input_type)
+    #wait a bit for everything to start
+    time.sleep(emo_exp.time_decay)
     while(True):
         #get emotion
         emo_exp.get_emotion()
