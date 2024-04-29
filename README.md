@@ -26,8 +26,12 @@ You should not face any problem using it from anaconda
 * pip install flask
 * pip install requests
 
-Nodes 
+Start 
 ------
+you can use the launch file for windows 
+- Avatar Case, use the camera on your laptop, no proximity node, send facial expression cues : stater_avatar.bat
+- Pepper Case : starter_pepper.bat It use the camera on Pepper Robot, has the Proximity Perception Module and send the animation to play to the robot. In order to use it correctly make sure to set up the correct IP and Port of your Pepper Robot on the nodes that connect with Pepper and to load the set of emotional animation into the Pepper Robot.  
+### Manual Start each Node
 Emotion Generation Node
 * cd ./Documenti/Tesi/Emotional_Framework/scripts
 * conda activate emotional-framework
