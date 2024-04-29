@@ -42,12 +42,12 @@ class ProximityPerception():
         dist = MAX_DIST
         self.get_people_id()
         while(1):
-            #people_list = self.memory.getData("EngagementZones/PeopleInZone1")
-            #people_list2 = self.memory.getData("EngagementZones/PeopleInZone2")
-            #people_list3 = self.memory.getData("EngagementZones/PeopleInZone3")
+            people_list = self.memory.getData("EngagementZones/PeopleInZone1")
+            people_list2 = self.memory.getData("EngagementZones/PeopleInZone2")
+            people_list3 = self.memory.getData("EngagementZones/PeopleInZone3")
             #print(people_list)
-            #if((self.people_id in people_list) or (self.people_id in people_list2) or (self.people_id in people_list3)):
-            if (self.memory.getData("PeoplePerception/Person/"+str(self.people_id)+"/IsVisible")):
+            if((self.people_id in people_list) or (self.people_id in people_list2) or (self.people_id in people_list3)):
+            #if (self.memory.getData("PeoplePerception/Person/"+str(self.people_id)+"/IsVisible")):
                 print("people(",self.people_id,") still visible")
                 s = "PeoplePerception/Person/"+ str(self.people_id) + "/Distance"
                 dist = self.memory.getData(s)
@@ -56,10 +56,10 @@ class ProximityPerception():
                 gaze = self.memory.getData(g)
                 gaze_level = self.memory.getData(g1)
                 #send distance to Impression Detection 
-                print(self.people_id, "  DIST : ", dist)
+                print(self.people_id,"  DIST : ", dist)
                 print("GAZE: ", gaze," level :", gaze_level)
-                data2 = json.dumps(dist)
-                requests.post(url2+"/proximity_perception", json=data2)
+                #data2 = json.dumps(dist)
+                #requests.post(url2+"/proximity_perception", json=data2)
             else:
                 print("People(",self.people_id,") not visible looking for new id")
                 self.get_people_id()
@@ -71,7 +71,7 @@ class ProximityPerception():
             g1 = "PeoplePerception/Person/"+str(self.people_id)+"/LookingAtRobotScore" #key to get Gaze confidence level
             gaze = self.memory.getData(g)
             gaze_level = self.memory.getData(g1)
-            print(gaz)
+            print("GAZE: ", gaze," level :", gaze_level)
 
 
 PP_module = ProximityPerception()
