@@ -16,6 +16,7 @@ import json
 import requests
 import threading
 
+MORPHCAST_TH = 2
 #basic emotions in EPA space
 emotion_map = {
     "H":[3, 2.5, 2.8],
@@ -104,11 +105,11 @@ class ImpressionDetection():
             self.impression[2] += -0.2
             if(self.proximity - self.old_prox >= 0.25):
                 self.impression[0] += -self.delta/2
-                self.impression[2] += -(self.old_prox - self.proximity)
+                self.impression[2] += (self.old_prox - self.proximity)
         
         else:
             self.sign[2] = 0
-            #self.impression[2] += 0.1
+            self.impression[2] += 0.5*(self.old_prox - self.proximity)
         if abs(self.impression[2])>4:
             self.impression[2] = 4 * (self.impression[2]/abs(self.impression[2]))
         print("Impression: " + str(self.impression))
@@ -116,24 +117,24 @@ class ImpressionDetection():
     def attention_effect(self):
         print("--------Attention Effects --------")
         #attention effect -> set Power and slightly increment/decremt the rest
-        self.sign[1]= 0
+        #self.sign[1]= 0
         if(self.attention >= 0.5): 
+            self.sign[1] = 1
             if(self.attention - self.old_att > 0.3):
-                self.sign[1] = 1
                 self.impression[1] += self.delta
             #increase effect of other
-            self.impression[0] += self.sign[0]*0.1
-            self.impression[1] += self.sign[1]*0.1
-            self.impression[2] += self.sign[2]*0.1
+            self.impression[0] += self.sign[0]*self.attention*0.1 #the more user look the more it'll increment
+            self.impression[1] += self.sign[1]*self.attention*0.1
+            self.impression[2] += self.sign[2]*self.attention*0.1
 
         else:
+            self.sign[1] = -1
             if(self.attention - self.old_att < -0.3):
-                self.sign[1] = -1
                 self.impression[1] += -self.delta
             #decrease the effect of others
-            self.impression[0] += -self.sign[0]*0.1
-            self.impression[1] += -self.sign[1]*0.1
-            self.impression[2] += -self.sign[2]*0.1
+            self.impression[0] += -self.sign[0]*(1-self.attention)*0.1 #the less it look the more it'll decrement
+            self.impression[1] += self.sign[1]*(1-self.attention)*0.1
+            self.impression[2] += -self.sign[2]*(1-self.attention)*0.1
         if abs(self.impression[1])>4:
             self.impression[1] = 4 * (self.impression[1]/abs(self.impression[1]))
         print("Impression: " + str(self.impression))
@@ -141,7 +142,7 @@ class ImpressionDetection():
     def update_impression(self):
         #emotion effects
         upd = False
-        if(self.new_perc):
+        if(self.new_perc and self.proximity<MORPHCAST_TH):
             self.new_perc = False
             self.emotion_effects()
             self.attention_effect()
