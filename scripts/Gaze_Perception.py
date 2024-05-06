@@ -9,6 +9,7 @@ PORT = 9559 #set correct PORT
 
 MAX_DIST = 15 
 url2 = 'http://127.0.0.1:4000' #impression_detection
+output_data = {}
 class ProximityPerception():
     def __init__(self):
         #set up to connect to Pepper
@@ -49,17 +50,17 @@ class ProximityPerception():
             if((self.people_id in people_list) or (self.people_id in people_list2) or (self.people_id in people_list3)):
             #if (self.memory.getData("PeoplePerception/Person/"+str(self.people_id)+"/IsVisible")):
                 print("people(",self.people_id,") still visible")
+                output_data["id"] = self.people_id
                 s = "PeoplePerception/Person/"+ str(self.people_id) + "/Distance"
-                dist = self.memory.getData(s)
+                output_data["dist"] = self.memory.getData(s)
                 g = "PeoplePerception/Person/"+str(self.people_id)+"/IsLookingAtRobot" #key to get Gaze
                 g1 = "PeoplePerception/Person/"+str(self.people_id)+"/LookingAtRobotScore" #key to get Gaze confidence level
-                gaze = self.memory.getData(g)
-                gaze_level = self.memory.getData(g1)
+                output_data["gaze"] = self.memory.getData(g)
+                output_data["gaze_level"] = self.memory.getData(g1)
                 #send distance to Impression Detection 
-                print(self.people_id,"  DIST : ", dist)
-                print("GAZE: ", gaze," level :", gaze_level)
+                print(output_data)
                 #data2 = json.dumps(dist)
-                #requests.post(url2+"/proximity_perception", json=data2)
+                requests.post(url2+"/gaze_prox_perception", json=output_data)
             else:
                 print("People(",self.people_id,") not visible looking for new id")
                 self.get_people_id()

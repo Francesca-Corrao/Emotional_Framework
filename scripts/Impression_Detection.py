@@ -27,6 +27,7 @@ emotion_map = {
     "SA":[-3, -2.2 , 2.5],
     "SU":[0, 0, 3]}
 url='http://127.0.0.1:3000/' #emotion Generation API
+
 #class
 class ImpressionDetection():
     def __init__(self):
@@ -46,7 +47,8 @@ class ImpressionDetection():
         #to set the sign of the new impression if positive or negative
         self.sign = [0,0,0]
         #value to start the processing of perception to get impression
-        self.new_perc = False
+        self.new_emo = False
+        self.new_att = False
         self.new_prox = False
 
     #get emotion and attention detected with morphcast
@@ -63,9 +65,16 @@ class ImpressionDetection():
 
     #get proximity from Pepper
     def set_proximity(self, data):
+        self.new_prox = True
         self.old_prox = self.proximity
         self.proximity = data
 
+    def set_attention(self, data):
+        self.new_att = True
+        self.old_att = self.attention
+        self.attention = data["gaze_level"]*data["gaze"]
+        print(self.attention)
+    
     def emotion_effects(self):
         #compute the effect of emotion in impresion making -> related to evaluation
         print("--------Emotion Effects--------")
@@ -142,9 +151,13 @@ class ImpressionDetection():
     def update_impression(self):
         #emotion effects
         upd = False
-        if(self.new_perc and self.proximity<MORPHCAST_TH):
-            self.new_perc = False
+        if(self.new_emo and self.proximity<MORPHCAST_TH):
+            self.new_emo = False
             self.emotion_effects()
+            self.attention_effect()
+            upd = True
+        elif(self.new_att):
+            self.new_att = False
             self.attention_effect()
             upd = True
         if(self.new_prox):
@@ -156,7 +169,7 @@ class ImpressionDetection():
             print("Impression updated")
             print("Impression:"  + str(self.impression))
             data = json.dumps(self.impression)
-            requests.post(url+'/impression' , json = data)      
+            #requests.post(url+'/impression' , json = data)      
 
     def main(self):
         print("Impression Detection Node")
@@ -182,7 +195,7 @@ def get_emotion_attention():
     #receive attention and perception from Morphcat
     print("Received Morphcast")
     data = request.get_json()
-    imp_node.new_perc = True
+    imp_node.new_emo = True
     print(str(data))
     imp_node.morphcast_feedback(json.loads(data))
     return jsonify({'succes':'True'}),200
@@ -195,6 +208,18 @@ def get_proximity():
     imp_node.new_prox = True
     print(data)
     imp_node.set_proximity(float(json.loads(data)))
+    return jsonify({'succes':'True'}),200
+
+@app.route('/gaze_prox_perception',methods =['POST'])
+def get_gazeprox():
+    #received proximity
+    print("Received Gaze and Proximity")
+    data = request.get_json()
+    #imp_node.new_prox = True
+    print(data)
+    #imp_node.set_proximity(float(json.loads(data)))
+    imp_node.set_proximity(float(data["dist"]))
+    imp_node.set_attention(data)
     return jsonify({'succes':'True'}),200
 
 
