@@ -25,8 +25,10 @@ You should not face any problem using it from anaconda
 * conda activate emotional-framework
 * pip install flask
 * pip install requests
+Dialog Requirements - devo ancora installare
 * pip install python-dotenv
-* pip install --upgrade openai
+* pip install --upgrade openai 
+* pip install pyaudio
 
 Start 
 ------
