@@ -13,6 +13,8 @@ import threading
 import json
 import time
 
+PORT = 3000
+
 class EmotionGenerator():
     def __init__(self) -> None:
         self.identity = [1,1,1] #identity in EPA space
@@ -110,5 +112,5 @@ if __name__ == '__main__':
     #start the emotion Generation Node 
     threading.Thread(target=emoNode.main).start()
     #start restAPI server
-    app.run(host='127.0.0.1', port=3000)
+    app.run(host='127.0.0.1', port=PORT)
     

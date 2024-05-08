@@ -17,6 +17,7 @@ import requests
 import threading
 
 MORPHCAST_TH = 2
+PORT = 4000
 #basic emotions in EPA space
 emotion_map = {
     "H":[3, 2.5, 2.8],
@@ -227,5 +228,5 @@ if __name__ == '__main__':
     #start impression node main
     threading.Thread(target=imp_node.main).start()
     #start Rest API server.
-    app.run(host='127.0.0.1', port=4000)
+    app.run(host='127.0.0.1', port=PORT)
     #imp_node.main()

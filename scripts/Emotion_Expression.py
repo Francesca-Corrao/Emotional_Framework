@@ -156,26 +156,27 @@ class EmotionExpression():
 
 
 #main
-def main():
-    print ("Emotion Expression Node")
-    input_type = sys.argv[1]
-    emo_exp = EmotionExpression(input_type)
-    #wait a bit for everything to start
-    time.sleep(emo_exp.time_decay)
-    while(True):
-        #get emotion
-        emo_exp.get_emotion()
-        """#to test without the other nodes 
-        data = input("impression in EPA: ")
-        i = []
-        for val in data:
-            i.append(float(val))
-        emo_exp.new_emotion = True
-        emo_exp.emotion = np.array(i)"""        
-        #update motion if got a new one
-        if(emo_exp.new_emotion):
-          emo_exp.update_motion()
-        #wait for emotion to decay
-        time.sleep(emo_exp.time_decay)
+    def main(self):
+        print ("Emotion Expression Node")
+        #input_type = sys.argv[1]
+        #emo_exp = EmotionExpression(input_type)
+        #wait a bit for everything to start
+        time.sleep(self.time_decay)
+        while(True):
+            #get emotion
+            self.get_emotion()
+            """#to test without the other nodes 
+            data = input("impression in EPA: ")
+            i = []
+            for val in data:
+                i.append(float(val))
+            emo_exp.new_emotion = True
+            emo_exp.emotion = np.array(i)"""        
+            #update motion if got a new one
+            if(self.new_emotion):
+                self.update_motion()
+            #wait for emotion to decay
+            time.sleep(self.time_decay)
+
 
 main()
