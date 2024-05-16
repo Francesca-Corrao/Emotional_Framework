@@ -1,39 +1,34 @@
 import Emotion_Expression
-from flask import Flask
+from flask import Flask, request,jsonify
 import threading
+from naoqi import ALProxy
+import json
 
-PORT = 6001
+#pepper ip 
+IP_ADD = "10.0.0.2" #set correct IP 
+PORT = 9559 #set correct PORT 
+
+#REST API PORT
+PORT2 = 6001
+
 app = Flask(__name__)
-
-exp = Emotion_Expression(type= "R")
+type = "R"
+exp = Emotion_Expression(type= type)
 
 #pepper speaking Proxy
+if type == "R":
+    speak = ALProxy("ALAnimationPlayer", IP_ADD , PORT )
 
 @app.route("/talk", methods = ["POST"])
 def talk():
+    data = request.get_json()
+    speech = json.load(data)
     print("Talking")
-
-@app.route("/get_emotion", methods = ["GET"])
-def return_emotion():
-    emo = exp.emo_label
-    emo_string = ""
-    if emo == "H":
-        emo_string = "happy"
-    elif emo == "A":
-        emo_string = "angry"
-    elif emo == "SA":
-        emo_string = "sad"
-    elif emo == "SU":
-        emo_string = "surprise"
-    elif emo == "F":
-        emo_string = "fear"
-    elif emo == "D":
-        emo_string = "disgust"
-    else:
-        emo_string = "neutral"
-
-    return emo_string, 200
+    if type == "R":
+        print(speech)
+        #speak.say(speech)
+    return jsonify(),200
 
 threading.Thread(target=exp.main).start()
 
-app.run(host='127.0.0.1', port=PORT)
+app.run(host='127.0.0.1', port=PORT2)

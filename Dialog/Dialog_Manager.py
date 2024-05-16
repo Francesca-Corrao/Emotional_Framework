@@ -7,11 +7,12 @@ import json
 
 url = "http://127.0.0.1:3000/" #Emotion-Generation API
 url_ic = "http://127.0.0.1:6000/" #Input Capture
+url_ai = "http://127.0.0.1:6001/"
 #_ = load_dotenv(find_dotenv())
 #client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"),)
-impression_expected = [0,0,0]
-identity = [0,0,0]
-emotional_state = [0,0,0]
+#impression_expected = [0,0,0]
+#identity = [0,0,0]
+#emotional_state = [0,0,0]
 emotional_label = "happy"
 conversation_started = False
 
@@ -21,7 +22,6 @@ my_messages=[
     {"role": "system", "content": ""},
     {"role": "user", "content": ""}
   ]
-
 #request identiy from emotional_framework
 def prompt():
     my_messages[0]["content"] = "You are an artificial social agent interacting with humans."\
@@ -32,6 +32,7 @@ def prompt():
 
 while(1):
     #request user speech
+    print("start")
     data = requests.get(url_ic+"/audio_service").json()
     print(data)
     if(data['recognized']):
@@ -54,5 +55,7 @@ while(1):
             #start the conversation
             robot_speech = "Nice to see you! I am Pepper"
     #post robot_speech
-    #aproximate time to wait before listening
-    time.sleep(1)
+    print("send robot speech")
+    data = json.dump(robot_speech)
+    requests.post(url_ai+"/talk", json=data)
+    print("done dialog loop")

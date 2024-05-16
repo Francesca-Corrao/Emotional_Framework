@@ -170,7 +170,7 @@ class ImpressionDetection():
             print("Impression updated")
             print("Impression:"  + str(self.impression))
             data = json.dumps(self.impression)
-            #requests.post(url+'/impression' , json = data)      
+            requests.post(url+'/impression' , json = data)      
 
     def main(self):
         print("Impression Detection Node")
