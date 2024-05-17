@@ -16,7 +16,7 @@ url_ai = "http://127.0.0.1:6001/"
 emotional_label = "happy"
 conversation_started = False
 
-robot_speech = ""
+agent_speech = ""
 user_speech = ""
 my_messages=[
     {"role": "system", "content": ""},
@@ -24,11 +24,12 @@ my_messages=[
   ]
 #request identiy from emotional_framework
 def prompt():
-    my_messages[0]["content"] = "You are an artificial social agent interacting with humans."\
+    """funciont to update and make the prompt to send to the GPT API"""
+    """my_messages[0]["content"] = "You are an artificial social agent interacting with humans."\
     "Your goal is to showcase emotions and make people perceive your identity."\
     "Your identity is friendly. This means you are good, slightly active and potent. "\
     "The emotional state to showcase is " + emotional_label + "The answer must be less then 40 words"
-    my_messages[1]["content"] = user_speech
+    my_messages[1]["content"] = user_speech"""
 
 while(1):
     #request user speech
@@ -44,18 +45,22 @@ while(1):
         user_speech = ""
     prompt()
     if user_speech != "":
+        if not conversation_started:
+            conversation_started = True
         #user answered respond to him
-        robot_speech = "It's great to hear you"
+        agent_speech = "It's great to hear you"
+
     else:
         #start the conversation
         if(conversation_started):
             #get back his attention
-            robot_speech = "Are you still there ?"
+            agent_speech = "Are you still there ?"
         else:
             #start the conversation
-            robot_speech = "Nice to see you! I am Pepper"
-    #post robot_speech
-    print("send robot speech")
-    data = json.dump(robot_speech)
+            agent_speech = "Nice to see you! I am Pepper"
+            conversation_started = True
+    #post agent_speech
+    print("send robot speech: " + agent_speech)
+    data = json.dumps(agent_speech)
     requests.post(url_ai+"/talk", json=data)
     print("done dialog loop")

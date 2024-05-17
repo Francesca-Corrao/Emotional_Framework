@@ -1,4 +1,4 @@
-import Emotion_Expression
+import Emotion_Expression as ee
 from flask import Flask, request,jsonify
 import threading
 from naoqi import ALProxy
@@ -12,8 +12,8 @@ PORT = 9559 #set correct PORT
 PORT2 = 6001
 
 app = Flask(__name__)
-type = "R"
-exp = Emotion_Expression(type= type)
+type = "A"
+exp = ee.EmotionExpression(type= type)
 
 #pepper speaking Proxy
 if type == "R":
@@ -22,13 +22,14 @@ if type == "R":
 @app.route("/talk", methods = ["POST"])
 def talk():
     data = request.get_json()
-    speech = json.load(data)
+    speech = json.loads(data)
     print("Talking")
+    print(speech)
     if type == "R":
         print(speech)
-        #speak.say(speech)
+        speak.say(speech)
     return jsonify(),200
 
-threading.Thread(target=exp.main).start()
+#threading.Thread(target=exp.main).start()
 
 app.run(host='127.0.0.1', port=PORT2)

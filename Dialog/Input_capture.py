@@ -38,8 +38,9 @@ def rms(frame):
     rms = math.pow(sum_squares / count, 0.5)
     return rms * 1000
 
-#creare un oggetto pyAudio
+
 def record():
+    """Function to record the audio from the microphone and save it in a .wav file using pyaudio"""
     print("Starting")
     p = pyaudio.PyAudio()
     #creare un stream audio
@@ -60,13 +61,13 @@ def record():
         current_time = time.time()
     print("Recording Done - audio recorder for:",end_time - start_time, "s")
     #stop stream
-    stream.start_stream()
+    stream.stop_stream()
     #close stream
     stream.close()
     #terminare pyAudio
     p.terminate()
-    #converti lista in byte
     print("Saving in wav file")
+    #converti lista in byte
     bytecont = b"".join(listen)
     #apriwavfile
     filename = os.path.join(os.getcwd(), 'input_capture.wav')
@@ -74,7 +75,7 @@ def record():
     wavfile.setnchannels(channels)
     wavfile.setsampwidth(p.get_sample_size(audio_format)) 
     wavfile.setframerate(rate)
-    #scrivi byte nel wavfil
+    #scrivi byte nel wavfile
     wavfile.writeframes(bytecont)
     wavfile.close()
 
@@ -93,7 +94,7 @@ def speech_text():
             data_to_send["text"]= text
         except sr.UnknownValueError:
             data_to_send["recognized"] = False
-            data_to_send[text] = " "
+            data_to_send["text"] = " "
         
 """while(True):
     c = input("Press enter to record: ")

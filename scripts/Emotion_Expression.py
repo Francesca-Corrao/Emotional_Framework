@@ -179,4 +179,4 @@ class EmotionExpression():
             time.sleep(self.time_decay)
 
 
-main()
+#main()
