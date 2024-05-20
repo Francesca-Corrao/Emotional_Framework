@@ -25,7 +25,10 @@ data_to_send ={
     "recognized" : False,
     "text": recognized_text
 }
-
+p = pyaudio.PyAudio()
+#creare un stream audio
+stream = p.open(channels=channels, format= audio_format , input=True, rate = rate, frames_per_buffer= chunk)
+filename = os.path.join(os.getcwd(), 'input_capture.wav')
 def rms(frame):
     count = len(frame) / s_width
     frmt = "%dh" % count
@@ -41,10 +44,9 @@ def rms(frame):
 
 def record():
     """Function to record the audio from the microphone and save it in a .wav file using pyaudio"""
+    global stream, filename
     print("Starting")
-    p = pyaudio.PyAudio()
-    #creare un stream audio
-    stream = p.open(channels=channels, format= audio_format , input=True, rate = rate, frames_per_buffer= chunk)
+    stream.start_stream()
     #lista in cui aggiungere input dati dello stream
     listen = []
     start_time = time.time()
@@ -62,15 +64,10 @@ def record():
     print("Recording Done - audio recorder for:",end_time - start_time, "s")
     #stop stream
     stream.stop_stream()
-    #close stream
-    stream.close()
-    #terminare pyAudio
-    p.terminate()
     print("Saving in wav file")
     #converti lista in byte
     bytecont = b"".join(listen)
     #apriwavfile
-    filename = os.path.join(os.getcwd(), 'input_capture.wav')
     wavfile = wave.open(filename, 'wb')
     wavfile.setnchannels(channels)
     wavfile.setsampwidth(p.get_sample_size(audio_format)) 

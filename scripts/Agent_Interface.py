@@ -3,6 +3,7 @@ from flask import Flask, request,jsonify
 import threading
 from naoqi import ALProxy
 import json
+import time
 
 #pepper ip 
 IP_ADD = "10.0.0.2" #set correct IP 
@@ -28,6 +29,7 @@ def talk():
     if type == "R":
         print(speech)
         speak.say(speech)
+    time.sleep(30)
     return jsonify(),200
 
 #threading.Thread(target=exp.main).start()

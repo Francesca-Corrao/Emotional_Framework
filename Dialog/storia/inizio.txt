@@ -1,0 +1,7 @@
+{
+    "start" : "Hi i am pepper and today we will plan together our day",
+    "option_1" : "staty indoor",
+    "option_2" : "go outside",
+    "option_1_file" : "storia/prova_1.txt",
+    "option_2_file" : "storia/prova_2.txt"
+}

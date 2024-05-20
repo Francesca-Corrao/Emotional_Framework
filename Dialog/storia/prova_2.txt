@@ -1,0 +1,7 @@
+{
+    "start" : "I am sorry I can't come with you outside I don't have my gravel wheel on.",
+    "option_1" : "If you stii want to go outside we can plan you activity together before you go",
+    "option_2" : "If you would like to spend more time together we can do some indoor activity",
+    "option_1_file" : "storia/inizio.txt",
+    "option_2_file" : "storia/inizio.txt"
+}
