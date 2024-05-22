@@ -1,7 +1,9 @@
 {
     "start" : "Oh great I have a lot of activity we can play together indoor",
-    "option_1" : "show a video",
-    "option_2" : "talk with me",
-    "option_1_file" : "storia/inizio.txt",
-    "option_2_file" : "storia/inizio.txt"
+    "option_1" : {"continue":"show a video",
+        "file":"storia/inizio.txt",
+        "impression": [1,1,1] },
+    "option_2" :  {"continue":"talk with me",
+        "file":"storia/inizio.txt",
+        "impression": [1,1,1] }
 }
