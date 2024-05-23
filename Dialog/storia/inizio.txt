@@ -1,5 +1,5 @@
 {
-    "start" : "Hi i am pepper and today we will plan together our day",
+    "start" : "Hi. I am pepper and today we will plan together our day!",
     "option_1" : {"continue":"staty indoor",
         "file":"storia/prova_1.txt",
         "impression": [1,1,1] },

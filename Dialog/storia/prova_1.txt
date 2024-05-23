@@ -1,5 +1,5 @@
 {
-    "start" : "Oh great I have a lot of activity we can play together indoor",
+    "start" : "Oh great, I have a lot of activity we can play together indoor.",
     "option_1" : {"continue":"show a video",
         "file":"storia/inizio.txt",
         "impression": [1,1,1] },
