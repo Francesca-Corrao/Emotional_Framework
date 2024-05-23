@@ -29,7 +29,7 @@ class ProximityPerception():
         self.people = False
         self.people_id = []
 
-    def onInput_onStart(self):
+    def start(self):
         print("Proximity Perceptioon Started...")
         while(True):
             self.people_id = [] #list of people in the Engagement Zones
@@ -71,7 +71,7 @@ class ProximityPerception():
 
 #print("Hello world!")
 PP_module = ProximityPerception()
-PP_module.onInput_onStart()
+PP_module.start()
 
 
 

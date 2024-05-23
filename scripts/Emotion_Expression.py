@@ -64,7 +64,7 @@ class EmotionExpression():
     def __init__(self, type):
         self.emotion = [0,0,0]
         self.emo_label = "N"
-        self.time_decay = 10
+        self.time_decay = 10.0
         self.type = type
         self.new_emotion = False
         if type == 'R':
@@ -106,23 +106,27 @@ class EmotionExpression():
         if(self.emo_label == "H"):
             print("Happy")
             animation = happy_animation[r]
-            color = "yellow" #sostituire con HEX
+            animation = "animations/Stand/Emotions/Positive/Happy_4"
+            color = "green" #sostituire con HEX
         elif(self.emo_label == "SA"):
             print("Sad")
             animation = sad_animation[r]
+            animation = "animations/Stand/Emotions/Neutral/Embarrassed_1"
             color = "blue" #sostituire con HEX
         elif(self.emo_label == "A"):
             print("Angry")
             animation = angry_animation[r]
+            animation = "animations/Stand/Gestures/Desperate_1"
             color = "red"
         elif(self.emo_label == "F"):
             print("Fear")
             animation= fear_animation[r]
-            color = "purple"
-        print("color: "+ color)
-        print("animation: "+animation)
-        #self.animation_player.run(animation,_async=True)
-        #self.leds.fadeRGB("FaceLed", color, self.time_decay)
+            animation = "animations/Stand/Gestures/No_1"
+            color = "magenta"
+        #print("color: "+ color)
+        #print("animation: "+animation)
+        self.animation_player.run(animation,_async=True)
+        self.leds.fadeRGB("FaceLeds", color, 1.0)
 
     def update_motion(self):
         print("Updating emotion behaviours")
@@ -135,6 +139,7 @@ class EmotionExpression():
                 self.play_animation()
             elif(self.emo_label == "N"):
                 print("Neutral Emotional state")
+                self.leds.fadeRGB("FaceLeds", "white", 1.0)
             else:
                 print("no able to dispaly emotion:" + self.emo_label)
         else:
@@ -145,11 +150,17 @@ class EmotionExpression():
         print("Request Emotional State to Emotion Generator Node")
         #get request
         #convert json to array
-        data = requests.get(url + '/emotional_state').json()
-        self.new_emotion= data['new_emotion']
+        #data = requests.get(url + '/emotional_state').json()
+        #self.new_emotion= data['new_emotion']
+        data = input("impression in EPA: ")
+        i = []
+        for val in data:
+            i.append(float(val))
+        self.new_emotion = True
+        self.emotion = np.array(i)
         if(self.new_emotion):
             print("received new emotion")
-            self.emotion = data["emotion"]
+            #self.emotion = data["emotion"]
             print(self.emotion)
         else:
             print("no new emotion")
@@ -164,7 +175,7 @@ class EmotionExpression():
         time.sleep(self.time_decay)
         while(True):
             #get emotion
-            self.get_emotion()
+            #self.get_emotion()
             """#to test without the other nodes 
             data = input("impression in EPA: ")
             i = []
@@ -174,9 +185,10 @@ class EmotionExpression():
             emo_exp.emotion = np.array(i)"""        
             #update motion if got a new one
             if(self.new_emotion):
+                self.new_emotion = False
                 self.update_motion()
             #wait for emotion to decay
-            time.sleep(self.time_decay)
+            #time.sleep(self.time_decay)
 
 
 #main()
