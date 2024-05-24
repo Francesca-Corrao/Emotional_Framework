@@ -3,7 +3,8 @@ import time
 import json
 from datetime import datetime
 url_ic = "http://127.0.0.1:6000/" #Input Capture
-url_ai = "http://127.0.0.1:6001/"
+url_ai = "http://127.0.0.1:6001/" #agent interface
+url_id = "http://127.0.0.1:4000/" #impression detection
 
 def update_dictionary(path):
     global output_dic
@@ -11,6 +12,10 @@ def update_dictionary(path):
     data = file.read()
     output_dic = json.loads(data)
     print(output_dic)
+
+def send_choice(key):
+    data = json.dumps(output_dic[key]["impression"])
+    requests.post(url_id+"/choice_impression", json = data)
 
 agent_speech = " "
 user_speech = None
@@ -40,9 +45,11 @@ while(1):
             user_speech = None
         if user_speech == "option one":
             print("option_1")
+            send_choice("option one")
             update_dictionary(output_dic['option_1']["file"])
         elif user_speech == "option two":
             print("option_2")
+            send_choice("option two")
             update_dictionary(output_dic['option_2']['file'])
         else:
             #no answer get wait for it
