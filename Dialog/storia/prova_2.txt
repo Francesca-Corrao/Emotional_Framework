@@ -1,5 +1,5 @@
 {
-    "start" : "I am sorry I can't come with you outside, I don't have my gravel wheel on.",
+    "start" : "Unfortunatelly I can't come with you outside, I don't have my gravel wheel on.",
     "option_1" :  {"continue":"We can plan your activity together before you go",
         "file":"storia/inizio.txt",
         "impression": [1,1,1] },

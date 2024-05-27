@@ -12,24 +12,25 @@ from flask import Flask, request, jsonify
 import threading
 import json
 import time
+from datetime import datetime
 
 PORT = 3000
 
 class EmotionGenerator():
-    def __init__(self) -> None:
+    def __init__(self):
         self.identity = [1,1,1] #identity in EPA space
         self.impression = [0,0,0] #impression in EPA space
         self.emotion = [0,0,0] #emotion in EPA space
         self.new_imp = False
         self.new_emo = False
-        self.time_decay = 5 #look for accurate data
+        self.time_decay = 1 #look for accurate data
         self.freq = 0
         self.delta = self.freq/self.time_decay
     
     #compute emotion evaluation
     def evaluation(self):
+        print("------ Evaluation Computing- -----")
         """Positivity varies with the valence of one's transient impression"""
-        #sign = self.impression[0]/abs(self.impression[0])
         """Intensity varies with extremity of impression and fundamental meaning adjust it"""
         self.emotion[0] = self.impression[0] - self.identity[0]
         """fundamental activity and its impression effect positivity"""
@@ -37,9 +38,11 @@ class EmotionGenerator():
         """Saturate to max value of emotion"""
         if(abs(self.emotion[0]) > 4):
             self.emotion[0] = (self.emotion[0]/abs(self.emotion[0]))* 4
+        print("Emotion Updated : ", self.emotion)
 
     #compute emotion potency
     def potency(self):
+        print("------ Potency Computing- -----")
         """ Transient impression and fundamental power""" #RIVEDERE
         if(self.identity[1]< 0 and self.impression[1]-self.identity[1] > 1):
             #powerless but appear more power
@@ -51,13 +54,16 @@ class EmotionGenerator():
         self.emotion[1] += -(self.impression[2] - self.identity[2]) * 0.1 
         if(abs(self.emotion[1]) > 4):
             self.emotion[1] = (self.emotion[1]/abs(self.emotion[1]))* 4
+        print("Emotion Updated : ", self.emotion)
     
     #compute emotion Activity
     def activity(self):
+        print("------ Activity Computing- -----")
         """Comparison of transient and fundamental activity"""
         self.emotion[2] = self.impression [2] - self.identity[2] + 0.5
         if(abs(self.emotion[2]) > 4):
             self.emotion[2] = (self.emotion[2]/abs(self.emotion[2]))* 4
+        print("Emotion Updated : ", self.emotion)
 
     def set_impression(self, imp):
         self.impression = imp
@@ -71,12 +77,7 @@ class EmotionGenerator():
                 self.potency()
                 self.activity()
                 self.new_emo = True
-                print("Emotion Updated : ", self.emotion)
-            """else:
-                #time decay
-                for i in range(0,2):
-                    self.emotion[i] = self.emotion[i] - self.delta
-            """
+                print(datetime.now(), " Emotion Updated : ", self.emotion)
             time.sleep(self.freq)
 
 #Emotion Generation Node

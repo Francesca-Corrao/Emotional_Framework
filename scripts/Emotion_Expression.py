@@ -14,6 +14,7 @@ from numpy.linalg import norm
 import requests
 import json
 import sys
+from datetime import datetime
 
 #basic emotion in EPA
 emotion_map = {
@@ -27,31 +28,19 @@ emotion_map = {
 #animations path for different emotions
 happy_animation = [
     "H:path1",
-    "H:path2",
-    "H:path3",
-    "H:path4",
-    "H:path5"]
+    "H:path2"]
 
 sad_animation = [
     "S:path1",
-    "S:path2",
-    "S:path3",
-    "S:path4",
-    "S:path5"]
+    "S:path2"]
 
 angry_animation = [
     "A:path1",
-    "A:path2",
-    "A:path3",
-    "A:path4",
-    "A:path5"]
+    "A:path2"]
 
 fear_animation = [
     "F:path1",
-    "F:path2",
-    "F:path3",
-    "F:path4",
-    "F:path5"]
+    "F:path2"]
 
 #Pepper Connection
 IP_ADD = "10.0.0.2" #set correct IP 
@@ -75,17 +64,12 @@ class EmotionExpression():
             #facial expression module
             print("Avatar Case")
     
-        #client
-    
     def get_basic(self):
         #get the basic emotion from the vector in EPA space 
         cos_list = []
         #compute cosine similarity 
         for key in emotion_map:
-            #cos_list.append(cosine_similarity(self.emotion.reshape(1,-1), emotion_map[key].reshape(1,-1)))
-            #print(key)
             cos_list.append(np.dot(self.emotion,emotion_map[key])/(norm(self.emotion)*norm(emotion_map[key])))
-        print(cos_list)
         max_cos = 0.65
         index = 4
         #get higher cosine similarity 
@@ -99,32 +83,30 @@ class EmotionExpression():
         print("basic emotion: "+ self.emo_label)
 
     def play_animation(self):
-        #select random emotion
-        r= random.randint(0,4)
+        #select random animation index
+        r= random.randint(0,1)
         animation = "" 
         color = ""
         if(self.emo_label == "H"):
             print("Happy")
             animation = happy_animation[r]
-            animation = "animations/Stand/Emotions/Positive/Happy_4"
+            #animation = "animations/Stand/Emotions/Positive/Happy_4"
             color = "green" #sostituire con HEX
         elif(self.emo_label == "SA"):
             print("Sad")
             animation = sad_animation[r]
-            animation = "animations/Stand/Emotions/Neutral/Embarrassed_1"
+            #animation = "animations/Stand/Emotions/Neutral/Embarrassed_1"
             color = "blue" #sostituire con HEX
         elif(self.emo_label == "A"):
             print("Angry")
             animation = angry_animation[r]
-            animation = "animations/Stand/Gestures/Desperate_1"
+            #animation = "animations/Stand/Gestures/Desperate_1"
             color = "red"
         elif(self.emo_label == "F"):
             print("Fear")
             animation= fear_animation[r]
-            animation = "animations/Stand/Gestures/No_1"
+            #animation = "animations/Stand/Gestures/No_1"
             color = "magenta"
-        #print("color: "+ color)
-        #print("animation: "+animation)
         self.animation_player.run(animation,_async=True)
         self.leds.fadeRGB("FaceLeds", color, 1.0)
 
@@ -147,20 +129,20 @@ class EmotionExpression():
             #face animation
     
     def get_emotion(self):
-        print("Request Emotional State to Emotion Generator Node")
+        print(datetime.now(), "Request Emotional State to Emotion Generator Node")
         #get request
         #convert json to array
-        #data = requests.get(url + '/emotional_state').json()
-        #self.new_emotion= data['new_emotion']
-        data = input("impression in EPA: ")
+        data = requests.get(url + 'emotional_state').json()
+        self.new_emotion= data['new_emotion']
+        """data = input("impression in EPA: ")
         i = []
         for val in data:
             i.append(float(val))
         self.new_emotion = True
-        self.emotion = np.array(i)
+        self.emotion = np.array(i)"""
         if(self.new_emotion):
             print("received new emotion")
-            #self.emotion = data["emotion"]
+            self.emotion = data["emotion"]
             print(self.emotion)
         else:
             print("no new emotion")
@@ -169,26 +151,13 @@ class EmotionExpression():
 #main
     def main(self):
         print ("Emotion Expression Node")
-        #input_type = sys.argv[1]
-        #emo_exp = EmotionExpression(input_type)
         #wait a bit for everything to start
         time.sleep(self.time_decay)
-        while(True):
-            #get emotion
-            #self.get_emotion()
-            """#to test without the other nodes 
-            data = input("impression in EPA: ")
-            i = []
-            for val in data:
-                i.append(float(val))
-            emo_exp.new_emotion = True
-            emo_exp.emotion = np.array(i)"""        
+        while(True):       
             #update motion if got a new one
             if(self.new_emotion):
                 self.new_emotion = False
                 self.update_motion()
-            #wait for emotion to decay
-            #time.sleep(self.time_decay)
+            #wait for emotion to decay forse solo se nuova emozione
+            time.sleep(self.time_decay/2) 
 
-
-#main()

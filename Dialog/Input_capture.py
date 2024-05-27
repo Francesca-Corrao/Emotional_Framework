@@ -1,5 +1,5 @@
 """"
-Prendere input audio dal microfono usando pyaudio solo quando è maggiore di una soglia 
+Prendere input audio dal microfono usando pyaudio solo quando maggiore di una soglia 
 """
 import pyaudio
 import wave
@@ -92,15 +92,6 @@ def speech_text():
         except sr.UnknownValueError:
             data_to_send["recognized"] = False
             data_to_send["text"] = " "
-        
-"""while(True):
-    c = input("Press enter to record: ")
-    if(c == ""):
-        #record()
-        speech_text()
-    else:
-        print("Wrong character enter:", c,".")
-"""
 
 #flask service that record and return the text recognized
 app = Flask(__name__)
