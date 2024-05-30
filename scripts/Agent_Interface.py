@@ -14,7 +14,7 @@ PORT = 9559 #set correct PORT
 PORT2 = 6001
 
 app = Flask(__name__)
-type = "R"
+type = "A"
 exp = ee.EmotionExpression(type= type)
 
 #pepper speaking Proxy

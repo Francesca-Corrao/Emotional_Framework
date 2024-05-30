@@ -1,0 +1,11 @@
+{
+    "start" : "Oh dear is it ready ? I have no doubt you would have make it. So congratulation my friend this means you are official a wizard now! Oh and look nobody else has already finish their Obsidian Prodigious Elixir so it seems like you are going to win the prize. So this means we are at the end of our journey. It was nice working with you and I enjoy the time we spend together. I hope for you it was the same and I look forward to seeing and helping you in your next adventure!",
+    "option_1" : {"continue":" ",
+        "file":"",
+        "impression": [1,1,1],
+	"to_say" : "" },
+    "option_2" : {"continue":"", 
+        "file":"",
+        "impression": [1,1,1],
+	"to_say" : ""}
+}

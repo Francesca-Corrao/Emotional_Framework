@@ -1,11 +1,11 @@
 {
-    "start" : "Okay, now that we get the ashes we are almost at the end of our mission now we just need to look for the last ingredient: water from an alligator river. Are you sure that’s the right ingredient ? Okay don’t worry, I think I have the perfect solution: there is a zoo nearby and I am pretty sure they have alligators. So, we can just go there and ask to someone of the staff for some of that water. Otherwise we can go to the scary alligators swamp, but I don’t know if I have the guts to do it!",
+    "start" : "Okay, now that we get the ashes we are almost at the end of our mission now we just need to look for the last ingredient: water from an alligator river. Are you sure that's the right one ? Okay don't worry, I think I have the perfect solution: there is a zoo nearby and I am pretty sure they have alligators. So, we can just go there and ask to someone of the staff for some of that water. Otherwise we can go to the scary alligators swamp, but I don't know if I have the guts to do it!",
     "option_1" : {"continue":"Go to the zoo and collect the water in the safest way ",
-        "file":"",
+        "file":"fantasy_story/zoo.txt",
         "impression": [1,1,1],
-	"to_say" = "" },
+	"to_say" :"" },
     "option_2" : {"continue":"Go the swamp and try avoid being eaten by alligators ", 
         "file":"fantasy_story/swamp.txt",
         "impression": [-1,1,1],
-	"to_say" = ""}
+	"to_say" : ""}
 }
