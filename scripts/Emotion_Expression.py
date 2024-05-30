@@ -27,20 +27,20 @@ emotion_map = {
 
 #animations path for different emotions
 happy_animation = [
-    "H:path1",
-    "H:path2"]
+    'emotions-8fe336/Happy_1',
+    'emotions-8fe336/Happy_2']
 
 sad_animation = [
-    "S:path1",
-    "S:path2"]
+    'emotions-8fe336/Sad_1',
+    'emotions-8fe336/Sad_2']
 
 angry_animation = [
-    "A:path1",
-    "A:path2"]
+    'emotions-8fe336/Anger_2',
+    'emotions-8fe336/Anger_4']
 
 fear_animation = [
-    "F:path1",
-    "F:path2"]
+    'emotions-8fe336/Fear_1',
+    'emotions-8fe336/Fear_2']
 
 #Pepper Connection
 IP_ADD = "10.0.0.2" #set correct IP 
@@ -90,22 +90,18 @@ class EmotionExpression():
         if(self.emo_label == "H"):
             print("Happy")
             animation = happy_animation[r]
-            #animation = "animations/Stand/Emotions/Positive/Happy_4"
             color = "green" #sostituire con HEX
         elif(self.emo_label == "SA"):
             print("Sad")
             animation = sad_animation[r]
-            #animation = "animations/Stand/Emotions/Neutral/Embarrassed_1"
             color = "blue" #sostituire con HEX
         elif(self.emo_label == "A"):
             print("Angry")
             animation = angry_animation[r]
-            #animation = "animations/Stand/Gestures/Desperate_1"
             color = "red"
         elif(self.emo_label == "F"):
             print("Fear")
             animation= fear_animation[r]
-            #animation = "animations/Stand/Gestures/No_1"
             color = "magenta"
         self.animation_player.run(animation,_async=True)
         self.leds.fadeRGB("FaceLeds", color, 1.0)

@@ -47,9 +47,9 @@ class EmotionGenerator():
         if(self.identity[1]< 0 and self.impression[1]-self.identity[1] > 1):
             #powerless but appear more power
             self.emotion[1] = self.impression[1]-self.identity[1]
-        elif(self.identity[1]>0 and self.impression[1]-self.impression[1]<-1):
+        elif(self.identity[1]>0 and self.impression[1]-self.identity[1]<-1):
             #powerfull but appear less powerful   
-            self.emotion[1] = self.impression[1]-self.identity[1]             
+            self.emotion[1] = self.impression[1]-self.identity[1]           
         """Activity affect potency"""
         self.emotion[1] += -(self.impression[2] - self.identity[2]) * 0.1 
         if(abs(self.emotion[1]) > 4):
