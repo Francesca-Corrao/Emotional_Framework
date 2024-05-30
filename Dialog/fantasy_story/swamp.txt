@@ -1,0 +1,14 @@
+{
+    "start" : "We arrive! Now we need to be very careful and don’t get alligators attention on us. 
+    Wait what was that sound ? Is it an alligator ? 
+    Oh no, lucky it is just a branch. We are close enough to the water go on, quickly let’s fill that bottle and let’s go. Hurry… this place give me chills!
+    Okay now that we have collected all the ingredients is time to go back to Master Azidel headquarters and prepare the Elixir  I hope we are the first to do it and win the prize!",
+    "option_1" : {"continue":"",
+        "file":"fantasy_story/finish",
+        "impression": [1,1,1],
+	"to_say" = "" },
+    "option_2" : {"continue":"", 
+        "file":"",
+        "impression": [1,1,1],
+	"to_say" = ""}
+}

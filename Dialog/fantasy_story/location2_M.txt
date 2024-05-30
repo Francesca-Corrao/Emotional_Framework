@@ -1,0 +1,11 @@
+{
+    "start" : "",
+    "option_1" : {"continue":"",
+        "file":"",
+        "impression": [1,1,1],
+	"to_say" = "" },
+    "option_2" : {"continue":"", 
+        "file":"",
+        "impression": [1,1,1],
+	"to_say" = ""}
+}
