@@ -70,7 +70,8 @@ class EmotionExpression():
         #compute cosine similarity 
         for key in emotion_map:
             cos_list.append(np.dot(self.emotion,emotion_map[key])/(norm(self.emotion)*norm(emotion_map[key])))
-        max_cos = 0.65
+            print(key,":", cos_list[-1])
+        max_cos = 0.3
         index = 4
         #get higher cosine similarity 
         for i in range(0, len(cos_list)):
@@ -130,19 +131,21 @@ class EmotionExpression():
         #convert json to array
         data = requests.get(url + 'emotional_state').json()
         self.new_emotion= data['new_emotion']
-        """data = input("impression in EPA: ")
-        i = []
-        for val in data:
-            i.append(float(val))
-        self.new_emotion = True
-        self.emotion = np.array(i)"""
+        
         if(self.new_emotion):
             print("received new emotion")
             self.emotion = data["emotion"]
             print(self.emotion)
         else:
             print("no new emotion")
-
+        
+    def input_emotion(self):
+        data = input("impression in EPA: ")
+        i = []
+        for val in data:
+            i.append(float(val))
+        self.new_emotion = True
+        self.emotion = np.array(i)
 
 #main
     def main(self):
@@ -157,3 +160,6 @@ class EmotionExpression():
             #wait for emotion to decay forse solo se nuova emozione
             time.sleep(self.time_decay/2) 
 
+#emo = EmotionExpression("A")
+#emo.input_emotion()
+#emo.update_motion()

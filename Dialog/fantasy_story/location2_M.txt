@@ -5,7 +5,7 @@
         "impression": [1,1,1],
 	"to_say" : "" },
     "option_2" : {"continue":"Should I wait for you to go there and talk with them", 
-        "file":"How did it went ? Where you able to talk with them? No ? I told you I should have been the one go talk with them but don't worry while you went I look around and found another shop which have exactly what we need. Look at this volcanos ashes!",
-        "impression": [1,-1,1],
-	"to_say" : ""}
+        "file":"fantasy_story/location3.txt",
+        "impression": [-1,1,-1],
+	"to_say" : "How did it went ? Where you able to talk with them? No ? I told you I should have been the one go talk with them but don't worry while you went I look around and found another shop which have exactly what we need. Look at this volcanos ashes!"}
 }

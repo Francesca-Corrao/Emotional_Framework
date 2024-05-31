@@ -6,6 +6,6 @@
 	"to_say" :"" },
     "option_2" : {"continue":"Just go to the alligators swamp, where we are sure to find what we need. ", 
         "file":"fantasy_story/swamp.txt",
-        "impression": [1,1,1],
+        "impression": [-1,-1,1],
 	"to_say" : ""}
 }

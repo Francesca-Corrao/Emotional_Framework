@@ -161,9 +161,9 @@ class ImpressionDetection():
         print("--------Choice Effects --------")
         for i in range(0,3):
             if(self.choice_impression[i] == self.sign[i]):
-                self.impression[i] += 2*self.sign[1]*self.delta
+                self.impression[i] += (1.5)*self.sign[1]
             else:
-                self.impression[i] += self.choice_impression[i]*self.delta
+                self.impression[i] = self.choice_impression[i]
                 # set sign to be the same of choice_impression per ora forse meglio di no
         self.saturate_allimpression()
         print("Impression: " + str(self.impression))

@@ -1,9 +1,9 @@
 {
     "start" : "Oh great, I will let you know what I am able to obtain!",
-    "option_1" : {"continue":"",
-        "impression": [1,-1,1],
-	"to_say" : "It went terrible, turns out my social skill are not as smooth as they seem, and the language they speak is a dialect of the one I have. Don't look at me with that I know you weren't able to deal with it face. I am not just a silly robot  I am a nice interpreter robot. Oh what ? You found another passage on the other side ? great let’s go and get the ashes",
-        "file":"fantasy_story\location3.txt"},
+    "option_1" : {"continue":" ",
+        "impression": [-1,1,-1],
+	"to_say" : "It went terrible, turns out my social skill are not as smooth as they seem, and the language they speak is a dialect of the one I have. Don't look at me with that I know you weren't able to deal with it face. I am not just a silly robot  I am a nice interpreter robot. Oh what ? You found another passage on the other side ? great let's go and get the ashes",
+        "file":"fantasy_story/location3.txt"},
     "option_2" : {"continue":"", 
         "file":"",
         "impression": [],

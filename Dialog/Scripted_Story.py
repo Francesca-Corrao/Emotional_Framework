@@ -79,9 +79,9 @@ def main():
                     print("option_1")
                     send_choice("option_1")
                     if(output_dic["option_1"]["to_say"] != ""):
-                        time.sleep(5) 
                         data = json.dumps(output_dic["option_1"]["to_say"])
                         requests.post(url_ai+"/talk", json=data)
+                        time.sleep(5)
                     update_dictionary(output_dic['option_1']["file"])
                 elif user_speech in select_two:
                     print("option_2")
@@ -89,6 +89,7 @@ def main():
                     if(output_dic["option_2"]["to_say"] != ""):
                         data = json.dumps(output_dic["option_2"]["to_say"])
                         requests.post(url_ai+"/talk", json=data)
+                        time.sleep(5)
                     update_dictionary(output_dic['option_2']['file'])
                 else:
                     #no answer get wait for it
@@ -112,6 +113,7 @@ def main():
                 print("start finish")
                 end_point=True
             update_dictionary(output_dic['option_1']['file'])
+            time.sleep(5)
             
 
     

@@ -32,7 +32,7 @@ class EmotionGenerator():
         print("------ Evaluation Computing- -----")
         """Positivity varies with the valence of one's transient impression"""
         """Intensity varies with extremity of impression and fundamental meaning adjust it"""
-        self.emotion[0] = self.impression[0] - self.identity[0]
+        self.emotion[0] = self.impression[0] - self.identity[0] + 1
         """fundamental activity and its impression effect positivity"""
         self.emotion[0] += (self.impression[2] -self.identity[2])*0.2
         """Saturate to max value of emotion"""
@@ -43,19 +43,22 @@ class EmotionGenerator():
     #compute emotion potency
     def potency(self):
         print("------ Potency Computing- -----")
-        """ Transient impression and fundamental power""" #RIVEDERE
+        #Transient impression and fundamental power #RIVEDERE
         if(self.identity[1]< 0 and self.impression[1]-self.identity[1] > 1):
             #powerless but appear more power
             self.emotion[1] = self.impression[1]-self.identity[1]
-        elif(self.identity[1]>0 and self.impression[1]-self.identity[1]<-1):
+        elif(self.identity[1]>0 and self.impression[1]-self.identity[1]<=-1):
             #powerfull but appear less powerful   
-            self.emotion[1] = self.impression[1]-self.identity[1]           
-        """Activity affect potency"""
-        self.emotion[1] += -(self.impression[2] - self.identity[2]) * 0.1 
+            self.emotion[1] = self.impression[1]-self.identity[1]
+        else: 
+            self.emotion[1] = 0         
+        #Activity affect potency
+        self.emotion[1] += -(self.impression[2] - self.identity[2])
         if(abs(self.emotion[1]) > 4):
-            self.emotion[1] = (self.emotion[1]/abs(self.emotion[1]))* 4
+            self.emotion[1] = (self.emotion[1]/abs(self.emotion[1]))* 4 
         print("Emotion Updated : ", self.emotion)
-    
+
+
     #compute emotion Activity
     def activity(self):
         print("------ Activity Computing- -----")

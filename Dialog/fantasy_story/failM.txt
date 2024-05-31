@@ -2,7 +2,7 @@
     "start" : "Oh great, I will let you know what I am able to obtain!",
     "option_1" : {"continue":" ",
         "file":"fantasy_story/location3.txt",
-        "impression": [1,-1,1],
+        "impression": [-1,1,-1],
 	"to_say" : "It went terrible, turns out they speak a dialect and not the language I have downloaded. Don't look at me with that I know you weren't able to deal with it face. I am not a silly robot  I am a nice interpreter robot. Oh what ? You found ashes from the shop nearby in the meantime. Great let's go on then" },
     "option_2" : {"continue":"", 
         "file":"",
