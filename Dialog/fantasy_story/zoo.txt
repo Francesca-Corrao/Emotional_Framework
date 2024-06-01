@@ -1,11 +1,11 @@
 {
-    "start" : "Oh see the zoo I told you about now let's go look for the alligators. Tiger... Lion... Dragons... Lizards... Monkeys... Snakes... Seals... Penguin... Owl... Elephants... we are at the end of the zoo and I didn't see any alligators!  So I think that there aren't any here.",
-    "option_1" : {"continue":"Go to the market, but I didn't see anything like that here",
-        "file":"",
-        "impression": [1,1,1],
-	"to_say" :"" },
-    "option_2" : {"continue":"Just go to the alligators swamp, where we are sure to find what we need. ", 
+    "start" : "Oh see the zoo I told you about now let's go look for the alligators._ Tiger... _Lion... _Dragons... _Lizards... _Monkeys... _Snakes... _Seals... _Penguin... _Owl... _Elephants... _We are at the end of the zoo and I didn't see any alligators! So I think that there aren't any here._ This means we have no option we must go to the terrible alligators swamp!",
+    "option_1" : {"continue":" ",
         "file":"fantasy_story/swamp.txt",
+        "impression": [-1,-1,1],
+	"to_say" :"" },
+    "option_2" : {"continue":" ", 
+        "file":" ",
         "impression": [-1,-1,1],
 	"to_say" : ""}
 }

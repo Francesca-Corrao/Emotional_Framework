@@ -21,20 +21,26 @@ exp = ee.EmotionExpression(type= type)
 if type == "R":
     speak = ALProxy("ALAnimatedSpeech", IP_ADD , PORT )
     sm = ALProxy("ALSpeakingMovement", IP_ADD, PORT)
+    ts = ALProxy("ALTextToSpeech", IP_ADD,PORT)
     sm.setEnabled(True)
     sm.setMode("contextual")
+    ts.setLanguage('English')
+    ts.setParameter("speed", 80)
 
 @app.route("/talk", methods = ["POST"])
 def talk():
     data = request.get_json()
     speech = json.loads(data)
+    speech_list = speech.split("_")
     print(datetime.now(), "Requesting Emotion")
     exp.get_emotion() #forse meglio mandarla su un thread vediamo)
     print("Talking")
-    if type == "R":
-        speak.say(str(speech))
-    else:
-        print(speech)
+    for talk in speech_list:
+        if type == "R":
+            speak.say(str(talk))
+        else:
+            print(talk)
+        time.sleep(2)
     return jsonify(),200
 print("Agent Interface")
 threading.Thread(target=exp.main).start()

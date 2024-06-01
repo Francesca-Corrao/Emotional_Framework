@@ -1,11 +1,11 @@
 {
     "start" : "Oh now that we have the flower we can go look for the volcanos ashes! From what I get that group of pixies stay at the end of the Volcano Kumba and sell a lot of artifacts from that site. Unfortunately they don't speak your language but I think I just downloaded that language set before we started our journey, but I never used it so I hope it doesn't fail us.",
-    "option_1" : {"continue":"Should I go forward and talk with them and ask if they have ashes",
+    "option_1" : {"continue":"I go forward and talk with them",
         "file":"fantasy_story/failM.txt",
         "impression": [1,1,1],
 	"to_say" : "" },
-    "option_2" : {"continue":"Should I wait for you to go there and talk with them", 
+    "option_2" : {"continue":"You go there and talk with them", 
         "file":"fantasy_story/location3.txt",
         "impression": [-1,1,-1],
-	"to_say" : "How did it went ? Where you able to talk with them? No ? I told you I should have been the one go talk with them but don't worry while you went I look around and found another shop which have exactly what we need. Look at this volcanos ashes!"}
+	"to_say" : "Okay let me now what you are able to obtain_ Why are you coming back empty handed?_I told you I should have been the one go talk with them but don't worry while you went I look around and found another shop which have exactly what we need. Look at this volcanos ashes!"}
 }

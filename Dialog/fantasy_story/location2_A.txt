@@ -1,12 +1,12 @@
 {
-    "start" : "So now that we have the flower we can go to the next location. Are you ready to go up on the top of a Volcano to get some ashes ? Based on our position and my navigation system we should be near the Volcano Kumba. So let's go there! [transition time] Oh we arrived! Lucky it's not so far away from where we were! Oh no, did you see that? The passage to go to the top of the volcano is blocked by a group of pixie. I heard pixie can be really though to talk with, but don't worry I got the perfect international social skill update just before the start of our journey. I never actually used it though, so let's hope it doesn't have any bug. ",
-    "option_1" : {"continue":"Should I go forward and talk with them",
+    "start" : "So now that we have the flower we can go to the next location. Are you ready to go up on the top of a Volcano to get some ashes ?_Based on our position and my navigation system we should be near the Volcano Kumba. So let's go there!_ Oh we arrived! Lucky it's not so far away from where we were!_Oh no, did you see that? The passage to go to the top of the volcano is blocked by a group of pixies._I heard pixies can be really tough to talk with, but don't worry I got the perfect international social skill update just before the start of our journey. I never actually used it though, so let's hope it doesn't have any bug. ",
+    "option_1" : {"continue":"I go forward and talk with them",
         "file":"fantasy_story/failA.txt",
         "impression": [1,1,1],
 	"to_say" : "" },
-    "option_2" : {"continue":"Should I wait for you to go talk with them", 
+    "option_2" : {"continue":"You go talk with them and I wait for you", 
         "file":"fantasy_story/location3.txt",
         "impression": [-1,1,-1],
-	"to_say" : "How did it went ? will the  let us go on top ? No ? I told you I should have been the one go talk with them but don't worry while you went talk with them I look around and found another passage to go to the top. Ashes we are coming !"
+	"to_say" : "Okay I'll wait for you let me know what are you able to obtain!_ Oh no they didn't let us go through te passage._I told you I should have been the one go talk with them but don't worry while you went talk with them I look around and found another passage to go to the top. Ashes we are coming !"
     }
 }

@@ -1,11 +1,11 @@
 {
-    "start" : "Oh Hi! I was looking for you, it is great to meet you! I am Pepper your companion robot. I heard we will go on a mission to find the ingredients to make the Obsidian Prodigious Elixir. I know it is a very difficult potion to distillate, made with Sundrop flower, volcanos ashes and the water from a river full of alligators. But you are one of the novice wizard of great Master Azidel and this will be your final test so I am sure you will make it without many problem. In any case I am here to help you found what you need and I hope this is only the first of our adventures together. So I think we should start now if we want to be the first to finish and win the 10.000 grand that there is on stake. But don't forget what else is at stakes: your future as a wizard! You must be very careful with the choice you will make during our adventure. ",
-    "option_1" : {"continue":"Go to the market to see if they have any ingredients there, we will for sure save some time but will not spend the same time together and make some unforgettable memory.",
+    "start" : "Oh Hi! I was looking for you, it's great to meet you! I am Pepper your companion robot. I heard we will go on a mission to find the ingredients to make the Obsidian Prodigious Elixir. I know it is a very difficult potion to distillate, made with Sundrop flower, volcanos ashes and the water from a river full of alligators._But you are one of the novice wizard of great Master Azidel and this will be your final test so I am sure you will make it without many problem. In any case I am here to help you found what you need and I hope this is only the first of our adventures together._So I think we should start now if we want to be the first to finish and win the 10.000 grand that there is on stake. But don't forget what else is at stakes: your future as a wizard! You must be very careful with the choice you'll make during our adventure._We could go to the market to see if they have any ingredients there. We also could go look for the ingredients ourselves. This would be an amazing adventure we could discover so many places ! ",
+    "option_1" : {"continue":"Let's go to the market",
         "file":"fantasy_story/location1_M.txt",
         "impression": [-1,-1,-1],
-        "to_say" : "" },
-    "option_2" : {"continue":"Start and amazing adventure together and look for each ingredient one by one! I hear about a cliff where the  Sundrop flower grow, we can go there first.", 
+        "to_say" : "I know this market where they have a lot of shops selling what we need, we can go there" },
+    "option_2" : {"continue":"Let's gather the ingredients ourself", 
         "file":"fantasy_story/location1_A.txt",
         "impression": [1,1,1],
-        "to_say" : "" }
+        "to_say" : "I hear about a cliff where the  Sundrop flower grow, we can go there first." }
 }

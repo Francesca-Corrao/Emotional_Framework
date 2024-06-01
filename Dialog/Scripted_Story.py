@@ -59,7 +59,7 @@ def main():
         #robot_speech
         agent_speech = output_dic['start']
         if output_dic["option_1"]["continue"] != " " : 
-            agent_speech += "What do you want to do: " + output_dic["option_1"]["continue"] + ", or " + output_dic["option_2"]["continue"] + " ? "
+            agent_speech += "_What do you want to do: " + output_dic["option_1"]["continue"] + ", or " + output_dic["option_2"]["continue"] + " ? "
             #post agent_speech
             print("send robot speech")
             data = json.dumps(agent_speech)
@@ -81,7 +81,7 @@ def main():
                     if(output_dic["option_1"]["to_say"] != ""):
                         data = json.dumps(output_dic["option_1"]["to_say"])
                         requests.post(url_ai+"/talk", json=data)
-                        time.sleep(5)
+                        #time.sleep(5)
                     update_dictionary(output_dic['option_1']["file"])
                 elif user_speech in select_two:
                     print("option_2")
@@ -89,7 +89,7 @@ def main():
                     if(output_dic["option_2"]["to_say"] != ""):
                         data = json.dumps(output_dic["option_2"]["to_say"])
                         requests.post(url_ai+"/talk", json=data)
-                        time.sleep(5)
+                        #time.sleep(5)
                     update_dictionary(output_dic['option_2']['file'])
                 else:
                     #no answer get wait for it
@@ -98,6 +98,7 @@ def main():
                     data = json.dumps(agent_speech)
                     requests.post(url_ai+"/talk", json=data)
             user_speech = None
+            time.sleep(1)
         else:
             data = json.dumps(agent_speech)
             requests.post(url_ai+"/talk", json=data)
@@ -113,7 +114,7 @@ def main():
                 print("start finish")
                 end_point=True
             update_dictionary(output_dic['option_1']['file'])
-            time.sleep(5)
+            #time.sleep(5)
             
 
     

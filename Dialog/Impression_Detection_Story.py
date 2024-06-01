@@ -161,7 +161,7 @@ class ImpressionDetection():
         print("--------Choice Effects --------")
         for i in range(0,3):
             if(self.choice_impression[i] == self.sign[i]):
-                self.impression[i] += (1.5)*self.sign[1]
+                self.impression[i] += (0.5)*self.sign[i]
             else:
                 self.impression[i] = self.choice_impression[i]
                 # set sign to be the same of choice_impression per ora forse meglio di no
@@ -171,6 +171,10 @@ class ImpressionDetection():
     def update_impression(self):
         #emotion effects
         upd = False
+        if(self.new_choice):
+            self.new_choice = False
+            self.choice_effects()
+            upd = True
         if(self.new_emo and self.proximity<MORPHCAST_TH):
             self.new_emo = False
             self.emotion_effects()
@@ -183,10 +187,6 @@ class ImpressionDetection():
         if(self.new_prox):
             self.new_prox = False
             self.proximty_effects()
-            upd = True
-        if(self.new_choice):
-            self.new_choice = False
-            self.choice_effects()
             upd = True
         #if new impression publish to EmoGen Node
         if(upd):

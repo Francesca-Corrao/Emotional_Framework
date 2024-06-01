@@ -1,11 +1,11 @@
 {
-    "start" : "Oh finally we came out of the forest. I didn't think it was that long, or maybe it was the fact that we lost the way once or twice. Hey what did you see?  Wait for me. I am sorry my wheels are not the best for going through gravel so I am a little bit slow. Oh so that is the famous Sundrop flower ? I know you took a lot of botanical lesson but if you want I have the tool for scan it and see if it is the right one. Remember that there is a 10.000 grand at stakes! Coming so far take a lot of time and the other location are not so near. ",
-    "option_1" : {"continue":"Scan it even if the process take many time to be extra sure is not the wrong one. I know we already spend a lot of time arriving here I don't want to be the reason you lose the grant. ",
+    "start" : "Oh finally we came out of the forest. I didn't think it would be that long. The road was really not as clear as I was expecting, a shame we go lost_Hey what did you see?  Wait for me._I am sorry my wheels are not the best for going through gravel so I am a little bit slow._Oh so that is the famous Sundrop flower ? I know you took a lot of botanical lesson but if you want I have the tool for scan it and see if it is the right one._ It may take some extra time, but it does not matter that we finish first if the ingredients are incorrect, we won't win the 10.000 grands.",
+    "option_1" : {"continue":"Scan the flower better be sure",
         "file":"fantasy_story/location2_A.txt",
         "impression": [1,1,1],
-        "to_say": "Oh nice I will start the scan now, I will let you now when I am ready to go on. Great the scan is complete and I can guarantee that this is the Sundrop flower!" },
-    "option_2" : {"continue":"Your botanical classes give you enough information to be sure it is the flower we are looking for, so it's better to just go on", 
+        "to_say": "Oh I will start the scan now, I will let you now when I am ready to go on._Great the scan is complete and I can guarantee that this is the Sundrop flower!" },
+    "option_2" : {"continue":"Your botanical classes give you enough information, so it is better to just go on", 
         "file":"fantasy_story/location2_A.txt",
         "impression": [-1,-1,-1],
-        "to_say" : "" }
+        "to_say" : "Okay collect the flower and we can go on then" }
 }
