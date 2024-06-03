@@ -1,5 +1,5 @@
 {
-    "start" : "Oh now that we have the flower we can go look for the volcanos ashes! From what I get that group of pixies stay at the end of the Volcano Kumba and sell a lot of artifacts from that site. Unfortunately they don't speak your language but I think I just downloaded that language set before we started our journey, but I never used it so I hope it doesn't fail us.",
+    "start" : "Oh now that we have the flower we can go look for the volcanos ashes!_From what I get that group of pixies stay at the end of the Volcano Kumba and sell a lot of artifacts from that site. Unfortunately they don't speak your language but I think I just downloaded that language set before we started our journey._I never used it so I hope it doesn't fail us.",
     "option_1" : {"continue":"I go forward and talk with them",
         "file":"fantasy_story/failM.txt",
         "impression": [1,1,1],

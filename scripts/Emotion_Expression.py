@@ -19,11 +19,10 @@ from datetime import datetime
 #basic emotion in EPA
 emotion_map = {
     "H": np.array([3, 2.5, 2.8]),
-    "N":np.array([0.01,0.01,0.01]),
     "F":np.array([-1.86, -2.2, 2.5]),
     "A":np.array([-2, 1.5, 2]),
     "SA":np.array([-3, -2.2 , -2.5]),
-    "SU":np.array([0, 0, 3])}
+    }
 
 #animations path for different emotions
 happy_animation = [
@@ -60,6 +59,7 @@ class EmotionExpression():
             print("Robot Case")
             self.animation_player = ALProxy("ALAnimationPlayer", IP_ADD , PORT )
             self.leds = ALProxy("ALLeds",IP_ADD,PORT)
+            self.leds.fadeRGB("FaceLeds", "white", 5.0)
         elif type == 'A':
             #facial expression module
             print("Avatar Case")
@@ -79,8 +79,11 @@ class EmotionExpression():
                 max_cos= cos_list[i]
                 index = i
         #get label 
-        keys = list(emotion_map.keys())
-        self.emo_label = keys[index]
+        if index != 4:
+            keys = list(emotion_map.keys())
+            self.emo_label = keys[index]
+        else: 
+            self.emo_label = "N"
         print("basic emotion: "+ self.emo_label)
 
     def play_animation(self):
@@ -91,21 +94,22 @@ class EmotionExpression():
         if(self.emo_label == "H"):
             print("Happy")
             animation = happy_animation[r]
-            color = "green" #sostituire con HEX
+            color = 0x55ff00
         elif(self.emo_label == "SA"):
             print("Sad")
             animation = sad_animation[r]
-            color = "blue" #sostituire con HEX
+            color = 0x0000ff 
         elif(self.emo_label == "A"):
             print("Angry")
             animation = angry_animation[r]
-            color = "red"
+            color = 0xeb0000
         elif(self.emo_label == "F"):
             print("Fear")
             animation= fear_animation[r]
-            color = "magenta"
-        self.animation_player.run(animation,_async=True)
-        self.leds.fadeRGB("FaceLeds", color, 1.0)
+            color = 0x000000
+        self.leds.fadeRGB("FaceLeds", color, 1.0, _async = True)
+        self.animation_player.run(animation)
+        
 
     def update_motion(self):
         print("Updating emotion behaviours")
@@ -118,7 +122,7 @@ class EmotionExpression():
                 self.play_animation()
             elif(self.emo_label == "N"):
                 print("Neutral Emotional state")
-                self.leds.fadeRGB("FaceLeds", "white", 1.0)
+                self.leds.fadeRGB("FaceLeds", "white", 0.5)
             else:
                 print("no able to dispaly emotion:" + self.emo_label)
         else:
@@ -138,6 +142,7 @@ class EmotionExpression():
             print(self.emotion)
         else:
             print("no new emotion")
+            self.leds.fadeRGB("FaceLeds", "white", 1.0)
         
     def input_emotion(self):
         data = input("impression in EPA: ")
@@ -154,11 +159,13 @@ class EmotionExpression():
         time.sleep(self.time_decay)
         while(True):       
             #update motion if got a new one
+            self.leds.fadeRGB("FaceLeds", "white", 1.0)
             if(self.new_emotion):
                 self.new_emotion = False
                 self.update_motion()
+                time.sleep(self.time_decay)
             #wait for emotion to decay forse solo se nuova emozione
-            time.sleep(self.time_decay/2) 
+            #time.sleep(self.time_decay/2) 
 
 #emo = EmotionExpression("A")
 #emo.input_emotion()

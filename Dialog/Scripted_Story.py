@@ -52,8 +52,10 @@ def main():
     agent_speech = " "
     user_speech = None
     update_dictionary("C:/Users/franc/Documents/Tesi/Emotional_Framework/Dialog/fantasy_story/begin.txt")
-    print(output_dic)
     end_point=False
+    start = True
+    first_state = "H"
+    time.sleep(5)
     while(1):
         print("start ", datetime.now())
         #robot_speech
@@ -65,31 +67,38 @@ def main():
             data = json.dumps(agent_speech)
             requests.post(url_ai+"/talk", json=data)
             #request user speech
-            time.sleep(0.5)
+            #time.sleep(0.5)
             print("request user_speech")
             while(user_speech == None):
-                #data = requests.get(url_ic+"/audio_service").json()
                 user_speech = input("insert:")
-                """if(data['recognized']):
+                """
+                data = requests.get(url_ic+"/audio_service").json()
+                if(data['recognized']):
                     user_speech = data['text'].lower()
                     print(user_speech)
                 else:
                     user_speech = None"""
                 if user_speech in select_one:
+                    if(start):
+                        start = False
+                        first_state = "SA"
                     print("option_1")
                     send_choice("option_1")
                     if(output_dic["option_1"]["to_say"] != ""):
+                        time.sleep(1)
                         data = json.dumps(output_dic["option_1"]["to_say"])
                         requests.post(url_ai+"/talk", json=data)
-                        #time.sleep(5)
                     update_dictionary(output_dic['option_1']["file"])
                 elif user_speech in select_two:
+                    if(start):
+                        start = False
+                        first_state = "H"
                     print("option_2")
                     send_choice("option_2")
                     if(output_dic["option_2"]["to_say"] != ""):
+                        time.sleep(1)
                         data = json.dumps(output_dic["option_2"]["to_say"])
                         requests.post(url_ai+"/talk", json=data)
-                        #time.sleep(5)
                     update_dictionary(output_dic['option_2']['file'])
                 else:
                     #no answer get wait for it
@@ -98,22 +107,31 @@ def main():
                     data = json.dumps(agent_speech)
                     requests.post(url_ai+"/talk", json=data)
             user_speech = None
-            time.sleep(1)
+            time.sleep(2)
         else:
             data = json.dumps(agent_speech)
             requests.post(url_ai+"/talk", json=data)
+            time.sleep(2)
+            if end_point:
+                if first_state == "SA":
+                    #end happy
+                    send_choice("option_1")
+                else:
+                    #end sad
+                    send_choice("option_2")
+            else:
+                send_choice("option_1")
+            if(output_dic["option_1"]["to_say"] != ""):
+                        data = json.dumps(output_dic["option_1"]["to_say"])
+                        requests.post(url_ai+"/talk", json=data)
             if end_point:
                 print("End Story")
                 break
-            send_choice("option_1")
-            if(output_dic["option_1"]["to_say"] != ""):
-                        time.sleep(5) 
-                        data = json.dumps(output_dic["option_1"]["to_say"])
-                        requests.post(url_ai+"/talk", json=data)
             if output_dic['option_1']['file'] == "fantasy_story/Finish.txt" :
                 print("start finish")
                 end_point=True
             update_dictionary(output_dic['option_1']['file'])
+            
             #time.sleep(5)
             
 

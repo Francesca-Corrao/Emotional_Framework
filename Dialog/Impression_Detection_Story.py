@@ -17,7 +17,7 @@ import requests
 import threading
 from datetime import datetime
 
-MORPHCAST_TH = 2
+MORPHCAST_TH = 1.5
 PORT = 4000
 #basic emotions in EPA space
 emotion_map = {
@@ -41,11 +41,11 @@ class ImpressionDetection():
         #old value to get the transition
         self.old_emotion = [0,0,0] 
         self.old_prox = 1
-        self.old_att = 0
+        self.old_att = 2
         #delta to increment/decrement impression
         self.delta = 0.5
         #distance thresholds, try proximity with pepper and set this 
-        self.shorter_distance_th = 1.25 #Engagment Zone 1
+        self.shorter_distance_th = 1 #Engagment Zone 1
         self.large_distance_th = 2 
         #to set the sign of the new impression if positive or negative
         self.sign = [0,0,0]
@@ -72,6 +72,7 @@ class ImpressionDetection():
         self.new_prox = True
         self.old_prox = self.proximity
         self.proximity = data
+        print(self.proximity)
 
     def set_attention(self, data):
         self.new_att = True
@@ -117,18 +118,19 @@ class ImpressionDetection():
         if(self.proximity <= self.shorter_distance_th):
             self.impression[2] += 0.2
             self.sign[2] = 1
-            if(self.proximity - self.old_prox <= -0.25):
+            if(self.proximity - self.old_prox <= -0.5):
                 self.impression[2] += self.old_prox - self.proximity
                 self.impression[0] +=  self.delta/2
 
         elif(self.proximity >= self.large_distance_th):
             self.sign[2] = -1
             self.impression[2] += -0.2
-            if(self.proximity - self.old_prox >= 0.25):
+            if(self.proximity - self.old_prox >= 0.5):
                 self.impression[0] += -self.delta/2
                 self.impression[2] += (self.old_prox - self.proximity)
         
         else:
+            print("else:", self.old_prox - self.proximity)
             self.sign[2] = 0
             self.impression[2] += 0.5*(self.old_prox - self.proximity)
         self.saturate_impression(2)
@@ -139,8 +141,6 @@ class ImpressionDetection():
         #attention effect -> set Power and slightly increment/decremt the rest
         if(self.attention >= 0.5): 
             self.sign[1] = 1
-            if(self.attention - self.old_att > 0.3):
-                self.impression[1] += self.delta
             #increase effect of other
             self.impression[0] += self.sign[0]*self.attention*0.1 #the more user look the more it'll increment
             self.impression[1] += self.sign[1]*self.attention*0.1
@@ -148,11 +148,11 @@ class ImpressionDetection():
 
         else:
             self.sign[1] = -1
-            if(self.attention - self.old_att < -0.3):
-                self.impression[1] += -self.delta
+            if self.attention < 0.25:
+                self.impression[1] += -self.delta/0.5
             #decrease the effect of others
             self.impression[0] += -self.sign[0]*(1-self.attention)*0.1 #the less it look the more it'll decrement
-            self.impression[1] += self.sign[1]*(1-self.attention)*0.1
+            self.impression[1] += -self.sign[1]*(1-self.attention)*0.1
             self.impression[2] += -self.sign[2]*(1-self.attention)*0.1
         self.saturate_impression(1)
         print("Impression: " + str(self.impression))
@@ -160,11 +160,11 @@ class ImpressionDetection():
     def choice_effects(self):
         print("--------Choice Effects --------")
         for i in range(0,3):
+            print(self.sign[i])
             if(self.choice_impression[i] == self.sign[i]):
-                self.impression[i] += (0.5)*self.sign[i]
+                self.impression[i] += self.sign[i]
             else:
                 self.impression[i] = self.choice_impression[i]
-                # set sign to be the same of choice_impression per ora forse meglio di no
         self.saturate_allimpression()
         print("Impression: " + str(self.impression))
 

@@ -14,7 +14,7 @@ PORT = 9559 #set correct PORT
 PORT2 = 6001
 
 app = Flask(__name__)
-type = "A"
+type = "R"
 exp = ee.EmotionExpression(type= type)
 
 #pepper speaking Proxy
@@ -33,14 +33,15 @@ def talk():
     speech = json.loads(data)
     speech_list = speech.split("_")
     print(datetime.now(), "Requesting Emotion")
-    exp.get_emotion() #forse meglio mandarla su un thread vediamo)
+    exp.get_emotion()
+    time.sleep(1)
     print("Talking")
     for talk in speech_list:
         if type == "R":
             speak.say(str(talk))
         else:
             print(talk)
-        time.sleep(2)
+        time.sleep(1)
     return jsonify(),200
 print("Agent Interface")
 threading.Thread(target=exp.main).start()

@@ -47,7 +47,7 @@ class ProximityPerception():
             people_list3 = self.memory.getData("EngagementZones/PeopleInZone3")
             if((self.people_id in people_list) or (self.people_id in people_list2) or (self.people_id in people_list3)):
             #if (self.memory.getData("PeoplePerception/Person/"+str(self.people_id)+"/IsVisible")):
-                print("people(",self.people_id,") still visible")
+                #("people(",self.people_id,") still visible")
                 output_data["id"] = self.people_id
                 s = "PeoplePerception/Person/"+ str(self.people_id) + "/Distance"
                 output_data["dist"] = self.memory.getData(s)
@@ -61,7 +61,7 @@ class ProximityPerception():
             else:
                 print("People(",self.people_id,") not visible looking for new id")
                 self.get_people_id()
-            time.sleep(3) #choose appropriate rate
+            time.sleep(5) #choose appropriate rate
 
 PP_module = ProximityPerception()
 PP_module.onInput_onStart()
