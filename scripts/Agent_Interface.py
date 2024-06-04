@@ -16,16 +16,18 @@ PORT2 = 6001
 app = Flask(__name__)
 type = "R"
 exp = ee.EmotionExpression(type= type)
-
+audio = None
 #pepper speaking Proxy
 if type == "R":
     speak = ALProxy("ALAnimatedSpeech", IP_ADD , PORT )
     sm = ALProxy("ALSpeakingMovement", IP_ADD, PORT)
     ts = ALProxy("ALTextToSpeech", IP_ADD,PORT)
+    audioplayer = ALProxy("ALAudioPlayer", IP_ADD, PORT)
     sm.setEnabled(True)
     sm.setMode("contextual")
     ts.setLanguage('English')
     ts.setParameter("speed", 80)
+    #audio = audioplayer.loadFile("/usr/share/naoqi/wav/random.wav")
 
 @app.route("/talk", methods = ["POST"])
 def talk():
@@ -44,6 +46,13 @@ def talk():
         time.sleep(1)
     return jsonify(),200
 print("Agent Interface")
+
+"""@app.route("/transition", methods = ["POST"])
+def transition():
+    global audio
+    if type == "R":
+        audioplayer.play(audio)
+    return jsonify(),200"""
 threading.Thread(target=exp.main).start()
 
 app.run(host='127.0.0.1', port=PORT2)
