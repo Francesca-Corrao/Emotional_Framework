@@ -1,0 +1,14 @@
+{
+    "start" : "What do you mean you want to go look at Mr Fenwick house ? I heard it's a very hostile place._ I heard that right now Mr Fenwick is out of the city. I don't know if it is a good idea to go look at his place without him knowing. But we can wait for tomorrow morning to go and see. ",
+    "option_1" : {"continue":"Just go now, we don't have any time to lose",
+        "file":"detective_story/location3.txt",
+        "impression": [-1,-1,1],
+	    "to_say" : "Okay if that's what you think is better let's go on then_We arrived I don't get how he can live in this place it's very dark and scary" 
+    },
+    "option_2" : {"continue":"Wait for tomorrow ", 
+        "file":"detective_story/tomorrow.txt",
+        "impression": [1,1,1],
+	    "to_say" : ""
+    }
+}
+

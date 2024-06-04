@@ -139,30 +139,28 @@ class ImpressionDetection():
     def attention_effect(self):
         print("--------Attention Effects --------")
         #attention effect -> set Power and slightly increment/decremt the rest
-        if(self.attention >= 0.5): 
-            self.sign[1] = 1
-            #increase effect of other
-            self.impression[0] += self.sign[0]*self.attention*0.1 #the more user look the more it'll increment
-            self.impression[1] += self.sign[1]*self.attention*0.1
-            self.impression[2] += self.sign[2]*self.attention*0.1
-
-        else:
-            self.sign[1] = -1
-            if self.attention < 0.25:
-                self.impression[1] += -self.delta/0.5
-            #decrease the effect of others
-            self.impression[0] += -self.sign[0]*(1-self.attention)*0.1 #the less it look the more it'll decrement
-            self.impression[1] += -self.sign[1]*(1-self.attention)*0.1
-            self.impression[2] += -self.sign[2]*(1-self.attention)*0.1
-        self.saturate_impression(1)
-        print("Impression: " + str(self.impression))
+        if self.attention != self.old_att:
+            if(self.attention >= 0.5): 
+                self.sign[1] = 1
+                #increase effect of other
+                self.impression[0] += self.sign[0]*self.attention*0.1 #the more user look the more it'll increment
+                self.impression[1] += self.sign[1]*self.attention*0.1
+                self.impression[2] += self.sign[2]*self.attention*0.1
+            else:
+                self.sign[1] = -1
+                #decrease the effect of others
+                self.impression[0] += -self.sign[0]*(1-self.attention)*0.1 #the less it look the more it'll decrement
+                self.impression[1] += self.sign[1]*(1-self.attention)*0.1
+                self.impression[2] += -self.sign[2]*(1-self.attention)*0.1
+            self.saturate_impression(1)
+            print("Impression: " + str(self.impression))
 
     def choice_effects(self):
         print("--------Choice Effects --------")
         for i in range(0,3):
             print(self.sign[i])
             if(self.choice_impression[i] == self.sign[i]):
-                self.impression[i] += self.sign[i]
+                self.impression[i] = self.sign[i]
             else:
                 self.impression[i] = self.choice_impression[i]
         self.saturate_allimpression()
@@ -207,7 +205,7 @@ app = Flask(__name__)
 @app.route('/morphcast_perception',methods =['POST'])
 def get_emotion_attention():
     #receive attention and perception from Morphcat
-    print("Received Morphcast")
+    #print("Received Morphcast")
     data = request.get_json()
     imp_node.new_emo = True
     imp_node.morphcast_feedback(json.loads(data))
@@ -216,7 +214,7 @@ def get_emotion_attention():
 @app.route('/proximity_perception',methods =['POST'])
 def get_proximity():
     #received proximity
-    print("Received Proximity")
+    #print("Received Proximity")
     data = request.get_json()
     imp_node.new_prox = True
     imp_node.set_proximity(float(json.loads(data)))
@@ -225,15 +223,16 @@ def get_proximity():
 @app.route('/gaze_prox_perception',methods =['POST'])
 def get_gazeprox():
     #received proximity
-    print("Received Gaze and Proximity")
+    #print("Received Gaze and Proximity")
     data = request.get_json()
     imp_node.set_proximity(float(data["dist"]))
-    imp_node.set_attention(data)
+    if imp_node.proximity >= MORPHCAST_TH:
+        imp_node.set_attention(data)
     return jsonify({'succes':'True'}),200
 
 @app.route('/choice_impression', methods= ['POST'])
 def get_choice():
-    print("Received Choice Impression")
+    #print("Received Choice Impression")
     data = request.get_json()
     imp_node.new_choice = True
     print(data)

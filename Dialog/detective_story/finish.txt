@@ -1,0 +1,11 @@
+{
+    "start" : "Oh you are able to open it ? Great! What there is inside ? I can't believe it, that is the necklace. You were able to solve this mystery. I never have a doubt. Now let's go to Mr.Leighton and give him the necklace so we can go home and celebrate.",
+    "option_1" : {"continue":" ",
+        "file":"",
+        "impression": [1,1,1],
+	"to_say" : "It was nice solving this problem with you. I hope you have fun too and that I will be able to help you even for future cases._ Now that you helped Mr.Leighton you will have plenty of them." },
+    "option_2" : {"continue":"", 
+        "file":"",
+        "impression": [-1,-1,-1],
+	"to_say" : " "}
+}

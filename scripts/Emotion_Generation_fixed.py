@@ -51,8 +51,8 @@ class EmotionGenerator():
             #powerfull but appear less powerful   
             self.emotion[1] = self.impression[1]-self.identity[1]
         else: 
-            self.emotion[1] = 0 
-        self.emotion[1] = self.impression[1]-self.identity[1]        
+            self.emotion[1] = self.impression[1]
+        #self.emotion[1] = self.impression[1]-self.identity[1]        
         #Activity affect potency
         self.emotion[1] += -(self.impression[2] - self.identity[2])
         if(abs(self.emotion[1]) > 4):
@@ -64,7 +64,8 @@ class EmotionGenerator():
     def activity(self):
         print("------ Activity Computing- -----")
         """Comparison of transient and fundamental activity"""
-        self.emotion[2] = self.impression [2] - self.identity[2] + 0.5
+        #self.emotion[2] = self.impression [2] - self.identity[2] + 0.5
+        self.emotion[2] = self.impression [2] + self.identity[2]
         if(abs(self.emotion[2]) > 4):
             self.emotion[2] = (self.emotion[2]/abs(self.emotion[2]))* 4
         print("Emotion Updated : ", self.emotion)
@@ -96,7 +97,7 @@ app = Flask(__name__)
 @app.route('/impression',methods =['POST'])
 def get_impression():
     #receive impression from Impression Node
-    print("Received Impression")
+    #print("Received Impression")
     #convert from json to array
     data = request.get_json()
     i = json.loads(data)

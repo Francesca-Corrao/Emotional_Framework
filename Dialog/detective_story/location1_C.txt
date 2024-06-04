@@ -1,0 +1,11 @@
+{
+    "start" : "This house is incredible. There are so many room, I don't get how is it possible that the thief stole  only the old necklace._Come on let's look what's in the safe._It doesn't seem like somebody tried to break it, so the thief probably know the code. _Oh look on the lord desk: there is a picture of his wife with the necklace. But wait, that isn't the same lady that came with him today. _Oh I didn't know that his first wife died some years ago and now he is remarried. _What is that you found inside the vault ?_Oh a letter. What does it says ?_It's written in Latin. Who uses it nowadays ?_ I know you have some Latin class in your past, but if you want, I have the tool to translate it. I never use that language, but it shouldn't have any trouble.",
+    "option_1" : {"continue":"I translate the letter ",
+        "file":"detective_story/location2.txt",
+        "impression": [1,1,1],
+	"to_say" : "Okay I'll let you know what it said_So, according to what is written on the letter, Mr. Leighton was about to sell the necklace to Mr Fenwick for a huge amount of money." },
+    "option_2" : {"continue":"You translate the letter", 
+        "file":"detective_story/location2.txt",
+        "impression": [-1,-1,-1],
+	"to_say" : "Okay let me know what it said_So, according to what is written on the letter, Mr. Leighton was about to sell the necklace to Mr Fenwick for a huge amount of money."}
+}

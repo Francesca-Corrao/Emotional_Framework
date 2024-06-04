@@ -6,7 +6,7 @@ url_ic = "http://127.0.0.1:6000/" #Input Capture
 url_ai = "http://127.0.0.1:6001/" #agent interface
 url_id = "http://127.0.0.1:4000/" #impression detection
 output_dic =  {}
-
+end_point=False
 select_one = [
     "option one",
     "option 1",
@@ -38,24 +38,27 @@ select_two = [
 ]
 
 def update_dictionary(path):
-    global output_dic
+    global output_dic, end_point
     file = open(path)
     data = file.read()
     output_dic = json.loads(data)
+    if "finish.txt" in path:
+        end_point = True
 
 def send_choice(key):
     data = json.dumps(output_dic[key]["impression"])
     requests.post(url_id+"choice_impression", json = data)
 
 def main(): 
+    global end_point
     print("Dialog Manager : Scripted Story ")
     agent_speech = " "
     user_speech = None
     update_dictionary("C:/Users/franc/Documents/Tesi/Emotional_Framework/Dialog/fantasy_story/begin.txt")
-    end_point=False
+    
     start = True
     first_state = "H"
-    time.sleep(5)
+    time.sleep(8)
     while(1):
         print("start ", datetime.now())
         #robot_speech
@@ -127,14 +130,9 @@ def main():
             if end_point:
                 print("End Story")
                 break
-            if output_dic['option_1']['file'] == "fantasy_story/Finish.txt" :
-                print("start finish")
-                end_point=True
             update_dictionary(output_dic['option_1']['file'])
             
             #time.sleep(5)
             
-
-    
 
 main()

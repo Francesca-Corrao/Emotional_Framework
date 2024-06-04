@@ -1,0 +1,12 @@
+{
+    "start" : "This is the shop I told you about. We should go talk with the owner to see if they know something. _Oh look, it is an assistant robot, just like me! It is a newer model, but if you want I can go talk with it. You know, between robot, we get each other better. Otherwise, you can go on and talk with it and see what it will tell you.",
+    "option_1" : {"continue":" I go talk with it",
+        "file":"detective_story/location2.txt",
+        "impression": [1,1,1],
+	"to_say" : "Okay, I'll let you know what it tells me. _ So, it's seems like Mr. Leighton came here to know how estimate how much he could sell the necklace for. It seems Mr.Fenwick gave him a higher offer. This means he must be really interested in the necklace." },
+    "option_2" : {"continue":" You go talk with it", 
+        "file":"detective_story/location2.txt",
+        "impression": [-1,-1,-1],
+	"to_say" : "Okay, Let me know what it tells you._So, it's seems like Mr. Leighton came here to know how estimate how much he could sell the necklace for. It seems Mr.Fenwick gave him a higher offer. This means he must be really interested in the necklace."}
+}
+

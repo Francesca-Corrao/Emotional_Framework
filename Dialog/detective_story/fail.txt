@@ -1,0 +1,11 @@
+{
+    "start" : "okay I will try it then.",
+    "option_1" : {"continue":" ",
+        "file":"detective_story/finish.txt",
+        "impression": [-1,1,-1],
+	"to_say" : "I am sorry I wasn't able to open it, it seems like my software is buggy it keep giving me the same passcode. Which is not working._You should try it then" },
+    "option_2" : {"continue":"", 
+        "file":"",
+        "impression": [1,1,1],
+	"to_say" : " "}
+}

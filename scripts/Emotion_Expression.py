@@ -133,16 +133,15 @@ class EmotionExpression():
         print(datetime.now(), "Request Emotional State to Emotion Generator Node")
         #get request
         #convert json to array
-        data = requests.get(url + 'emotional_state').json()
-        self.new_emotion= data['new_emotion']
-        
-        if(self.new_emotion):
-            print("received new emotion")
+        data = requests.get(url + 'emotional_state').json() 
+        if(data['new_emotion']):
             self.emotion = data["emotion"]
-            print(self.emotion)
+            print("received new emotion:", self.emotion)
+            self.new_emotion= data['new_emotion']
         else:
+            self.new_emotion= data['new_emotion']
             print("no new emotion")
-            self.leds.fadeRGB("FaceLeds", "white", 1.0)
+            #self.leds.fadeRGB("FaceLeds", "white", 1.0)
         
     def input_emotion(self):
         data = input("impression in EPA: ")
@@ -159,7 +158,7 @@ class EmotionExpression():
         time.sleep(self.time_decay)
         while(True):       
             #update motion if got a new one
-            self.leds.fadeRGB("FaceLeds", "white", 1.0)
+            #self.leds.fadeRGB("FaceLeds", "white", 1.0)
             if(self.new_emotion):
                 self.new_emotion = False
                 self.update_motion()

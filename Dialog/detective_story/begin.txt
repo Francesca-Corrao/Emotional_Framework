@@ -1,0 +1,11 @@
+{
+    "start" : " Oh Hi! It's me Pepper your companion robot. I just want to let you know that The Leightons just left the house._I know I shouldn't, but I overheard that they ask you to lead the search of their missing jewels._It's an amazing opportunity: if you'll be able to find them, you will became the most famous and requested detective of the city. _I know this is not an easy challenge but it is not your first job. You have solve a lot of mysteries so far, and I am pretty sure you will solve this one too. In any case I am always here to help you, as I  have done in the past._I don't want to keep you any longer from you mission. I think we should start looking for that necklace._Who knows what happen to it, and the lord seems to be in a hurry to find it. So we can go look at the crime scene or look if somebody is selling the jewels._I am looking forward to go investigate together and look at the crime scene, but go look in the shops could save as some times and we could find the necklace early.",
+    "option_2" : {"continue":"Go look the crime scene",
+        "file":"detective_story/location1_C.txt",
+        "impression": [1,1,1],
+	"to_say" : "Let's go on then. We should start by looking at Mr.Leighton safe." },
+    "option_1" : {"continue":"Go look the market", 
+        "file":"detective_story/location1_A.txt",
+        "impression": [-1,-1,-1],
+	"to_say" : "I know an antique shop on the main street where a lot of criminal sell their stuff. We should go there"}
+}
