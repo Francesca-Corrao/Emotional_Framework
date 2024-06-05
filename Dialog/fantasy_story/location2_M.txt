@@ -7,5 +7,5 @@
     "option_2" : {"continue":"You go there and talk with them", 
         "file":"fantasy_story/location3.txt",
         "impression": [-1,1,-1],
-	"to_say" : "Okay let me now what you are able to obtain_ Why are you coming back empty handed?_I told you I should have been the one go talk with them but don't worry while you went I look around and found another shop which have exactly what we need. Look at this volcanos ashes!"}
+	"to_say" : "Okay let me now what you are able to obtain_^_ Why are you coming back empty handed?_I told you I should have been the one go talk with them but don't worry while you went I look around and found another shop which have exactly what we need. Look at this volcanos ashes!"}
 }

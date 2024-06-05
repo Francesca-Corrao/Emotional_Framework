@@ -3,9 +3,9 @@
     "option_1" : {"continue":"Scan it better be sure",
         "file":"fantasy_story/location2_M.txt",
         "impression": [1,1,1],
-	"to_say" : "I will start the scan now, I will let you now when I am ready to go on._I finish the scan and it is the right flower, we can go on!" },
+	"to_say" : "I will start the scan now, I will let you now when I am ready to go on._^_I finish the scan and it is the right flower, we can go on!" },
     "option_2" : {"continue":"Your botanical classes give you enough information", 
         "file":"fantasy_story/location2_M.txt",
         "impression": [-1,-1,-1],
-	"to_say" : "Okay buy it then so we can go on"}
+	"to_say" : "Okay buy it then so we can go on. _^"}
 }

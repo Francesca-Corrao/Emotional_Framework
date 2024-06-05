@@ -3,9 +3,9 @@
     "option_1" : {"continue":"Go to the zoo",
         "file":"fantasy_story/zoo.txt",
         "impression": [1,1,1],
-	"to_say" :"" },
+	"to_say" :"okay, let's go to the zoo then _^" },
     "option_2" : {"continue":"Go the swamp", 
         "file":"fantasy_story/swamp.txt",
         "impression": [-1,-1,1],
-	"to_say" : ""}
+	"to_say" : "Okay let's go the swamp then _^"}
 }

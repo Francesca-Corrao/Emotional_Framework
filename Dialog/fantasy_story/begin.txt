@@ -3,9 +3,9 @@
     "option_1" : {"continue":"Let's go to the market",
         "file":"fantasy_story/location1_M.txt",
         "impression": [-1,-1,-1],
-        "to_say" : "I know this market where they have a lot of shops selling what we need, we can go there" },
+        "to_say" : "I know this market where they have a lot of shops selling what we need, we can go there. _^" },
     "option_2" : {"continue":"Let's gather the ingredients ourself", 
         "file":"fantasy_story/location1_A.txt",
         "impression": [1,1,1],
-        "to_say" : "I heard about a cliff where the  Sundrop flower grow, we can go there first." }
+        "to_say" : "I heard about a cliff where the  Sundrop flower grow, we can go there first._^" }
 }

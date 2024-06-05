@@ -1,7 +1,7 @@
 import Emotion_Expression as ee
 from flask import Flask, request,jsonify
 import threading
-from naoqi import ALProxy
+from naoqi import ALProxy, qi
 import json
 import time
 from datetime import datetime
@@ -22,12 +22,13 @@ if type == "R":
     speak = ALProxy("ALAnimatedSpeech", IP_ADD , PORT )
     sm = ALProxy("ALSpeakingMovement", IP_ADD, PORT)
     ts = ALProxy("ALTextToSpeech", IP_ADD,PORT)
-    audioplayer = ALProxy("ALAudioPlayer", IP_ADD, PORT)
+    #audioplayer = ALProxy("ALAudioPlayer", IP_ADD, PORT)
+    bm = ALProxy("ALBehaviorManager", IP_ADD, PORT)
     sm.setEnabled(True)
     sm.setMode("contextual")
     ts.setLanguage('English')
     ts.setParameter("speed", 80)
-    #audio = audioplayer.loadFile("/usr/share/naoqi/wav/random.wav")
+    bm.preloadBehavior("my_sounds/play_clock")
 
 @app.route("/talk", methods = ["POST"])
 def talk():
@@ -39,11 +40,17 @@ def talk():
     time.sleep(1)
     print("Talking")
     for talk in speech_list:
-        if type == "R":
-            speak.say(str(talk))
+        print(talk)
+        if talk == "^":
+            #play sound
+            bm.runBehavior("my_sounds/play_clock")
         else:
-            print(talk)
-        time.sleep(1)
+            if type == "R":
+                speak.say(str(talk))
+            else:
+                print(talk)
+            time.sleep(1)
+
     return jsonify(),200
 print("Agent Interface")
 
@@ -53,6 +60,6 @@ def transition():
     if type == "R":
         audioplayer.play(audio)
     return jsonify(),200"""
-threading.Thread(target=exp.main).start()
+#threading.Thread(target=exp.main).start()
 
 app.run(host='127.0.0.1', port=PORT2)

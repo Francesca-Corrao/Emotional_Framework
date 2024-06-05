@@ -1,5 +1,5 @@
 {
-    "start" : "Oh great, I will let you know what I am able to obtain!",
+    "start" : "Oh great, I will let you know what I am able to obtain!_^",
     "option_1" : {"continue":" ",
         "file":"fantasy_story/location3.txt",
         "impression": [-1,1,-1],

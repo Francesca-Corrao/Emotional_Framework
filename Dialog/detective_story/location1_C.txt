@@ -3,9 +3,9 @@
     "option_1" : {"continue":"I translate the letter ",
         "file":"detective_story/location2.txt",
         "impression": [1,1,1],
-	"to_say" : "Okay I'll let you know what it said_So, according to what is written on the letter, Mr. Leighton was about to sell the necklace to Mr Fenwick for a huge amount of money." },
+	"to_say" : "Okay I'll let you know what it said_^_So, according to what is written on the letter, Mr. Leighton was about to sell the necklace to Mr Fenwick for a huge amount of money." },
     "option_2" : {"continue":"You translate the letter", 
         "file":"detective_story/location2.txt",
         "impression": [-1,-1,-1],
-	"to_say" : "Okay let me know what it said_So, according to what is written on the letter, Mr. Leighton was about to sell the necklace to Mr Fenwick for a huge amount of money."}
+	"to_say" : "Okay let me know what it said_^_So, according to what is written on the letter, Mr. Leighton was about to sell the necklace to Mr Fenwick for a huge amount of money."}
 }

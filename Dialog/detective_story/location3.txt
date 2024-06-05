@@ -1,5 +1,5 @@
 {
-    "start" : "Go on then, we don't want to be caught._Let's go to the office to see if there is a safe where he can store the neckless_Oh wait what was that sound ?_Oh hello Mr.Fenwick !_We are sorry to have entered your home, but we are looking for something. The neckless of Mr. Leighton: have you seen it ?_We are finally out of that place! Did you heard what Mr. Fenwick said ? It would have bought the necklace and they had closed the deal with Mr.Leighton, even though his child was not happy about it. They try to stop their father many times. It seems like the child was upset about how their father could give away the neckless their mother wore every day. You want to go back to the Leighton Mansion ? Okay then, let's go _Why are we in the child's room ? Oh, you have an idea, great!_What are we looking for ? Oh, is that a casket with a lock ? We need a passcode to open it._If you want, I have a tool to decode password. I can try open it, or probably with all your field experience, you know how to open it in a shorter way",
+    "start" : "Go on then, we don't want to be caught._Let's go to the office to see if there is a safe where he can store the neckless_Oh wait what was that sound ?_Oh hello Mr.Fenwick !_We are sorry to have entered your home, but we are looking for something. The neckless of Mr. Leighton: have you seen it ?_^_We are finally out of that place! Did you heard what Mr. Fenwick said ? It would have bought the necklace and they had closed the deal with Mr.Leighton, even though his son was not happy about it. They try to stop their father many times. It seems like the son was upset about how their father could give away the neckless their mother wore every day._You want to go back to the Leighton Mansion ? Okay then, let's go _^_ Why are we in the son's room ? Oh, you have an idea, great!_What are we looking for ? Oh, is that a casket with a lock ? We need a passcode to open it._If you want, I have a tool to decode password. I can try open it, or probably with all your field experience, you know how to open it in a shorter way",
     "option_1" : {"continue":"Should I try decode it",
         "file":"detective_story/fail.txt",
         "impression": [1,1,1],
@@ -7,5 +7,5 @@
     "option_2" : {"continue":"Should I let it to you ", 
         "file":"detective_story/finish.txt",
         "impression": [-1,1,-1],
-	"to_say" : "Okay let's go on then, open it!"}
+	"to_say" : "Okay let's go on then, open it!_^"}
 }

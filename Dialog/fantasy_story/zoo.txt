@@ -1,5 +1,5 @@
 {
-    "start" : "Oh see the zoo I told you about now let's go look for the alligators._ Tiger... Lion... Dragons... Lizards... Monkeys... Snakes... Seals... Penguin... Elephants..._ We are at the end of the zoo and I didn't see any alligators! So I think that there aren't any here._ This means we have no option we must go to the terrible alligators swamp!",
+    "start" : "Oh see the zoo I told you about now let's go look for the alligators._ Tiger... Lion... Dragons... Lizards... Monkeys... Snakes... Seals... Penguin... Elephants..._ We are at the end of the zoo and I didn't see any alligators! So I think that there aren't any here._ This means we have no option we must go to the terrible alligators swamp!_^",
     "option_1" : {"continue":" ",
         "file":"fantasy_story/swamp.txt",
         "impression": [-1,-1,1],

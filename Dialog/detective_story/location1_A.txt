@@ -3,10 +3,10 @@
     "option_1" : {"continue":" I go talk with it",
         "file":"detective_story/location2.txt",
         "impression": [1,1,1],
-	"to_say" : "Okay, I'll let you know what it tells me. _ So, it's seems like Mr. Leighton came here to know how estimate how much he could sell the necklace for. It seems Mr.Fenwick gave him a higher offer. This means he must be really interested in the necklace." },
+	"to_say" : "Okay, I'll let you know what it tells me. _^_ So, it's seems like Mr. Leighton came here to know how estimate how much he could sell the necklace for. It seems Mr.Fenwick gave him a higher offer. This means he must be really interested in the necklace." },
     "option_2" : {"continue":" You go talk with it", 
         "file":"detective_story/location2.txt",
         "impression": [-1,-1,-1],
-	"to_say" : "Okay, Let me know what it tells you._So, it's seems like Mr. Leighton came here to know how estimate how much he could sell the necklace for. It seems Mr.Fenwick gave him a higher offer. This means he must be really interested in the necklace."}
+	"to_say" : "Okay, Let me know what it tells you._^_So, it's seems like Mr. Leighton came here to know how estimate how much he could sell the necklace for. It seems Mr.Fenwick gave him a higher offer. This means he must be really interested in the necklace."}
 }
 

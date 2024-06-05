@@ -3,9 +3,9 @@
     "option_1" : {"continue":"Scan the flower better be sure",
         "file":"fantasy_story/location2_A.txt",
         "impression": [1,1,1],
-        "to_say": "Oh I will start the scan now, I will let you now when I am ready to go on._Great the scan is complete and I can guarantee that this is the Sundrop flower!" },
+        "to_say": "Oh I will start the scan now, I will let you now when I am ready to go on._^_Great the scan is complete and I can guarantee that this is the Sundrop flower!" },
     "option_2" : {"continue":"Your botanical classes give you enough information, so it is better to just go on", 
         "file":"fantasy_story/location2_A.txt",
         "impression": [-1,-1,-1],
-        "to_say" : "Okay collect the flower and we can go on then" }
+        "to_say" : "Okay collect the flower and we can go on then_^" }
 }

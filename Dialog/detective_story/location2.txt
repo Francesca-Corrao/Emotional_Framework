@@ -3,7 +3,7 @@
     "option_1" : {"continue":"Just go now, we don't have any time to lose",
         "file":"detective_story/location3.txt",
         "impression": [-1,-1,1],
-	    "to_say" : "Okay if that's what you think is better let's go on then_We arrived I don't get how he can live in this place it's very dark and scary" 
+	    "to_say" : "Okay if that's what you think is better let's go on then_^_We arrived I don't get how he can live in this place it's very dark and scary." 
     },
     "option_2" : {"continue":"Wait for tomorrow ", 
         "file":"detective_story/tomorrow.txt",

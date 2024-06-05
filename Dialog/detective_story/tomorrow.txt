@@ -1,9 +1,9 @@
 {
-    "start" : "Okay, it's better to don't go on people houses without their permission_Now we can go to Mr.Fenwick house._Oh no he's still not home.",
+    "start" : "Okay, it's better to don't go on people houses without their permission_^_Now we can go to Mr.Fenwick house._Oh no he's still not home.",
     "option_1" : {"continue":" ",
         "file":"detective_story/location3.txt",
         "impression": [-1,-1,1],
-	"to_say" : "You're right we can't wait any longer we should go inside even if there is no one home." },
+	"to_say" : "You're right we can't wait any longer we should go inside even if there is no one home._^" },
     "option_2" : {"continue":"", 
         "file":"",
         "impression": [1,1,1],
