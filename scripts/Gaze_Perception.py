@@ -2,14 +2,19 @@ from naoqi import ALProxy
 import time
 import requests
 import json
+from datetime import datetime
 
 #Pepper info to connect
-IP_ADD = "10.0.0.2" #set correct IP 
+IP_ADD = "10.0.0.6" #set correct IP 
 PORT = 9559 #set correct PORT
 
 MAX_DIST = 1.5 
 url2 = 'http://127.0.0.1:4000' #impression_detection
 output_data = {}
+
+file_emotion = "../test/pepper_perception.txt"
+file = open(file_emotion, "a")
+file.write("Beging" + str(datetime.now()) + "\n")
 class ProximityPerception():
     def __init__(self):
         #set up to connect to Pepper
@@ -57,6 +62,7 @@ class ProximityPerception():
                 output_data["gaze_level"] = self.memory.getData(g1)
                 #send distance to Impression Detection 
                 print(output_data)
+                file.write(str(datetime.now())+ str(output_data) + "\n")
                 requests.post(url2+"/gaze_prox_perception", json=output_data)
             else:
                 print("People(",self.people_id,") not visible looking for new id")

@@ -21,27 +21,32 @@ MORPHCAST_TH = 1.5
 PORT = 4000
 #basic emotions in EPA space
 emotion_map = {
-    "H":[3, 2.5, 2.8],
+    "H":[3, 0.8, 0.5],
     "N":[0,0,0],
-    "D":[-1.2,0,1],
-    "F":[-1.86, -2.2, 2.5],
-    "A":[-2, 1.5, 2],
-    "SA":[-3, -2.2 , 2.5],
-    "SU":[0, 0, 3]}
+    "D":[-1.5,0.2,-2],
+    "F":[-0.6, -2.1, 2.1],
+    "A":[-2, 2.8, 1],
+    "SA":[-0.8, -1.9 , -1.9],
+    "SU":[0.5, -0.4, 1]}
 url='http://127.0.0.1:3000/' #Emotion Generation API
 
+morphcast_active = False
+
+file_emotion="../test/impression.txt"
+file = open(file_emotion, 'a')
+file.write("Beging" + str(datetime.now()) + "\n")
 #class
 class ImpressionDetection():
     def __init__(self):
         self.impression = [0,0,0] #impression in EPA space
         self.user_emotion = [0,0,0] #user emotion in EPA
-        self.proximity = 1 # proximity
+        self.proximity = 2.5 # proximity
         self.attention= 0 #user's attention
         self.choice_impression = [0,0,0]
         #old value to get the transition
         self.old_emotion = [0,0,0] 
-        self.old_prox = 1
-        self.old_att = 2
+        self.old_prox = self.proximity
+        self.old_att = self.attention
         #delta to increment/decrement impression
         self.delta = 0.5
         #distance thresholds, try proximity with pepper and set this 
@@ -72,13 +77,11 @@ class ImpressionDetection():
         self.new_prox = True
         self.old_prox = self.proximity
         self.proximity = data
-        print(self.proximity)
 
     def set_attention(self, data):
         self.new_att = True
         self.old_att = self.attention
         self.attention = data["gaze_level"]*data["gaze"]
-        print(self.attention)
     
     def set_choice(self, data):
         self.choice_impression = json.loads(data)
@@ -94,7 +97,9 @@ class ImpressionDetection():
 
     def emotion_effects(self):
         #compute the effect of emotion in impresion making -> related to evaluation
-        print("--------Emotion Effects--------")
+        #print("--------Emotion Effects--------")
+        global file
+        file.write("--------Emotion Effects--------"+"\n")
         if(self.user_emotion[0]> 1 and self.user_emotion[0] - self.old_emotion[0] > 1):
             #emozione migliorata in positivo
             self.impression[0] += self.delta * (self.user_emotion[0] - self.old_emotion[0])
@@ -110,10 +115,14 @@ class ImpressionDetection():
             else: 
                 self.sign[0] = 0 
         self.saturate_impression(0)
-        print("Impression: " + str(self.impression))
+        #print("Impression: " + str(self.impression))
+        file.write("Impression: " + str(self.impression)+"\n")
+        file.flush
 
     def proximty_effects(self):
-        print("--------Proximity Effects--------")
+        #print("--------Proximity Effects--------")
+        global file
+        file.write("--------Proximity Effects--------\n")
         #proximity effect on Impression makig -> Activity and Evaluation 
         if(self.proximity <= self.shorter_distance_th):
             self.impression[2] += 0.2
@@ -134,10 +143,13 @@ class ImpressionDetection():
             self.sign[2] = 0
             self.impression[2] += 0.5*(self.old_prox - self.proximity)
         self.saturate_impression(2)
-        print("Impression: " + str(self.impression))
+        #print("Impression: " + str(self.impression))
+        file.write("Impression: " + str(self.impression)+"\n")
+        file.flush
 
     def attention_effect(self):
-        print("--------Attention Effects --------")
+        global file
+        file.write("--------Attention Effects --------\n")
         #attention effect -> set Power and slightly increment/decremt the rest
         if self.attention != self.old_att:
             if(self.attention >= 0.5): 
@@ -153,25 +165,35 @@ class ImpressionDetection():
                 self.impression[1] += self.sign[1]*(1-self.attention)*0.1
                 self.impression[2] += -self.sign[2]*(1-self.attention)*0.1
             self.saturate_impression(1)
-            print("Impression: " + str(self.impression))
+            #print("Impression: " + str(self.impression))
+            file.write("Impression: " + str(self.impression)+"\n")
+            file.flush
 
     def choice_effects(self):
-        print("--------Choice Effects --------")
+        global file
+        file.write("--------Choice Effects --------")
         for i in range(0,3):
-            print(self.sign[i])
+            print(self.choice_impression[i])
             if(self.choice_impression[i] == self.sign[i]):
                 self.impression[i] = self.sign[i]
             else:
                 self.impression[i] = self.choice_impression[i]
         self.saturate_allimpression()
-        print("Impression: " + str(self.impression))
+        #print("Impression: " + str(self.impression))
+        file.write("Impression: " + str(self.impression)+"\n")
+        file.flush
 
     def update_impression(self):
         #emotion effects
+        global morphcast_active, file
         upd = False
         if(self.new_choice):
             self.new_choice = False
             self.choice_effects()
+            upd = True
+        if(self.new_prox):
+            self.new_prox = False
+            self.proximty_effects()
             upd = True
         if(self.new_emo and self.proximity<MORPHCAST_TH):
             self.new_emo = False
@@ -180,17 +202,16 @@ class ImpressionDetection():
             upd = True
         elif(self.new_att):
             self.new_att = False
+            morphcast_active = False
             self.attention_effect()
-            upd = True
-        if(self.new_prox):
-            self.new_prox = False
-            self.proximty_effects()
             upd = True
         #if new impression publish to EmoGen Node
         if(upd):
-            print(datetime.now(), "Impression updated ")
+            print(datetime.now(), "Impression updated: "+ str(self.impression))
+            file.write(str(datetime.now())+ " Impression updated: "+ str(self.impression) + "\n")
             data = json.dumps(self.impression)
-            requests.post(url+'/impression' , json = data)      
+            requests.post(url+'/impression' , json = data)
+            file.flush()
 
     def main(self):
         print("Impression Detection Node")
@@ -206,8 +227,10 @@ app = Flask(__name__)
 def get_emotion_attention():
     #receive attention and perception from Morphcat
     #print("Received Morphcast")
+    global morphcast_active
     data = request.get_json()
     imp_node.new_emo = True
+    morphcast_active = True
     imp_node.morphcast_feedback(json.loads(data))
     return jsonify({'succes':'True'}),200
 
@@ -226,7 +249,7 @@ def get_gazeprox():
     #print("Received Gaze and Proximity")
     data = request.get_json()
     imp_node.set_proximity(float(data["dist"]))
-    if imp_node.proximity >= MORPHCAST_TH:
+    if not(morphcast_active) or imp_node.proximity >= MORPHCAST_TH :
         imp_node.set_attention(data)
     return jsonify({'succes':'True'}),200
 

@@ -10,7 +10,7 @@ import io
 from PIL import Image
 
 #Pepper IP information update with the right one
-IP_ADD = "10.0.0.2" #set correct IP 
+IP_ADD = "10.0.0.6" #set correct IP 
 PORT = 9559 #set correct PORT
 
 #REST API PORT

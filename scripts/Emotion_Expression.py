@@ -18,10 +18,10 @@ from datetime import datetime
 
 #basic emotion in EPA
 emotion_map = {
-    "H": np.array([3, 2.5, 2.8]),
-    "F":np.array([-1.86, -2.2, 2.5]),
-    "A":np.array([-2, 1.5, 2]),
-    "SA":np.array([-3, -2.2 , -2.5]),
+    "H": np.array([3, 0.8, 1]),
+    "F":np.array([-0.6, -2.1, 2.1]),
+    "A":np.array([-2.2, 2.8, 1]),
+    "SA":np.array([-1.5, -1.9 , -1.9])
     }
 
 #animations path for different emotions
@@ -42,19 +42,23 @@ fear_animation = [
     'emotions-8fe336/Fear_2']
 
 #Pepper Connection
-IP_ADD = "10.0.0.2" #set correct IP 
+IP_ADD = "10.0.0.6" #set correct IP 
 PORT = 9559 #set correct PORT 
 
 url='http://127.0.0.1:3000/' #emotion Generation restAPI
-
+file_emotion = "../test/expression.txt"
+file = open(file_emotion, "a")
+file.write("Beging" + str(datetime.now()) + "\n")
 #class
 class EmotionExpression():
     def __init__(self, type):
         self.emotion = [0,0,0]
         self.emo_label = "N"
-        self.time_decay = 10.0
+        self.old_emotion = " "
+        self.time_decay = 30.0
         self.type = type
         self.new_emotion = False
+        self.end_time = time.time()
         if type == 'R':
             print("Robot Case")
             self.animation_player = ALProxy("ALAnimationPlayer", IP_ADD , PORT )
@@ -65,26 +69,28 @@ class EmotionExpression():
             print("Avatar Case")
     
     def get_basic(self):
+        global file
         #get the basic emotion from the vector in EPA space 
         cos_list = []
         #compute cosine similarity 
         for key in emotion_map:
             cos_list.append(np.dot(self.emotion,emotion_map[key])/(norm(self.emotion)*norm(emotion_map[key])))
-            print(key,":", cos_list[-1])
-        max_cos = 0.3
-        index = 4
+            file.write(str(key) + ":"+ str(cos_list[-1])+ "\n") #da errorreeee
+        max_cos = 0.6
+        index = -1
         #get higher cosine similarity 
         for i in range(0, len(cos_list)):
             if(cos_list[i] > max_cos):
                 max_cos= cos_list[i]
                 index = i
         #get label 
-        if index != 4:
+        if index != -1 :
             keys = list(emotion_map.keys())
             self.emo_label = keys[index]
-        else: 
-            self.emo_label = "N"
-        print("basic emotion: "+ self.emo_label)
+        else:
+            self.emo_label = " N "
+        file.write("basic emotion: "+ self.emo_label + "\n")
+        file.flush()
 
     def play_animation(self):
         #select random animation index
@@ -108,14 +114,19 @@ class EmotionExpression():
             animation= fear_animation[r]
             color = 0x000000
         self.leds.fadeRGB("FaceLeds", color, 1.0, _async = True)
-        self.animation_player.run(animation)
+        if(self.old_emotion == self.emo_label and time.time() <= self.end_time):
+            return
+        else:
+            self.animation_player.run(animation)
+            self.end_time = time.time()+self.time_decay
         
 
     def update_motion(self):
         print("Updating emotion behaviours")
         #find closest basic emotion
+        self.old_emotion = self.emo_label
         self.get_basic()
-        #select emotion to play
+        #run animation
         if(self.type == "R"):
             if self.emo_label in ["H", "A", "F", "SA"] :
                 print("play emotion:" + self.emo_label)
@@ -130,9 +141,8 @@ class EmotionExpression():
             #face animation
     
     def get_emotion(self):
-        print(datetime.now(), "Request Emotional State to Emotion Generator Node")
-        #get request
-        #convert json to array
+        global file
+        file.write(str(datetime.now()) + "Request Emotional State to Emotion Generator Node\n")
         data = requests.get(url + 'emotional_state').json() 
         if(data['new_emotion']):
             self.emotion = data["emotion"]
@@ -141,7 +151,6 @@ class EmotionExpression():
         else:
             self.new_emotion= data['new_emotion']
             print("no new emotion")
-            #self.leds.fadeRGB("FaceLeds", "white", 1.0)
         
     def input_emotion(self):
         data = input("impression in EPA: ")
@@ -154,17 +163,11 @@ class EmotionExpression():
 #main
     def main(self):
         print ("Emotion Expression Node")
-        #wait a bit for everything to start
-        time.sleep(self.time_decay)
         while(True):       
-            #update motion if got a new one
-            #self.leds.fadeRGB("FaceLeds", "white", 1.0)
+            #update motion if got a new emotion
             if(self.new_emotion):
                 self.new_emotion = False
                 self.update_motion()
-                time.sleep(self.time_decay)
-            #wait for emotion to decay forse solo se nuova emozione
-            #time.sleep(self.time_decay/2) 
 
 #emo = EmotionExpression("A")
 #emo.input_emotion()

@@ -7,7 +7,7 @@ import time
 from datetime import datetime
 
 #pepper ip 
-IP_ADD = "10.0.0.2" #set correct IP 
+IP_ADD = "10.0.0.6" #set correct IP 
 PORT = 9559 #set correct PORT 
 
 #REST API PORT
@@ -22,7 +22,6 @@ if type == "R":
     speak = ALProxy("ALAnimatedSpeech", IP_ADD , PORT )
     sm = ALProxy("ALSpeakingMovement", IP_ADD, PORT)
     ts = ALProxy("ALTextToSpeech", IP_ADD,PORT)
-    #audioplayer = ALProxy("ALAudioPlayer", IP_ADD, PORT)
     bm = ALProxy("ALBehaviorManager", IP_ADD, PORT)
     sm.setEnabled(True)
     sm.setMode("contextual")
@@ -35,9 +34,8 @@ def talk():
     data = request.get_json()
     speech = json.loads(data)
     speech_list = speech.split("_")
-    print(datetime.now(), "Requesting Emotion")
     exp.get_emotion()
-    time.sleep(1)
+    #time.sleep(1)
     print("Talking")
     for talk in speech_list:
         print(talk)
@@ -45,21 +43,17 @@ def talk():
             #play sound
             bm.runBehavior("my_sounds/play_clock")
         else:
+            #exp.get_emotion()
             if type == "R":
                 speak.say(str(talk))
             else:
                 print(talk)
-            time.sleep(1)
+            time.sleep(1.5)
 
     return jsonify(),200
 print("Agent Interface")
 
-"""@app.route("/transition", methods = ["POST"])
-def transition():
-    global audio
-    if type == "R":
-        audioplayer.play(audio)
-    return jsonify(),200"""
-#threading.Thread(target=exp.main).start()
+
+threading.Thread(target=exp.main).start()
 
 app.run(host='127.0.0.1', port=PORT2)

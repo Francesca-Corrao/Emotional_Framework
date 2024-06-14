@@ -70,7 +70,7 @@ def main():
             data = json.dumps(agent_speech)
             requests.post(url_ai+"/talk", json=data)
             #request user speech
-            #time.sleep(0.5)
+            time.sleep(0.5)
             print("request user_speech")
             while(user_speech == None):
                 user_speech = input("insert:")

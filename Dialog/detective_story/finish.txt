@@ -1,5 +1,5 @@
 {
-    "start" : "Oh you are able to open it ? Great! What there is inside ? I can't believe it, that is the necklace. You were able to solve this mystery. I never have a doubt. Let's go to Mr.Leighton and give him the necklace, next time he will have to talk to his son before selling family jeweley with such a sentimental value. So we can go home and celebrate now._^",
+    "start" : "Oh you are able to open it ? Great! What there is inside ? I can't believe it, that is the necklace. You were able to solve this mystery. I never have a doubt._Let's go to Mr.Leighton and give him the necklace, next time he will have to talk to his son before selling family jewelry with such a sentimental value._So we can go home and celebrate now._^",
     "option_1" : {"continue":" ",
         "file":"",
         "impression": [1,1,1],

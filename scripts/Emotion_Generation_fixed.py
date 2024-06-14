@@ -15,10 +15,13 @@ import time
 from datetime import datetime
 
 PORT = 3000
+file_emotion = "../test/emotion.txt"
+file = open(file_emotion, "a")
+file.write("Beging" + str(datetime.now()) + "\n")
 
 class EmotionGenerator():
     def __init__(self):
-        self.identity = [1,1,1] #identity in EPA space
+        self.identity = [1,1.1,0.9] #identity in EPA space
         self.impression = [0,0,0] #impression in EPA space
         self.emotion = [0,0,0] #emotion in EPA space
         self.new_imp = False
@@ -29,7 +32,7 @@ class EmotionGenerator():
     
     #compute emotion evaluation
     def evaluation(self):
-        print("------ Evaluation Computing- -----")
+        #print("------ Evaluation Computing- -----")
         """Positivity varies with the valence of one's transient impression"""
         """Intensity varies with extremity of impression and fundamental meaning adjust it"""
         self.emotion[0] = self.impression[0] - self.identity[0] + 1
@@ -38,11 +41,11 @@ class EmotionGenerator():
         """Saturate to max value of emotion"""
         if(abs(self.emotion[0]) > 4):
             self.emotion[0] = (self.emotion[0]/abs(self.emotion[0]))* 4
-        print("Emotion Updated : ", self.emotion)
+        #print("Emotion Updated : ", self.emotion)
 
     #compute emotion potency
     def potency(self):
-        print("------ Potency Computing- -----")
+        #print("------ Potency Computing- -----")
         #Transient impression and fundamental power #RIVEDERE
         if(self.identity[1]< 0 and self.impression[1]-self.identity[1] > 1):
             #powerless but appear more power
@@ -57,23 +60,24 @@ class EmotionGenerator():
         self.emotion[1] += -(self.impression[2] - self.identity[2])
         if(abs(self.emotion[1]) > 4):
             self.emotion[1] = (self.emotion[1]/abs(self.emotion[1]))* 4 
-        print("Emotion Updated : ", self.emotion)
+        #print("Emotion Updated : ", self.emotion)
 
 
     #compute emotion Activity
     def activity(self):
-        print("------ Activity Computing- -----")
+        #print("------ Activity Computing- -----")
         """Comparison of transient and fundamental activity"""
         #self.emotion[2] = self.impression [2] - self.identity[2] + 0.5
         self.emotion[2] = self.impression [2] + self.identity[2]
         if(abs(self.emotion[2]) > 4):
             self.emotion[2] = (self.emotion[2]/abs(self.emotion[2]))* 4
-        print("Emotion Updated : ", self.emotion)
+        #print("Emotion Updated : ", self.emotion)
 
     def set_impression(self, imp):
         self.impression = imp
 
     def main(self):
+        global file
         print("Emotion Generation Node")
         while(1):
             if(self.new_imp):
@@ -84,6 +88,8 @@ class EmotionGenerator():
                 self.activity()
                 self.new_emo = True
                 print(datetime.now(), " Emotion Updated : ", self.emotion)
+                file.write(str(datetime.now()) + "Emotion Updated: "+ str(self.emotion))
+                file.flush()
             time.sleep(self.freq)
 
 #Emotion Generation Node

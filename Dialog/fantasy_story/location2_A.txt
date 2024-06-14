@@ -7,6 +7,6 @@
     "option_2" : {"continue":"You go talk with them and I wait for you", 
         "file":"fantasy_story/location3.txt",
         "impression": [-1,1,-1],
-	"to_say" : "Okay I'll wait for you let me know what are you able to obtain!_^_ Oh no they didn't let us go through te passage._I told you I should have been the one go talk with them but don't worry while you went talk with them I look around and found another passage to go to the top. Ashes we are coming !"
+	"to_say" : "Okay I'll wait for you let me know what are you able to obtain!_^_ Oh no they didn't let us go through te passage._I told you I should have been the one go talk with them but don't worry while you went talk with them I look around and found another passage to go to the top. Ashes we are coming !_^"
     }
 }
