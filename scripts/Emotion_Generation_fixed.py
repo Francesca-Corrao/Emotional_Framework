@@ -88,7 +88,7 @@ class EmotionGenerator():
                 self.activity()
                 self.new_emo = True
                 print(datetime.now(), " Emotion Updated : ", self.emotion)
-                file.write(str(datetime.now()) + "Emotion Updated: "+ str(self.emotion))
+                file.write(str(datetime.now()) + "Emotion Updated: "+ str(self.emotion)+"\n")
                 file.flush()
             time.sleep(self.freq)
 
