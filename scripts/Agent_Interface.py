@@ -34,7 +34,7 @@ def talk():
     data = request.get_json()
     speech = json.loads(data)
     speech_list = speech.split("_")
-    exp.get_emotion()
+    #exp.get_emotion()
     #time.sleep(1)
     print("Talking")
     for talk in speech_list:

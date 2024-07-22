@@ -54,7 +54,8 @@ def main():
     print("Dialog Manager : Scripted Story ")
     agent_speech = " "
     user_speech = None
-    update_dictionary("C:/Users/franc/Documents/Tesi/Emotional_Framework/Dialog/detective_story/begin.txt")
+    #update_dictionary("C:/Users/franc/Documents/Tesi/Emotional_Framework/Dialog/detective_story/begin.txt")
+    update_dictionary("C:/Users/franc/Documents/Tesi/Emotional_Framework/Dialog/fantasy_story/begin.txt")
     
     start = True
     first_state = "H"
