@@ -1,19 +1,20 @@
 """"
-This node take the information about Emotion and Attention provided by the Morphcast SDK
+This node takes the information about Emotion and Attention provided by the Morphcast SDK
 and publish it to make it available to the Impression Detection Node.
+If a couple of emotion and impression have been already send two times don't send it again.
 """
 import time
 import requests
 import json
 from datetime import datetime
 
-url='http://127.0.0.1:8001/' #morphcast Flask server 
+url='http://127.0.0.1:8001/' #Morphcast Flask server 
 headers= {'Content-Type':'application/json'}
 
 data = {
 }
 
-url2 = 'http://127.0.0.1:4000' # Impression Detection Flask server
+url2 = 'http://127.0.0.1:4000' # Impression Detection API
 old_values = "0_N"
 count = 0
 file_emotion="../test/morphcast_data.txt"
@@ -34,7 +35,6 @@ def publish_perception():
     resp=requests.put(url+'get_input', json=data, headers=headers)
     new_perception=eval(resp.text)["new_perception"]  
     print(new_perception)
-    #new_perception ="True"
     time.sleep(3)
     if new_perception=="True":
         perc=eval(resp.text)["perception"]

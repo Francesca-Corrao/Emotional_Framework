@@ -2,7 +2,7 @@
 Emotion Expression Component: get the emotion the robot feel in EPA space and perform one of the 5 it's able to feel.
 From EPA found the closest one among the 5 he can display [Happy, Neutral, Sad, Anger and Fear].
 Send the clue for the Expression to the Agent. 
-Robot case: 
+Pepper case: 
 -Emotion Animation -> ALAnimationPlayerProxy 
 -Eye LED color -> ALLeds
 """
@@ -26,29 +26,29 @@ emotion_map = {
 
 #animations path for different emotions
 happy_animation = [
-    'emotions-8fe336/Happy_1',
-    'emotions-8fe336/Happy_2']
+    'emotions/Happy_1',
+    'emotions/Happy_2']
 
 sad_animation = [
-    'emotions-8fe336/Sad_1',
-    'emotions-8fe336/Sad_2']
+    'emotions/Sad_1',
+    'emotions/Sad_2']
 
 angry_animation = [
-    'emotions-8fe336/Anger_2',
-    'emotions-8fe336/Anger_4']
+    'emotions/Anger_2',
+    'emotions/Anger_4']
 
 fear_animation = [
-    'emotions-8fe336/Fear_1',
-    'emotions-8fe336/Fear_2']
+    'emotions/Fear_1',
+    'emotions/Fear_2']
 
 #Pepper Connection
-IP_ADD = "10.0.0.6" #set correct IP 
+IP_ADD = "130.251.13.137" #set correct IP 
 PORT = 9559 #set correct PORT 
 
-url='http://127.0.0.1:3000/' #emotion Generation restAPI
+url='http://127.0.0.1:3000/' #Emotion Generation API
 file_emotion = "../test/expression.txt"
 file = open(file_emotion, "a")
-file.write("Beging" + str(datetime.now()) + "\n")
+file.write("Start " + str(datetime.now()) + "\n")
 #class
 class EmotionExpression():
     def __init__(self, type):
@@ -64,6 +64,7 @@ class EmotionExpression():
             self.animation_player = ALProxy("ALAnimationPlayer", IP_ADD , PORT )
             self.leds = ALProxy("ALLeds",IP_ADD,PORT)
             self.leds.fadeRGB("FaceLeds", "white", 5.0)
+            self.ts = ALProxy("ALTextToSpeech", IP_ADD,PORT)
         elif type == 'A':
             #facial expression module
             print("Avatar Case")
@@ -75,7 +76,7 @@ class EmotionExpression():
         #compute cosine similarity 
         for key in emotion_map:
             cos_list.append(np.dot(self.emotion,emotion_map[key])/(norm(self.emotion)*norm(emotion_map[key])))
-            file.write(str(key) + ":"+ str(cos_list[-1])+ "\n") #da errorreeee
+            file.write(str(key) + ":"+ str(cos_list[-1])+ "\n")
         max_cos = 0.6
         index = -1
         #get higher cosine similarity 
@@ -93,7 +94,7 @@ class EmotionExpression():
         file.flush()
 
     def play_animation(self):
-        #select random animation index
+        #select random animation among the emotion's ones
         r= random.randint(0,1)
         animation = "" 
         color = ""
@@ -105,6 +106,7 @@ class EmotionExpression():
             print("Sad")
             animation = sad_animation[r]
             color = 0x0000ff 
+            self.ts.setParameter("speed", 50)
         elif(self.emo_label == "A"):
             print("Angry")
             animation = angry_animation[r]
@@ -123,11 +125,11 @@ class EmotionExpression():
 
     def update_motion(self):
         print("Updating emotion behaviours")
-        #find closest basic emotion
         self.old_emotion = self.emo_label
+        #find closest basic emotion
         self.get_basic()
-        #run animation
         if(self.type == "R"):
+            #run emotional behaviour
             if self.emo_label in ["H", "A", "F", "SA"] :
                 print("play emotion:" + self.emo_label)
                 self.play_animation()

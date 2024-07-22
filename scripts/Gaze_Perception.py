@@ -1,3 +1,9 @@
+"""
+Pepper's perception module to get
+- proximity from user
+- gaze level of the user 
+and send it to the Impression Detection Node
+"""
 from naoqi import ALProxy
 import time
 import requests
@@ -5,8 +11,8 @@ import json
 from datetime import datetime
 
 #Pepper info to connect
-IP_ADD = "10.0.0.6" #set correct IP 
-PORT = 9559 #set correct PORT
+IP_ADD = "130.251.13.137" #set IP 
+PORT = 9559 #set PORT
 
 MAX_DIST = 1.5 
 url2 = 'http://127.0.0.1:4000' #impression_detection
@@ -18,8 +24,8 @@ file.write("Beging" + str(datetime.now()) + "\n")
 class ProximityPerception():
     def __init__(self):
         #set up to connect to Pepper
-        self.memory = ALProxy("ALMemory", IP_ADD, PORT) #aggiungere IP e porta
-        self.engagment_zone = ALProxy("ALEngagementZones",IP_ADD,PORT) #aggiungere IP e porta 
+        self.memory = ALProxy("ALMemory", IP_ADD, PORT)
+        self.engagment_zone = ALProxy("ALEngagementZones",IP_ADD,PORT)
         self.people_perception = ALProxy("ALPeoplePerception", IP_ADD,PORT)
         self.gaze_analysis = ALProxy("ALGazeAnalysis", IP_ADD,PORT)
         self.engagment_zone.setFirstLimitDistance(1) 
@@ -51,8 +57,6 @@ class ProximityPerception():
             people_list2 = self.memory.getData("EngagementZones/PeopleInZone2")
             people_list3 = self.memory.getData("EngagementZones/PeopleInZone3")
             if((self.people_id in people_list) or (self.people_id in people_list2) or (self.people_id in people_list3)):
-            #if (self.memory.getData("PeoplePerception/Person/"+str(self.people_id)+"/IsVisible")):
-                #("people(",self.people_id,") still visible")
                 output_data["id"] = self.people_id
                 s = "PeoplePerception/Person/"+ str(self.people_id) + "/Distance"
                 output_data["dist"] = self.memory.getData(s)

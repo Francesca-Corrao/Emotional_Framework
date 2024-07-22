@@ -1,3 +1,9 @@
+"""
+Node that manages the speaking of the robot:
+- connect to pepper AnimatedSpeech and sent to it the text to say with the say methods.
+- run some sound to have indicate the passing of time
+"""
+
 import Emotion_Expression as ee
 from flask import Flask, request,jsonify
 import threading
@@ -7,7 +13,7 @@ import time
 from datetime import datetime
 
 #pepper ip 
-IP_ADD = "10.0.0.6" #set correct IP 
+IP_ADD = "130.251.13.137" #set correct IP 
 PORT = 9559 #set correct PORT 
 
 #REST API PORT
@@ -27,23 +33,22 @@ if type == "R":
     sm.setMode("contextual")
     ts.setLanguage('English')
     ts.setParameter("speed", 80)
-    bm.preloadBehavior("my_sounds/play_clock")
+    bm.preloadBehavior("emotions/play_clock")
 
 @app.route("/talk", methods = ["POST"])
 def talk():
     data = request.get_json()
     speech = json.loads(data)
     speech_list = speech.split("_")
-    #exp.get_emotion()
-    #time.sleep(1)
+    exp.get_emotion()
     print("Talking")
     for talk in speech_list:
         print(talk)
         if talk == "^":
             #play sound
-            bm.runBehavior("my_sounds/play_clock")
+            bm.runBehavior("emotions/play_clock")
         else:
-            #exp.get_emotion()
+            exp.get_emotion()
             if type == "R":
                 speak.say(str(talk))
             else:

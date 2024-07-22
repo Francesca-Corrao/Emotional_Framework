@@ -1,5 +1,5 @@
 """
-Provide the image acquired from pepper's camera on a url for using it to do emotion recognition
+Provide the image acquired from pepper's camera on a url for using it to do emotion recognition.
 """
 
 from flask import Flask, Response, render_template,  url_for
@@ -10,7 +10,7 @@ import io
 from PIL import Image
 
 #Pepper IP information update with the right one
-IP_ADD = "10.0.0.6" #set correct IP 
+IP_ADD = "130.251.13.137" #set correct IP 
 PORT = 9559 #set correct PORT
 
 #REST API PORT

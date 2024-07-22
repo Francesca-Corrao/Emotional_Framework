@@ -1,10 +1,17 @@
+"""
+Node that manages the interaction between the robot and the human.
+- Send to the robot the speech it has to say
+- Get the choice of the user, either by keyboard or using the microphone
+- Continue the story according to the choice and send the impression associated to the choice to the impression detection node  
+"""
+
 import requests
 import time
 import json
 from datetime import datetime
-url_ic = "http://127.0.0.1:6000/" #Input Capture
-url_ai = "http://127.0.0.1:6001/" #agent interface
-url_id = "http://127.0.0.1:4000/" #impression detection
+url_ic = "http://127.0.0.1:6000/" #Input Capture API
+url_ai = "http://127.0.0.1:6001/" #Agent Interface API
+url_id = "http://127.0.0.1:4000/" #Impression Detection API
 output_dic =  {}
 end_point=False
 select_one = [
@@ -13,31 +20,20 @@ select_one = [
     "one",
     "1",
     "options one",
-    "options 1",
-    "first",
-    "the first",
-    "the first one",
-    "the first option",
-    "first option"
+    "options 1"
 ]
-
 
 select_two = [
     "option two",
     "option 2",
-    "option to",
     "two",
     "2",
-    "to"
     "options two",
-    "options 2",
-    "second",
-    "the second",
-    "second option",
-    "the second option"
+    "options 2"
 ]
 
 def update_dictionary(path):
+    #Function to update the paragraph of the story to tell
     global output_dic, end_point
     file = open(path)
     data = file.read()
@@ -46,6 +42,7 @@ def update_dictionary(path):
         end_point = True
 
 def send_choice(key):
+    #Function to send the impression associated with the choice to the Impression Detection Node
     data = json.dumps(output_dic[key]["impression"])
     requests.post(url_id+"choice_impression", json = data)
 
@@ -59,7 +56,7 @@ def main():
     
     start = True
     first_state = "H"
-    time.sleep(8)
+    time.sleep(8) #wait for other nodes to start--- connection to Pepper takes time
     while(1):
         print("start ", datetime.now())
         #robot_speech
@@ -126,8 +123,8 @@ def main():
             else:
                 send_choice("option_1")
             if(output_dic["option_1"]["to_say"] != ""):
-                        data = json.dumps(output_dic["option_1"]["to_say"])
-                        requests.post(url_ai+"/talk", json=data)
+                    data = json.dumps(output_dic["option_1"]["to_say"])
+                    requests.post(url_ai+"/talk", json=data)
             if end_point:
                 print("End Story")
                 break

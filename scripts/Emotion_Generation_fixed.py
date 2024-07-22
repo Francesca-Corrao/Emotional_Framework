@@ -26,52 +26,32 @@ class EmotionGenerator():
         self.emotion = [0,0,0] #emotion in EPA space
         self.new_imp = False
         self.new_emo = False
-        self.time_decay = 1 #look for accurate data
-        self.freq = 0
-        self.delta = self.freq/self.time_decay
     
     #compute emotion evaluation
     def evaluation(self):
-        #print("------ Evaluation Computing- -----")
-        """Positivity varies with the valence of one's transient impression"""
-        """Intensity varies with extremity of impression and fundamental meaning adjust it"""
-        self.emotion[0] = self.impression[0] - self.identity[0] + 1
-        """fundamental activity and its impression effect positivity"""
+        self.emotion[0] = self.impression[0] - self.identity[0] + 1        
         self.emotion[0] += (self.impression[2] -self.identity[2])*0.2
-        """Saturate to max value of emotion"""
         if(abs(self.emotion[0]) > 4):
             self.emotion[0] = (self.emotion[0]/abs(self.emotion[0]))* 4
-        #print("Emotion Updated : ", self.emotion)
 
     #compute emotion potency
     def potency(self):
-        #print("------ Potency Computing- -----")
-        #Transient impression and fundamental power #RIVEDERE
         if(self.identity[1]< 0 and self.impression[1]-self.identity[1] > 1):
-            #powerless but appear more power
             self.emotion[1] = self.impression[1]-self.identity[1]
-        elif(self.identity[1]>0 and self.impression[1]-self.identity[1]<=-1):
-            #powerfull but appear less powerful   
+        elif(self.identity[1]>0 and self.impression[1]-self.identity[1]<=-1):  
             self.emotion[1] = self.impression[1]-self.identity[1]
         else: 
-            self.emotion[1] = self.impression[1]
-        #self.emotion[1] = self.impression[1]-self.identity[1]        
-        #Activity affect potency
+            self.emotion[1] = self.impression[1]       
         self.emotion[1] += -(self.impression[2] - self.identity[2])
         if(abs(self.emotion[1]) > 4):
             self.emotion[1] = (self.emotion[1]/abs(self.emotion[1]))* 4 
-        #print("Emotion Updated : ", self.emotion)
 
 
     #compute emotion Activity
-    def activity(self):
-        #print("------ Activity Computing- -----")
-        """Comparison of transient and fundamental activity"""
-        #self.emotion[2] = self.impression [2] - self.identity[2] + 0.5
+    def activity(self):        
         self.emotion[2] = self.impression [2] + self.identity[2]
         if(abs(self.emotion[2]) > 4):
             self.emotion[2] = (self.emotion[2]/abs(self.emotion[2]))* 4
-        #print("Emotion Updated : ", self.emotion)
 
     def set_impression(self, imp):
         self.impression = imp
@@ -96,15 +76,11 @@ class EmotionGenerator():
 emoNode = EmotionGenerator()
 
 #REST API
-
 app = Flask(__name__)
 
 #Impression-EmotionGen Comunication
 @app.route('/impression',methods =['POST'])
 def get_impression():
-    #receive impression from Impression Node
-    #print("Received Impression")
-    #convert from json to array
     data = request.get_json()
     i = json.loads(data)
     emoNode.new_imp = True
@@ -114,7 +90,6 @@ def get_impression():
 #EmotionGen- EmotionExp Comunication
 @app.route('/emotional_state',methods =['GET'])
 def send_emotion():
-    #request by Emotion Expression -> send emotion
     print("Received Request from Emotional expression")
     val = emoNode.new_emo
     emoNode.new_emo = False
