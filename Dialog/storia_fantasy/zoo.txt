@@ -1,0 +1,17 @@
+{
+    "start": "Eccoci  allo zoo di cui ti ho parlato, adesso andiamo a cercare gli alligatori._ Tigri... Leoni... Scimmie... Serpenti... Foche... Pinguini... Elefanti..._ Siamo alla fine dello zoo e non ho visto alcun alligatore! Quindi penso che non ce ne siano qui._ Questo significa che non abbiamo altra scelta, dobbiamo andare nella terribile palude degli alligatori!_^",
+    
+    "option_1": {
+        "continue": " ",
+        "file": "storia_fantasy/swamp.txt",
+        "impression": [-1, -1, 1],
+        "to_say": ""
+    },
+    
+    "option_2": {
+        "continue": " ",
+        "file": " ",
+        "impression": [-1, -1, 1],
+        "to_say": ""
+    }
+}

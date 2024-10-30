@@ -1,0 +1,17 @@
+{
+    "start": "In questo mercato penso che possiamo trovare la maggior parte delle cose di cui abbiamo bisogno._Guarda quel negozio laggiu, sembra che abbia molti fiori. Dovremmo andare a vedere se hanno quello che ci serve._ Pensi che quello sia il fiore del Sole? So che hai seguito molte lezioni di botanica e dovresti riuscire a riconoscerlo da solo._Ma, se vuoi, ho lo strumento per scansionarlo e vedere se si tratta di quello giusto. Il processo richiede del tempo. ",
+    
+    "option_1": {
+        "continue": "Scansiona per essere sicuri",
+        "file": "storia_fantasy/location2_M.txt",
+        "impression": [1, 1, 1],
+        "to_say": "Avvio la scansione adesso, ti faro sapere quando sono pronto a proseguire._^_Ho completato la scansione si tratta del fiore giusto, possiamo andare avanti!"
+    },
+    
+    "option_2": {
+        "continue": "Non scansionarlo",
+        "file": "storia_fantasy/location2_M.txt",
+        "impression": [-1, -1, -1],
+        "to_say": "Va bene, compralo allora cosi possiamo andare avanti._^"
+    }
+}

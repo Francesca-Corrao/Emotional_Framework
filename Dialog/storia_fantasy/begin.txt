@@ -1,0 +1,17 @@
+{
+    "start": "Ciao, sono NAO il tuo robot da compagnia._Ho saputo che andremo in missione per trovare gli ingredienti necessari a creare l'Elisir Magico. So che si tratta di una pozione molto difficile da distillare, fatta con il fiore del Sole, cenere di vulcano e l'acqua di un fiume pieno di alligatori._ Si tratta del tuo test finale, quindi sono sicuro che ce la farai senza troppi problemi._In ogni caso, io sono qui per aiutarti a trovare ciò di cui hai bisogno._Per iniziare potremmo andare al mercato a vedere se hanno qualche ingrediente li. Oppure potremmo cercare gli ingredienti insieme. Sarebbe un'avventura incredibile e potremmo scoprire tanti posti nuovi!_Non mentirò, non vedo l'ora di viaggiare insieme a te.",
+    
+    "option_1": {
+        "continue": "Andiamo al mercato",
+        "file": "storia_fantasy/location1_M.txt",
+        "impression": [-1, -1, -1],
+        "to_say": "Conosco un mercato dove ci sono molti negozi che vendono ciò di cui abbiamo bisogno, andiamo li._^"
+    },
+    
+    "option_2": {
+        "continue": "Andiamo a raccogliere gli ingredienti insieme",
+        "file": "storia_fantasy/location1_A.txt",
+        "impression": [1, 1, 1],
+        "to_say": "Ho sentito parlare di una scogliera dove cresce il fiore del Sole, iniziamo da li._^"
+    }
+}

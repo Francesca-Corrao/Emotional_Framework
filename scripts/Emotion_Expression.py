@@ -42,7 +42,8 @@ fear_animation = [
     'emotions/Fear_2']
 
 #Pepper Connection
-IP_ADD = "130.251.13.137" #set correct IP 
+#IP_ADD = "192.168.248.132" #set correct IP 
+IP_ADD= "130.251.13.122" #NAO lab
 PORT = 9559 #set correct PORT 
 
 url='http://127.0.0.1:3000/' #Emotion Generation API
@@ -100,13 +101,13 @@ class EmotionExpression():
         color = ""
         if(self.emo_label == "H"):
             print("Happy")
-            animation = happy_animation[r]
+            animation = 'emotions/Happy_1'
             color = 0x55ff00
         elif(self.emo_label == "SA"):
             print("Sad")
             animation = sad_animation[r]
             color = 0x0000ff 
-            self.ts.setParameter("speed", 50)
+            #self.ts.setParameter("speed", 70)
         elif(self.emo_label == "A"):
             print("Angry")
             animation = angry_animation[r]

@@ -1,0 +1,17 @@
+{
+    "start": "Ora che abbiamo le ceneri, siamo quasi alla fine della nostra missione. Dobbiamo solo cercare l'ultimo ingrediente: acqua da un fiume di alligatori._Sei sicuro che sia quello giusto? Va bene, non preoccuparti, penso di avere la soluzione perfetta: qui vicino si trova uno zoo e sono abbastanza sicuro che abbiano gli alligatori._Quindi possiamo semplicemente andare lì e chiedere a qualcuno dello staff un po' di quell'acqua. Altrimenti possiamo andare nella palude spaventosa, ma non so se ho il coraggio di farlo!",
+    
+    "option_1": {
+        "continue": "Andiamo allo zoo",
+        "file": "storia_fantasy/zoo.txt",
+        "impression": [1, 1, 1],
+        "to_say": "Va bene, andiamo allo zoo _^"
+    },
+    
+    "option_2": {
+        "continue": "Andiamo nella palude",
+        "file": "storia_fantasy/swamp.txt",
+        "impression": [-1, -1, 1],
+        "to_say": "Va bene, andiamo nella palude_^"
+    }
+}

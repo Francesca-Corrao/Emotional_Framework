@@ -26,6 +26,7 @@ class EmotionGenerator():
         self.emotion = [0,0,0] #emotion in EPA space
         self.new_imp = False
         self.new_emo = False
+        self.freq = 0
     
     #compute emotion evaluation
     def evaluation(self):

@@ -1,0 +1,17 @@
+{
+    "start": "Adesso che abbiamo il fiore, possiamo andare alla prossima location. Sei pronto a salire sulla cima di un vulcano per prendere delle ceneri? _In base alla nostra posizione e al mio sistema di navigazione, dovremmo essere vicino al Vulcano Kumba. Andiamo!_^Siamo arrivati! Fortunatamente non era lontano_Oh no il passaggio per andare in cima al vulcano è bloccato da un gruppo di folletti._Ho sentito dire che i folletti possono essere davvero difficili da trattare, ma non preoccuparti, ho aggiornato le mie abilità sociali internazionali, proprio prima di iniziare il nostro viaggio. Non l'ho mai usato, quindi speriamo che non abbia errori.",
+    
+    "option_1": {
+        "continue": "Vado avanti e parlo con loro",
+        "file": "storia_fantasy/failA.txt",
+        "impression": [1, 1, 1],
+        "to_say": ""
+    },
+    
+    "option_2": {
+        "continue": "Tu vai a parlare con loro e io ti aspetto",
+        "file": "storia_fantasy/location3.txt",
+        "impression": [-1, 1, -1],
+        "to_say": "Va bene, fammi sapere cosa riesci a ottenere!_^_Non ci hanno lasciato passare._Te l'avevo detto che dovevo essere io a parlare con loro, ma non preoccuparti, mentre tu parlavi con loro, ho guardato in giro e ho trovato un altro passaggio per andare in cima._^"
+    }
+}

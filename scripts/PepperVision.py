@@ -10,7 +10,8 @@ import io
 from PIL import Image
 
 #Pepper IP information update with the right one
-IP_ADD = "130.251.13.137" #set correct IP 
+#IP_ADD = "192.168.248.132" #set correct IP 
+IP_ADD= "130.251.13.122" #NAO lab
 PORT = 9559 #set correct PORT
 
 #REST API PORT

@@ -1,0 +1,17 @@
+{
+    "start": "Fantastico, ti faro sapere cosa riesco a ottenere!_^",
+    
+    "option_1": {
+        "continue": " ",
+        "impression": [-1, 1, -1],
+        "to_say": "A quanto pare le mie abilita sociali non sono cosi fluide come sembrano, e la lingua che parlavano era un dialetto di quella che conosco._ Non ho ottenuto molto ma di sicuro stavano ridendo di me._Hai trovato un altro passaggio dall'altra parte? Perfetto, andiamo a prendere le ceneri_^",
+        "file": "storia_fantasy/location3.txt"
+    },
+    
+    "option_2": {
+        "continue": "",
+        "file": "",
+        "impression": [],
+        "to_say": ""
+    }
+}

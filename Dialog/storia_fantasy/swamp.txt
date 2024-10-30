@@ -1,0 +1,17 @@
+{
+    "start": "Siamo arrivati! Adesso dobbiamo stare molto attenti e non attirare l'attenzione degli alligatori su di noi._Aspetta, che suono era quello? Un coccodrillo? _No, per fortuna si tratta solo di un ramo._ Siamo abbastanza vicini all'acqua, vai avanti, in fretta, riempiamo quella bottiglia e andiamo._Sbrigati... questo posto mi fa venire i brividi! _Adesso che abbiamo raccolto tutti gli ingredienti, è tempo di tornare al quartiere generale e preparare l'Elisir._^",
+    
+    "option_1": {
+        "continue": " ",
+        "file": "storia_fantasy/finish.txt",
+        "impression": [1, 1, 1],
+        "to_say": ""
+    },
+    
+    "option_2": {
+        "continue": "",
+        "file": "",
+        "impression": [-1, -1, -1],
+        "to_say": ""
+    }
+}

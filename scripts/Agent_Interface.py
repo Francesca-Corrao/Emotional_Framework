@@ -13,14 +13,16 @@ import time
 from datetime import datetime
 
 #pepper ip 
-IP_ADD = "130.251.13.137" #set correct IP 
+#IP_ADD = "192.168.248.132" #set correct IP
+#IP_ADD = "130.251.13.137" #LAB pepper
+IP_ADD= "130.251.13.122" #NAO lab
 PORT = 9559 #set correct PORT 
 
 #REST API PORT
 PORT2 = 6001
 
 app = Flask(__name__)
-type = "R"
+type = "A"
 exp = ee.EmotionExpression(type= type)
 audio = None
 #pepper speaking Proxy
@@ -29,11 +31,20 @@ if type == "R":
     sm = ALProxy("ALSpeakingMovement", IP_ADD, PORT)
     ts = ALProxy("ALTextToSpeech", IP_ADD,PORT)
     bm = ALProxy("ALBehaviorManager", IP_ADD, PORT)
+    speech_recognition = ALProxy("ALSpeechRecognition", IP_ADD, PORT)
+    aa = ALProxy("ALAutonomousLife", IP_ADD, PORT)
+    speech_recognition.pause(True)
+    #active = aa.getAutonomousAbilityEnabled("BasicAwareness")
+    #print(active)
+    aa.setAutonomousAbilityEnabled("BasicAwareness", False)
+    #active = aa.getAutonomousAbilityEnabled("BasicAwareness")
+    #print(active)
     sm.setEnabled(True)
     sm.setMode("contextual")
     ts.setLanguage('English')
     ts.setParameter("speed", 80)
     bm.preloadBehavior("emotions/play_clock")
+    
 
 @app.route("/talk", methods = ["POST"])
 def talk():
@@ -45,10 +56,11 @@ def talk():
     for talk in speech_list:
         print(talk)
         if talk == "^":
+            if type == "R":
             #play sound
-            bm.runBehavior("emotions/play_clock")
+                bm.runBehavior("emotions/play_clock")
         else:
-            exp.get_emotion()
+            #exp.get_emotion()
             if type == "R":
                 speak.say(str(talk))
             else:

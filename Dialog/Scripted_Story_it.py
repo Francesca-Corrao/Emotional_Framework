@@ -51,8 +51,7 @@ def main():
     print("Dialog Manager : Scripted Story ")
     agent_speech = " "
     user_speech = None
-    #update_dictionary("C:/Users/franc/Documents/Tesi/Emotional_Framework/Dialog/detective_story/begin.txt")
-    update_dictionary("C:/Users/franc/Documents/Tesi/Emotional_Framework/Dialog/fantasy_story/begin.txt")
+    update_dictionary("C:/Users/franc/Documents/Tesi/Emotional_Framework/Dialog/storia_fantasy/begin.txt")
     
     start = True
     first_state = "H"
@@ -62,7 +61,7 @@ def main():
         #robot_speech
         agent_speech = output_dic['start']
         if output_dic["option_1"]["continue"] != " " : 
-            agent_speech += "_What do you want to do: " + output_dic["option_1"]["continue"] + ", or " + output_dic["option_2"]["continue"] + " ? "
+            agent_speech += "_Cosa vuoi fare: " + output_dic["option_1"]["continue"] + ", o " + output_dic["option_2"]["continue"] + " ? "
             #post agent_speech
             print("send robot speech")
             data = json.dumps(agent_speech)
@@ -104,7 +103,7 @@ def main():
                 else:
                     #no answer get wait for it
                     user_speech = None 
-                    agent_speech = "I am sorry, I didn't get your choice. Can you please try again slowly and louder"
+                    agent_speech = "Mi dispiace non ho capito che hai detto, puoi ripetere ?"
                     data = json.dumps(agent_speech)
                     requests.post(url_ai+"/talk", json=data)
             user_speech = None

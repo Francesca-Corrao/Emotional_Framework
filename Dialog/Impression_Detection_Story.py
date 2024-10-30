@@ -52,7 +52,7 @@ class ImpressionDetection():
         self.delta = 0.5
         #distance thresholds
         self.shorter_distance_th = 1 #Engagment Zone 1
-        self.large_distance_th = 2 
+        self.large_distance_th = 1.5
         #to set the sign of the new impression if positive or negative
         self.sign = [0,0,0]
         #value to start the processing of perception to get impression
@@ -177,7 +177,7 @@ class ImpressionDetection():
         if(self.new_choice):
             self.new_choice = False
             self.choice_effects()
-            upd = True
+            upd = True 
         if(self.new_prox):
             self.new_prox = False
             self.proximty_effects()

@@ -4,7 +4,7 @@ import requests
 import json
 
 #Pepper info to connect
-IP_ADD = "130.251.13.137" #set correct IP 
+IIP_ADD = "192.168.248.71" #set correct IP 
 PORT = 9559 #set correct PORT
 
 MAX_DIST = 15 

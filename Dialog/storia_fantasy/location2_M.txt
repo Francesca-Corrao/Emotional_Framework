@@ -1,0 +1,17 @@
+{
+    "start": "Adesso che abbiamo il fiore, possiamo andare a cercare le ceneri del vulcano! _Da quello che ho capito, quel gruppo di fate si trova vicino al Vulcano Kumba e vende molti oggetti del luogo. Sfortunatamente non parlano la tua lingua, ma penso di aver appena scaricato il pacchetto linguistico prima di iniziare il nostro viaggio. _Non l'ho mai usato, quindi spero che non ci deluda.",
+    
+    "option_1": {
+        "continue": "Vado avanti e parlo con loro",
+        "file": "storia_fantasy/failM.txt",
+        "impression": [1, 1, 1],
+        "to_say": ""
+    },
+    
+    "option_2": {
+        "continue": "Tu vai a parlare con loro",
+        "file": "storia_fantasy/location3.txt",
+        "impression": [-1, 1, -1],
+        "to_say": "Va bene, fammi sapere cosa riesci a ottenere!_^_Come mai sei tornato a mani vuote? _Te l'avevo detto che dovevo essere io a parlare con loro, ma non preoccuparti, mentre tu eri via, ho guardato in giro e ho trovato un altro negozio che ha esattamente quello di cui abbiamo bisogno. Guarda queste ceneri vulcaniche!"
+    }
+}

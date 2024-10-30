@@ -1,0 +1,17 @@
+{
+    "start": "Finalmente siamo usciti dalla foresta. Non pensavo sarebbe stata cosi lunga. La strada non era davvero chiara come mi aspettavo, peccato che ci siamo persi._Hai trovato il fiore del Sole? So che hai seguito molte lezioni di botanica, ma se vuoi ho lo strumento per scansionarlo e vedere se si tratta di quello giusto._Ci vuole un po' di tempo, ma non importa arrivare per primi se gli ingredienti sono sbagliati; non diventerai un mago",
+    
+    "option_1": {
+        "continue": "Scansiona il fiore per essere sicuri",
+        "file": "storia_fantasy/location2_A.txt",
+        "impression": [1, 1, 1],
+        "to_say": "Avvio la scansione adesso, ti faro sapere quando sono pronto a proseguire._^_Scansione completa. posso garantire che hai il fiore del sole!"
+    },
+    
+    "option_2": {
+        "continue": "Non serve scansionare il fiore",
+        "file": "storia_fantasy/location2_A.txt",
+        "impression": [-1, -1, -1],
+        "to_say": "Va bene, raccogli il fiore e possiamo andare avanti_^"
+    }
+}

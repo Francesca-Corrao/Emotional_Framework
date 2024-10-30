@@ -11,7 +11,8 @@ import json
 from datetime import datetime
 
 #Pepper info to connect
-IP_ADD = "130.251.13.137" #set IP 
+#IP_ADD = "192.168.248.132" #set IP 
+IP_ADD= "130.251.13.122" #NAO lab
 PORT = 9559 #set PORT
 
 MAX_DIST = 1.5 

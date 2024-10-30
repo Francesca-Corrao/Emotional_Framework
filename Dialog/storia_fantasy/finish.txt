@@ -1,0 +1,17 @@
+{
+    "start": "Abbiamo terminato? Non avevo dubbi che ce l'avresti fatta._Congratulazioni, amico mio, questo significa che ora sei ufficialmente un mago!_E guarda, nessun altro ha ancora finito il proprio Elisir Magico, quindi sembra che vincerai il premio._",
+    
+    "option_1": {
+        "continue": " ",
+        "file": "",
+        "impression": [1, 1, 1],
+        "to_say": "Abbiamo finito il nostro viaggio. Mi ha fatto piacere lavorare con te e mi sono divertito a passare questo tempo insieme. Spero che per te sia stato lo stesso e non vedo l'ora di rivederti e aiutarti nella tua prossima avventura!"
+    },
+    
+    "option_2": {
+        "continue": "",
+        "file": "",
+        "impression": [-1, -1, -1],
+        "to_say": "Abbiamo finito il nostro viaggio. Mi ha fatto piacere lavorare con te e mi sono divertito a passare questo tempo insieme. Spero che per te sia stato lo stesso e non vedo l'ora di rivederti e aiutarti nella tua prossima avventura!"
+    }
+}
